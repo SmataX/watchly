@@ -1,10 +1,7 @@
-# src/common/models.py
-
 from datetime import datetime
 from typing import Optional, List
 from sqlmodel import SQLModel, Field, Relationship
 from pydantic import BaseModel
-
 
 # --------------------
 # User Model
@@ -20,6 +17,22 @@ class User(SQLModel, table=True):
     created_at: datetime = Field(default_factory=datetime.now)
 
 
+# --------------------
+# MovieDirector Link Table (Many-to-Many)
+# --------------------
+class MovieDirector(SQLModel, table=True):
+    __tablename__ = "movie_directors" #
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    
+    # Added Foreign Keys
+    movie_id: int = Field(foreign_key="movies.id")
+    director_id: int = Field(foreign_key="directors.id") 
+
+
+# --------------------
+# Movie Model
+# --------------------
 class Movie(SQLModel, table=True):
     __tablename__ = "movies"
 
@@ -31,6 +44,15 @@ class Movie(SQLModel, table=True):
     release_date: datetime
     created_at: datetime = Field(default_factory=datetime.now)
 
+    directors: List["Director"] = Relationship(
+        back_populates="movies", 
+        link_model=MovieDirector
+    )
+
+
+# --------------------
+# Director Model
+# --------------------
 class Director(SQLModel, table=True):
     __tablename__ = "directors"
 
@@ -38,13 +60,13 @@ class Director(SQLModel, table=True):
     first_name: str
     surname: str
     picture_url: str
+    created_at: datetime = Field(default_factory=datetime.now)
 
-class MovieDirector(SQLModel, table=True):
-    __tablename__ = "MovieDirector"
+    movies: List["Movie"] = Relationship(
+        back_populates="directors", 
+        link_model=MovieDirector
+    )
 
-    id: Optional[int] = Field(default=None, primary_key=True)
-    movie_id: int
-    director: int
 
 # --------------------
 # Auth Token
