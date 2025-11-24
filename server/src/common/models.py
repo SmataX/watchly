@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 from typing import Optional, List
 from sqlmodel import SQLModel, Field, Relationship
 from pydantic import BaseModel
@@ -41,7 +41,7 @@ class Movie(SQLModel, table=True):
     description: str
     duration: int
     poster_url: Optional[str] = None
-    release_date: datetime
+    release_date: date
     created_at: datetime = Field(default_factory=datetime.now)
 
     directors: List["Director"] = Relationship(
