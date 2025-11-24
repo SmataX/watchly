@@ -11,7 +11,7 @@ class CreateUserForm(BaseModel):
 
 
 class AddMovieForm(BaseModel):
-    name: str
+    title: str
     description: str
     duration: int
     poster_url: str | None = None

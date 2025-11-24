@@ -37,7 +37,7 @@ class Movie(SQLModel, table=True):
     __tablename__ = "movies"
 
     id: Optional[int] = Field(default=None, primary_key=True)
-    name: str = Field(nullable=False)
+    title: str = Field(nullable=False)
     description: str
     duration: int
     poster_url: Optional[str] = None
