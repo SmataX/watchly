@@ -7,7 +7,7 @@ from src.common.deps import SessionDep, UserDep
 from src.modules.movies.movies_operations import add_movie, get_all_movies, get_movie_by_id, update_movie, delete_movie
 
 
-movies_router = APIRouter(prefix="/movies", tags=["movies"])
+movies_router = APIRouter(prefix="/api/movies", tags=["movies"])
 
 @movies_router.get("", response_model=list[Movie])
 def get_all(session: SessionDep, skip: int = 0, limit: int = 100):

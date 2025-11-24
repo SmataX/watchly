@@ -9,7 +9,7 @@ from src.common.schemes import CreateUserForm
 from .auth_operations import create_user, login_for_access_token
 
 
-router = APIRouter(prefix="/auth", tags=["auth"])
+router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 
 @router.get("/")
