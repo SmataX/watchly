@@ -1,24 +1,51 @@
-.searchBox{
-
+.mainLayout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    align-items: start;
 }
-.filterSidebar{
 
+.movieGrid {
+    display: flex;
+    flex-direction: column;
 }
-.filterSection{
 
+.searchBox {
 }
-.categoryList{
 
+.filterSidebar {
 }
-.hrLine{
 
+.filterSection {
 }
-.genreList{
 
+.categoryList {
 }
-.resetButton{
 
+.hrLine {
 }
-.mainContent{
 
+.genreList {
+}
+
+.resetButton {
+    margin-top: 10px;
+}
+
+.mainContent {
+}
+
+.sliderTrack {
+    height: 6px;
+    width: 50%;
+    background-color: #ccc;
+    border-radius: 3px;
+}
+
+.sliderThumb {
+    height: 15px;
+    width: 15px;
+    background-color: #007bff;
+    border-radius: 50%;
+    outline: none;
+    cursor: grab;
 }
