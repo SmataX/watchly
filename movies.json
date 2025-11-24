@@ -1,0 +1,142 @@
+[
+  {
+    "title": "The Shawshank Redemption",
+    "description": "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
+    "duration": 142,
+    "poster_url": "https://example.com/posters/shawshank.jpg",
+    "release_date": "1994-09-22"
+  },
+  {
+    "title": "The Godfather",
+    "description": "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.",
+    "duration": 175,
+    "poster_url": "https://example.com/posters/godfather.jpg",
+    "release_date": "1972-03-24"
+  },
+  {
+    "title": "The Dark Knight",
+    "description": "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.",
+    "duration": 152,
+    "poster_url": "https://example.com/posters/dark_knight.jpg",
+    "release_date": "2008-07-18"
+  },
+  {
+    "title": "Pulp Fiction",
+    "description": "The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.",
+    "duration": 154,
+    "poster_url": "https://example.com/posters/pulp_fiction.jpg",
+    "release_date": "1994-10-14"
+  },
+  {
+    "title": "Inception",
+    "description": "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.",
+    "duration": 148,
+    "poster_url": "https://example.com/posters/inception.jpg",
+    "release_date": "2010-07-16"
+  },
+  {
+    "title": "Fight Club",
+    "description": "An insomniac office worker and a devil-may-care soapmaker form an underground fight club that evolves into something much, much more.",
+    "duration": 139,
+    "poster_url": "https://example.com/posters/fight_club.jpg",
+    "release_date": "1999-10-15"
+  },
+  {
+    "title": "Forrest Gump",
+    "description": "The presidencies of Kennedy and Johnson, the events of Vietnam, Watergate and other historical events unfold from the perspective of an Alabama man with an IQ of 75.",
+    "duration": 142,
+    "poster_url": "https://example.com/posters/forrest_gump.jpg",
+    "release_date": "1994-07-06"
+  },
+  {
+    "title": "The Matrix",
+    "description": "When a beautiful stranger leads computer hacker Neo to a forbidding underworld, he discovers the shocking truth--the life he knows is the elaborate deception of an evil cyber-intelligence.",
+    "duration": 136,
+    "poster_url": "https://example.com/posters/matrix.jpg",
+    "release_date": "1999-03-31"
+  },
+  {
+    "title": "The Lord of the Rings: The Fellowship of the Ring",
+    "description": "A meek Hobbit from the Shire and eight companions set out on a journey to destroy the powerful One Ring and save Middle-earth from the Dark Lord Sauron.",
+    "duration": 178,
+    "poster_url": "https://example.com/posters/lotr_fellowship.jpg",
+    "release_date": "2001-12-19"
+  },
+  {
+    "title": "Star Wars: Episode IV - A New Hope",
+    "description": "Luke Skywalker joins forces with a Jedi Knight, a cocky pilot, a Wookiee and two droids to save the galaxy from the Empire's world-destroying battle station.",
+    "duration": 121,
+    "poster_url": "https://example.com/posters/star_wars_iv.jpg",
+    "release_date": "1977-05-25"
+  },
+  {
+    "title": "Goodfellas",
+    "description": "The story of Henry Hill and his life in the mob, covering his relationship with his wife Karen Hill and his mob partners Jimmy Conway and Tommy DeVito.",
+    "duration": 146,
+    "poster_url": "https://example.com/posters/goodfellas.jpg",
+    "release_date": "1990-09-19"
+  },
+  {
+    "title": "The Silence of the Lambs",
+    "description": "A young F.B.I. cadet must receive the help of an incarcerated and manipulative cannibal killer to help catch another serial killer, a madman who skins his victims.",
+    "duration": 118,
+    "poster_url": "https://example.com/posters/silence_lambs.jpg",
+    "release_date": "1991-02-14"
+  },
+  {
+    "title": "Interstellar",
+    "description": "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
+    "duration": 169,
+    "poster_url": "https://example.com/posters/interstellar.jpg",
+    "release_date": "2014-11-07"
+  },
+  {
+    "title": "Parasite",
+    "description": "Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan.",
+    "duration": 132,
+    "poster_url": "https://example.com/posters/parasite.jpg",
+    "release_date": "2019-05-30"
+  },
+  {
+    "title": "Spirited Away",
+    "description": "During her family's move to the suburbs, a sullen 10-year-old girl wanders into a world ruled by gods, witches, and spirits, and where humans are changed into beasts.",
+    "duration": 125,
+    "poster_url": "https://example.com/posters/spirited_away.jpg",
+    "release_date": "2001-07-20"
+  },
+  {
+    "title": "The Green Mile",
+    "description": "The lives of guards on Death Row are affected by one of their charges: a black man accused of child murder and rape, yet who has a mysterious gift.",
+    "duration": 189,
+    "poster_url": "https://example.com/posters/green_mile.jpg",
+    "release_date": "1999-12-10"
+  },
+  {
+    "title": "Saving Private Ryan",
+    "description": "Following the Normandy Landings, a group of U.S. soldiers go behind enemy lines to retrieve a paratrooper whose brothers have been killed in action.",
+    "duration": 169,
+    "poster_url": "https://example.com/posters/saving_private_ryan.jpg",
+    "release_date": "1998-07-24"
+  },
+  {
+    "title": "Gladiator",
+    "description": "A former Roman General sets out to exact vengeance against the corrupt emperor who murdered his family and sent him into slavery.",
+    "duration": 155,
+    "poster_url": "https://example.com/posters/gladiator.jpg",
+    "release_date": "2000-05-05"
+  },
+  {
+    "title": "The Lion King",
+    "description": "Lion prince Simba and his father are targeted by his bitter uncle, who wants to ascend the throne himself.",
+    "duration": 88,
+    "poster_url": "https://example.com/posters/lion_king.jpg",
+    "release_date": "1994-06-15"
+  },
+  {
+    "title": "The Prestige",
+    "description": "After a tragic accident, two stage magicians engage in a battle to create the ultimate illusion while sacrificing everything they have to outwit each other.",
+    "duration": 130,
+    "poster_url": "https://example.com/posters/prestige.jpg",
+    "release_date": "2006-10-20"
+  }
+]
