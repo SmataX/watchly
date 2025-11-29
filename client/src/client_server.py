@@ -182,7 +182,8 @@ async def register_user(
 @app.get("/")
 async def index(
     request: Request, 
-    user: Optional[dict] = Depends(get_optional_user)
+    user: Optional[dict] = Depends(get_optional_user),
+    client: httpx.AsyncClient = Depends(get_http_client)
 ):
     """
     Renders the home page.
@@ -195,9 +196,22 @@ async def index(
     Returns:
         TemplateResponse: The rendered 'template.html' with user context.
     """
+
+    # Get 10 random movies from the api
+    movies = []
+
+    try:
+        respone = await client.get("/movies/random?limit=10")
+
+        if respone.status_code == 200:
+            movies = respone.json()
+    except httpx.RequestError:
+        pass
+
     return templates.TemplateResponse("template.html", {
         "request": request, 
-        "user": user
+        "user": user,
+        "movies": movies
     })
 
 @app.get("/logout")

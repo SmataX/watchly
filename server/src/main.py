@@ -8,9 +8,8 @@ from src.common.db import create_db_and_tables, engine
 from src.modules.auth import auth_router
 from src.modules.movies import movies_router 
 from src.common.schemes import AddMovieForm
-from src.modules.movies.movies_operations import add_movie
+from src.modules.movies.movies_operations import add_movie, init_movies_data
 from src.common.models import Movie
-from src.common.tools import init_movies_data
 
 
 @asynccontextmanager
