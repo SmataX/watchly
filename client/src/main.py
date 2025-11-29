@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 from typing import Optional
 
 import httpx
+from pathlib import Path
 from fastapi import FastAPI, Request, Form, status, Depends
 from fastapi.responses import RedirectResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
@@ -27,8 +28,12 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 # --- Static Files & Templates ---
-app.mount("/client/static", StaticFiles(directory="client/static"), name="static")
-templates = Jinja2Templates(directory="client/templates")
+BASE_DIR = Path(__file__).resolve().parent.parent
+templates_dir = BASE_DIR / "templates"
+static_dir = BASE_DIR / "static"
+
+app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
+templates = Jinja2Templates(directory=str(templates_dir))
 
 # --- Dependencies ---
 
@@ -208,7 +213,7 @@ async def index(
     except httpx.RequestError:
         pass
 
-    return templates.TemplateResponse("template.html", {
+    return templates.TemplateResponse("index.html", {
         "request": request, 
         "user": user,
         "movies": movies

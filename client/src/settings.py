@@ -7,6 +7,6 @@ class Settings(BaseSettings):
     FRONTEND_URL: str
 
     # This tells Pydantic to read from the .env file
-    model_config = SettingsConfigDict(env_file="client/.env", env_ignore_empty=True)
+    model_config = SettingsConfigDict(env_file=".env", env_ignore_empty=True)
 
 settings = Settings()

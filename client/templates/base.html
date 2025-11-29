@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a> | 
+        
+        {% if user %}
+            <span style="color: green;">Hello, {{ user.username }}!</span>
+            <a href="/logout">Logout</a>
+        {% else %}
+            <a href="/login">Login</a> | 
+            <a href="/register">Register</a>
+        {% endif %}
+    </nav>
+
+    {% block content %}{% endblock %}
+    
+
+</body>
+</html>

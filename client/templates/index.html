@@ -1,22 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Home</title>
-</head>
-<body>
-    <nav>
-        <a href="/">Home</a> | 
-        
-        {% if user %}
-            <span style="color: green;">Hello, {{ user.username }}!</span>
-            <a href="/logout">Logout</a>
-        {% else %}
-            <a href="/login">Login</a> | 
-            <a href="/register">Register</a>
-        {% endif %}
-    </nav>
-
-    <hr>
+{% extends "base.html" %}
+{% block content %}
+<hr>
     <h1>Welcome to the Watchly</h1>
     <p>This content is visible to everyone.</p>
 
@@ -35,6 +19,4 @@
     {% else %}
     <p>Can't find any movie</p>
     {% endif %}
-
-</body>
-</html>
+{% endblock %}
