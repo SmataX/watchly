@@ -142,6 +142,42 @@ async def login_user(
             "login.html", 
             {"request": request, "error": "Backend service unavailable"}
         )
+    
+
+@app.get("/register", )
+def get_register_page(request: Request):
+    return templates.TemplateResponse("register.html", {"request": request})
+
+@app.post("/register")
+async def register_user(
+    request: Request, 
+    username: str = Form(...), 
+    email: str = Form(...),
+    password: str = Form(...),
+    client: httpx.AsyncClient = Depends(get_http_client)
+):
+    try:
+        response = await client.post(
+            "/auth/register", 
+            json={
+                "username": username, 
+                "email": email, 
+                "password": password
+            }
+        )
+        response.raise_for_status()
+        
+        return RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
+    except httpx.HTTPStatusError:
+        return templates.TemplateResponse(
+            "register.html", 
+            {"request": request, "error": "Registration failed"}
+        )
+    except httpx.RequestError as e:
+        return templates.TemplateResponse(
+            "register.html", 
+            {"request": request, "error": "Backend service unavailable"}
+        )
 
 @app.get("/")
 async def index(
