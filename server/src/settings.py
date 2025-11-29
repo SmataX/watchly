@@ -1,10 +1,14 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
-    SECRET_KEY: str
     DATABASE_URL: str
+    SECRET_KEY: str
+    BACKEND_URL: str
+    FRONTEND_URL: str
+    ALGORITHM: str
+    ACCESS_TOKEN_EXPIRE_MINUTES: int
 
-    class Config:
-        env_file = ".env"
+    # This tells Pydantic to read from the .env file
+    model_config = SettingsConfigDict(env_file=".env", env_ignore_empty=True)
 
 settings = Settings()
