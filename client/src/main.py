@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 from typing import Optional
 
 import httpx
+from pathlib import Path
 from fastapi import FastAPI, Request, Form, status, Depends
 from fastapi.responses import RedirectResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
@@ -27,8 +28,12 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 # --- Static Files & Templates ---
-app.mount("/client/static", StaticFiles(directory="client/static"), name="static")
-templates = Jinja2Templates(directory="client/templates")
+BASE_DIR = Path(__file__).resolve().parent.parent
+templates_dir = BASE_DIR / "templates"
+static_dir = BASE_DIR / "static"
+
+app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
+templates = Jinja2Templates(directory=str(templates_dir))
 
 # --- Dependencies ---
 
@@ -142,11 +147,48 @@ async def login_user(
             "login.html", 
             {"request": request, "error": "Backend service unavailable"}
         )
+    
+
+@app.get("/register", )
+def get_register_page(request: Request):
+    return templates.TemplateResponse("register.html", {"request": request})
+
+@app.post("/register")
+async def register_user(
+    request: Request, 
+    username: str = Form(...), 
+    email: str = Form(...),
+    password: str = Form(...),
+    client: httpx.AsyncClient = Depends(get_http_client)
+):
+    try:
+        response = await client.post(
+            "/auth/register", 
+            json={
+                "username": username, 
+                "email": email, 
+                "password": password
+            }
+        )
+        response.raise_for_status()
+        
+        return RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
+    except httpx.HTTPStatusError:
+        return templates.TemplateResponse(
+            "register.html", 
+            {"request": request, "error": "Registration failed"}
+        )
+    except httpx.RequestError as e:
+        return templates.TemplateResponse(
+            "register.html", 
+            {"request": request, "error": "Backend service unavailable"}
+        )
 
 @app.get("/")
 async def index(
     request: Request, 
-    user: Optional[dict] = Depends(get_optional_user)
+    user: Optional[dict] = Depends(get_optional_user),
+    client: httpx.AsyncClient = Depends(get_http_client)
 ):
     """
     Renders the home page.
@@ -159,9 +201,22 @@ async def index(
     Returns:
         TemplateResponse: The rendered 'template.html' with user context.
     """
-    return templates.TemplateResponse("template.html", {
+
+    # Get 10 random movies from the api
+    movies = []
+
+    try:
+        respone = await client.get("/movies/random?limit=10")
+
+        if respone.status_code == 200:
+            movies = respone.json()
+    except httpx.RequestError:
+        pass
+
+    return templates.TemplateResponse("index.html", {
         "request": request, 
-        "user": user
+        "user": user,
+        "movies": movies
     })
 
 @app.get("/logout")

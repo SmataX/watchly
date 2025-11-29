@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<hr>
+    <h1>Welcome to the Watchly</h1>
+    <p>This content is visible to everyone.</p>
+
+    {% if user %}
+        <p>This content is only for {{ user.username }}.</p>
+    {% endif %}
+
+    {% if movies %}
+    <h2>Random Movies</h2>
+    {% for movie in movies %}
+        <div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0;">
+            <h3>{{ movie.title }} ({{ movie.release_date }})</h3>
+            <p>{{ movie.description }}</p>
+        </div>
+    {% endfor %}
+    {% else %}
+    <p>Can't find any movie</p>
+    {% endif %}
+{% endblock %}

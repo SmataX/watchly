@@ -16,13 +16,8 @@
         {% endif %}
     </nav>
 
-    <hr>
-    <h1>Welcome to the Watchly</h1>
-    <p>This content is visible to everyone.</p>
-
-    {% if user %}
-        <p>This content is only for {{ user.username }}.</p>
-    {% endif %}
+    {% block content %}{% endblock %}
+    
 
 </body>
 </html>

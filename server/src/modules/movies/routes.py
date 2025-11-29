@@ -4,10 +4,14 @@ from fastapi import APIRouter, status
 from src.common.models import Movie
 from src.common.schemes import AddMovieForm
 from src.common.deps import SessionDep, UserDep
-from src.modules.movies.movies_operations import add_movie, get_all_movies, get_movie_by_id, update_movie, delete_movie
+from src.modules.movies.movies_operations import add_movie, get_all_movies, get_movie_by_id, update_movie, delete_movie, get_random_movies
 
 
-movies_router = APIRouter(prefix="/api/movies", tags=["movies"])
+movies_router = APIRouter(prefix="/movies", tags=["movies"])
+
+@movies_router.get("/random", response_model=list[Movie])
+def get_random(session: SessionDep, limit: int = 10):
+    return get_random_movies(session, limit)
 
 @movies_router.get("", response_model=list[Movie])
 def get_all(session: SessionDep, skip: int = 0, limit: int = 100):
