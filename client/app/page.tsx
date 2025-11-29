@@ -51,7 +51,7 @@ export default async function Home() {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {movies.map((movie) => (
-              <div key={movie.id} className="border p-4 rounded shadow hover:bg-gray-50">
+              <div key={movie.id} className="border p-4 rounded shadow hover:bg-gray-50" >
                 {/* Render your movie data here */}
                 <h3 className="font-bold">{movie.title}</h3>
                 {movie.description && <p className="text-sm text-gray-600">{movie.description}</p>}

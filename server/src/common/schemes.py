@@ -1,7 +1,7 @@
 # src/common/schemes.py
 
 from pydantic import BaseModel
-from datetime import datetime
+from datetime import datetime, date
 
 
 class CreateUserForm(BaseModel):
@@ -15,4 +15,4 @@ class AddMovieForm(BaseModel):
     description: str
     duration: int
     poster_url: str | None = None
-    release_date: datetime
+    release_date: date
