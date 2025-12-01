@@ -1,0 +1,138 @@
+/* client/static/style.css */
+
+/* --- USTAWIENIA OGÓLNE --- */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1; 
+}
+
+a {
+    text-decoration: none;
+}
+
+/* HEADER */
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background-color: #0D0D0D;
+    color: #fff;
+    box-sizing: border-box;
+    border-bottom: 1px solid #c4c4c4;
+}
+
+.left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logoText {
+    font-size: 22px;
+    font-weight: 900;
+    cursor: pointer;
+    color: white;
+}
+
+.nav {
+    display: flex;
+}
+
+.nav a {
+    font-size: 16px;
+    color: #fff;
+    margin-right: 40px;
+}
+
+.signIn, .logoutBtn {
+    padding: 8px 20px;
+    background-color: #fff;
+    color: #000;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.user-greeting {
+    margin-right: 15px;
+    font-weight: bold;
+    color: #00ff00;
+}
+
+/* --- FOOTER (Stopka) --- */
+.footer {
+    background-color: #0D0D0D;
+    color: #fff;
+    padding: 60px 80px 20px;
+    border-top: 1px solid #c4c4c4;
+}
+
+.footerContent {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+
+.logoSection {
+    max-width: 300px;
+}
+
+.logoSection .logoText {
+    display: block;
+    margin-bottom: 15px;
+}
+
+.socialIcons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.linksSection {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 50px;
+}
+
+.linksSection > div {
+    min-width: 150px;
+}
+
+.linksSection h4 {
+    font-weight: 700;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+.linksSection ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.linksSection li {
+    margin-bottom: 8px;
+    cursor: pointer;
+    color: #ccc;
+}
+
+.copy {
+    text-align: center;
+    font-size: 12px;
+    margin-top: 40px;
+    border-top: 1px solid #333;
+    padding-top: 20px;
+}

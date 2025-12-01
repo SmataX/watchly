@@ -233,3 +233,21 @@ def logout():
     response = RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
     response.delete_cookie(key="access_token")
     return response
+
+@app.get("/all_movies")
+def movies(request: Request):
+    return templates.TemplateResponse("all_movies.html", {
+        "request": request, 
+    })
+
+@app.get("/user_profile")
+def movies(request: Request):
+    return templates.TemplateResponse("friends.html", {
+        "request": request, 
+    })
+
+@app.get("/friends")
+def movies(request: Request):
+    return templates.TemplateResponse("friends.html", {
+        "request": request, 
+    })

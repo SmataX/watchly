@@ -14,6 +14,7 @@
         <div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0;">
             <h3>{{ movie.title }} ({{ movie.release_date }})</h3>
             <p>{{ movie.description }}</p>
+            <img src="https://image.tmdb.org/t/p/w500 {{ movie.poster_path }}">
         </div>
     {% endfor %}
     {% else %}
