@@ -10,15 +10,16 @@ from passlib.context import CryptContext
 from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session, select
 
-from src.common.models import User
-from src.common.schemes import CreateUserForm
-from src.settings import settings
+from .models import User
+from .schemes import RegisterUserScheme
+from src.core.config import config
+
 
 bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
-oauth2_bearer = OAuth2PasswordBearer(tokenUrl="api/auth/login")
+oauth2_bearer = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 
-def create_user(db_session: Session, form: CreateUserForm) -> User:
+def create_user(db_session: Session, form: RegisterUserScheme) -> User:
     """
     Creates a new user in the database.
     
@@ -95,10 +96,10 @@ def create_access_token(username: str, user_id: int, expires_delta: Optional[tim
     if expires_delta:
         expire = datetime.now(timezone.utc) + expires_delta
     else:
-        expire = datetime.now(timezone.utc) + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+        expire = datetime.now(timezone.utc) + timedelta(minutes=config.ACCESS_TOKEN_EXPIRE_MINUTES)
     
     to_encode = {"sub": username, "id": user_id, "exp": expire}
-    encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+    encoded_jwt = jwt.encode(to_encode, config.SECRET_KEY, algorithm=config.ALGORITHM)
     return encoded_jwt
 
 
@@ -130,7 +131,7 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm, db_session: Ses
     token = create_access_token(
         username=user.username, 
         user_id=user.id, 
-        expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+        expires_delta=timedelta(minutes=config.ACCESS_TOKEN_EXPIRE_MINUTES)
     )
 
     return {'access_token': token, 'token_type': 'bearer'}
@@ -160,7 +161,7 @@ def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]) -> Dict[str,
     )
     
     try:
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[config.ALGORITHM])
         username: str = payload.get('sub')
         user_id: int = payload.get('id')
         

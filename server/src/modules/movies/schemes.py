@@ -1,14 +1,7 @@
-# src/common/schemes.py
+# movies/schemes.py
 
 from pydantic import BaseModel
-from datetime import datetime, date
-
-
-class CreateUserForm(BaseModel):
-    username: str
-    email: str
-    password: str
-
+from datetime import date
 
 class AddMovieForm(BaseModel):
     title: str
