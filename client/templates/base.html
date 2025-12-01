@@ -1,23 +1,83 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WATCHLY</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <nav>
-        <a href="/">Home</a> | 
-        
-        {% if user %}
-            <span style="color: green;">Hello, {{ user.username }}!</span>
-            <a href="/logout">Logout</a>
-        {% else %}
-            <a href="/login">Login</a> | 
-            <a href="/register">Register</a>
-        {% endif %}
-    </nav>
 
-    {% block content %}{% endblock %}
-    
+    <header class="header">
+        <div class="left">
+            <img src="/static/images/logo.png" alt="logo" width="40" height="40">
+            <a href="/" class="logoText">WATCHLY</a>
+        </div>
+
+        <nav class="nav">
+            <a href="/all_movies">Movies</a>
+            <a href="/reviews">Reviews</a>
+            <a href="/friends">Friends</a>
+            <a href="/user_profile">My Ratings</a>
+        </nav>
+
+        <div>
+            {% if user %}
+                <span class="user-greeting">Hello, {{ user.username }}!</span>
+                <a href="/logout" class="logoutBtn">Logout</a>
+            {% else %}
+                <a href="/login" class="signIn">Sign in</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="footerContent">
+            <div class="logoSection">
+                <h2 class="logoText">WATCHLY</h2>
+                <p>Your ultimate destination for movie and TV series ratings, reviews, and recommendations.</p>
+                <div class="socialIcons">
+                    <img src="/static/images/ig_icon.png" alt="Instagram" width="30" height="30">
+                    <img src="/static/images/twitter_icon.png" alt="Twitter" width="30" height="30">
+                </div>
+            </div>
+
+            <div class="linksSection">
+                <div>
+                    <h4>Explore</h4>
+                    <ul>
+                        <li>Movies</li>
+                        <li>TV Series</li>
+                        <li>Top Rated</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Community</h4>
+                    <ul>
+                        <li>Reviews</li>
+                        <li>Ratings</li>
+                        <li>Watchlist</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>About</h4>
+                    <ul>
+                        <li>About Us</li>
+                        <li>Contact</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="copy">
+            &copy; 2025 WATCHLY. All rights reserved.
+        </div>
+    </footer>
 
 </body>
 </html>
