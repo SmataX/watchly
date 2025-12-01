@@ -4,11 +4,11 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, status
 from fastapi.security import OAuth2PasswordRequestForm
-from src.common.models import Token
-from src.common.schemes import CreateUserForm
-from .auth_operations import create_user, login_for_access_token, get_current_user
+from .models import Token
+from .schemes import RegisterUserScheme
+from .services import create_user, login_for_access_token, get_current_user
 from src.modules.auth.deps import UserDep
-from src.common.db import SessionDep
+from src.core.deps import SessionDep
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -32,7 +32,7 @@ def check_auth_status(user: UserDep):
 
 
 @router.post("/register", status_code=status.HTTP_201_CREATED)
-def register(db_session: SessionDep, form: CreateUserForm):
+def register(db_session: SessionDep, form: RegisterUserScheme):
     """
     Registers a new user.
 

@@ -2,11 +2,8 @@
 
 from fastapi import HTTPException, status
 from sqlmodel import Session, select, func
-import json
-from pathlib import Path
-from src.common.db import engine
-from src.common.models import Movie
-from src.common.schemes import AddMovieForm
+from .schemes import AddMovieForm
+from .models import Movie
 
 
 def get_all_movies(db_session: Session, skip: int = 0, limit: int = 100):

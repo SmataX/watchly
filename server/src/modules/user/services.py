@@ -2,7 +2,7 @@
 
 from fastapi import HTTPException, status
 from sqlmodel import Session, select, func
-from src.common.models import User, RatedMovie, Review, Friend
+from src.modules.auth.models import User
 from src.modules.auth.deps import UserDep
 
 class UserOperations:

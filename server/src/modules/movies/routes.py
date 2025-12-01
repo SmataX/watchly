@@ -1,11 +1,11 @@
 # src/modules/movies/routes.py
 
 from fastapi import APIRouter, status
-from src.common.models import Movie
-from src.common.schemes import AddMovieForm
+from .models import Movie
+from .schemes import AddMovieForm
 from src.modules.auth.deps import UserDep
-from src.common.db import SessionDep
-from src.modules.movies.movies_operations import add_movie, get_all_movies, get_movie_by_id, update_movie, delete_movie, get_random_movies
+from src.core.deps import SessionDep
+from .services import add_movie, get_all_movies, get_movie_by_id, update_movie, delete_movie, get_random_movies
 
 
 movies_router = APIRouter(prefix="/movies", tags=["movies"])

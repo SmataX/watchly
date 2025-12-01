@@ -2,8 +2,8 @@
 
 from fastapi import APIRouter, status
 from src.modules.auth.deps import UserDep
-from src.common.db import SessionDep
-from src.modules.user.user_operations import UserOperations
+from src.core.deps import SessionDep
+from .services import UserOperations
 
 
 user_router = APIRouter(prefix="/user", tags=["user"])
