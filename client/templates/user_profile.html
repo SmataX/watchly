@@ -13,12 +13,14 @@
             <div class="info-section">
                 <div class="info-top">
                     <div>
-                        <h1 class="display-name">SigmaKaro</h1>
+                        <h1 class="display-name">{{ user_data['username'] }}</h1>
                     </div>
+                    {% if user['username'] == user_data['username'] %}
                     <a href="/edit_profile" class="edit-btn">Edit profile</a>
+                    {% endif %}
                 </div>
 
-                <p class="bio-text">A fan of Korean dramas who loves Korean men</p>
+                <p class="bio-text">{{ user_data['description'] }}</p>
 
                 <div class="follow-stats">
                     <span><strong>585</strong> Following</span>
@@ -35,7 +37,7 @@
             <div class="stat-header">
                 <span>Rated movies</span>
                 <span class="icon">★</span> </div>
-            <div class="stat-number">250</div>
+            <div class="stat-number">{{ user_data['rated_movies']|length}}</div>
         </div>
 
         <div class="stat-box">
