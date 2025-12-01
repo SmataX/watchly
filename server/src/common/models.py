@@ -19,7 +19,7 @@ class User(SQLModel, table=True):
     username: str = Field(index=True, unique=True, nullable=False)
     email: str = Field(index=True, unique=True, nullable=False)
     password: str = Field(nullable=False)
-    profile_path: Optional[str] = Field(default=None) # Renamed to match DBML
+    profile_url: Optional[str] = Field(default=None) # Renamed to match DBML
     description: Optional[str] = Field(default=None)
     created_at: datetime = Field(default_factory=datetime.now)
 

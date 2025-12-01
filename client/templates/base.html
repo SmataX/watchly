@@ -23,7 +23,8 @@
 
         <div>
             {% if user %}
-                <span class="user-greeting">Hello, {{ user.username }}!</span>
+                <a href="/user_profile" class="user-greeting">Hello, {{ user.username }}!</a>
+                
                 <a href="/logout" class="logoutBtn">Logout</a>
             {% else %}
                 <a href="/login" class="signIn">Sign in</a>
