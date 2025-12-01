@@ -242,7 +242,7 @@ def movies(request: Request):
 
 @app.get("/user_profile")
 def movies(request: Request):
-    return templates.TemplateResponse("friends.html", {
+    return templates.TemplateResponse("user_profile.html", {
         "request": request, 
     })
 
@@ -251,3 +251,10 @@ def movies(request: Request):
     return templates.TemplateResponse("friends.html", {
         "request": request, 
     })
+
+@app.get("/reviews")
+def movies(request: Request):
+    return templates.TemplateResponse("reviews.html", {
+        "request": request, 
+    })
+

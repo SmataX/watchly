@@ -8,6 +8,8 @@ html, body {
     font-family: 'Inter', sans-serif;
     display: flex;
     flex-direction: column;
+    background-color: black;
+    color: #fff;
 }
 
 main {
@@ -18,7 +20,7 @@ a {
     text-decoration: none;
 }
 
-/* HEADER */
+/* --- HEADER --- */
 .header {
     width: 100%;
     display: flex;
@@ -67,10 +69,10 @@ a {
 .user-greeting {
     margin-right: 15px;
     font-weight: bold;
-    color: #00ff00;
+    color: #fffb00;
 }
 
-/* --- FOOTER (Stopka) --- */
+/* --- FOOTER --- */
 .footer {
     background-color: #0D0D0D;
     color: #fff;
@@ -118,7 +120,6 @@ a {
 }
 
 .linksSection ul {
-    list-style: none;
     padding: 0;
     margin: 0;
 }
@@ -126,7 +127,7 @@ a {
 .linksSection li {
     margin-bottom: 8px;
     cursor: pointer;
-    color: #ccc;
+    color: #c0bebe;
 }
 
 .copy {
@@ -135,4 +136,266 @@ a {
     margin-top: 40px;
     border-top: 1px solid #333;
     padding-top: 20px;
+}
+
+/* --- PROFILE --- */
+.profile-wrapper {
+    max-width: 950px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: sans-serif;
+}
+
+.profile-card {
+    background-color: #121212;
+    border: 1px solid #333;
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.profile-header-content {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+.avatar-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar-circle {
+    width: 125px;
+    height: 125px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.avatar-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.share-profile-link {
+    color: #099dff;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.share-profile-link:hover {
+    color: #4bb7ff;
+}
+
+.info-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.info-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.display-name {
+    margin:0;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.edit-btn {
+    background: transparent;
+    border: 1px solid #505050;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    transition: 0.3s;
+}
+
+.edit-btn:hover {
+    background: #313131;
+}
+
+.bio-text {
+    margin-bottom: 45px;
+    font-size: 1.1rem;
+}
+
+.follow-stats {
+    display: flex;
+    gap: 30px;
+    font-size: 1.1rem;
+}
+
+.member-since {
+    color: #666666;
+    font-size: 0.8rem;
+    text-align: right;
+    margin-bottom: -10px;
+}
+
+.date-account {
+    font-weight: bold;
+    color: #858585;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.stat-box {
+    background-color: #121212;
+    border: 1px solid #333;
+    border-radius: 15px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100px;
+}
+
+.stat-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.95rem;
+    font-weight: bold;
+}
+
+.stat-box:hover {
+    background: #202020;
+    transition: 0.3s;
+}
+
+.stat-header .icon {
+    color: #e68a00;
+    font-size: 2rem;
+    margin-top: -15px; 
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.section-container {
+    margin-bottom: 40px;
+}
+
+.section-title {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.section-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.view-all-link {
+    color: #e68a00;
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.view-all-link:hover {
+    text-decoration: underline;
+    color: #ffb01f;
+}
+
+.section-divider {
+    border: 0;
+    border-top: 1px solid #808080;
+    margin-bottom: 20px;
+}
+
+.genres-list {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.genre-tag {
+    border: 1px solid #e68a00; 
+    color: #e68a00;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 1rem;
+}
+
+.genre-tag:hover {
+    background-color: #fdb64c;
+    color: #000;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.movies-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 20px;
+}
+
+.movie-poster {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform 0.2s;
+}
+
+.movie-poster:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.reviews-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.review-card {
+    background-color: #131313;
+    border: 1px solid #313131;
+    border-radius: 15px;
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+}
+
+.review-poster-wrapper {
+    flex-shrink: 0;
+    width: 150px;
+}
+
+.review-poster {
+    width: 100%;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.review-content {
+    flex: 1;
+    margin-left: 20px;
+}
+
+.review-content {
+    flex-grow: 1;
+}
+
+.review-card .section-divider {
+    margin-top: 20px;  
+    margin-bottom: 20px;
 }

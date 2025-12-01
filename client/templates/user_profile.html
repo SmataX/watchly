@@ -1,8 +1,155 @@
 {% extends "base.html" %}
-
 {% block content %}
-<div style="padding: 20px;">
-    <h1>Profile</h1>
-    <p>Informacje o twoim profilu</p>
+<div class="profile-wrapper">
+    <div class="profile-card">
+        <div class="profile-header-content">
+            <div class="avatar-section">
+                <div class="avatar-circle">
+                    <img src="https://i.pinimg.com/originals/82/47/0b/82470b4ed44c3edacfcd4201e2297050.jpg?nii=t" alt="Avatar">
+                </div>
+                <a href="#" class="share-profile-link">Edit picture</a>
+            </div>
+
+            <div class="info-section">
+                <div class="info-top">
+                    <div>
+                        <h1 class="display-name">SigmaKaro</h1>
+                    </div>
+                    <a href="/edit_profile" class="edit-btn">Edit profile</a>
+                </div>
+
+                <p class="bio-text">A fan of Korean dramas who loves Korean men</p>
+
+                <div class="follow-stats">
+                    <span><strong>585</strong> Following</span>
+                    <span><strong>63</strong> Followers</span>
+                </div>
+                
+                <p class="member-since">Member since <span class="date-account">July 2025</span></p>
+            </div>
+        </div>
     </div>
+
+    <div class="stats-grid">
+        <div class="stat-box">
+            <div class="stat-header">
+                <span>Rated movies</span>
+                <span class="icon">★</span> </div>
+            <div class="stat-number">250</div>
+        </div>
+
+        <div class="stat-box">
+            <div class="stat-header">
+                <span>Average rating</span>
+                <span class="icon">↗</span> </div>
+            <div class="stat-number">4.2</div>
+        </div>
+
+        <div class="stat-box">
+            <div class="stat-header">
+                <span>Favorite movies</span>
+                <span class="icon">♥</span> </div>
+            <div class="stat-number">52</div>
+        </div>
+    </div>
+
+    <div class="section-container">
+        <h3 class="section-title">Favorite Genres</h3>
+        <hr class="section-divider">
+        <div class="genres-list">
+            <span class="genre-tag">Comedy</span>
+            <span class="genre-tag">Romance</span>
+            <span class="genre-tag">Horror</span>
+            <span class="genre-tag">Thriller</span>
+        </div>
+    </div>
+
+    <div class="section-container">
+        <div class="section-header-row">
+            <h3 class="section-title">Favorite Movies</h3>
+            <a href="#" class="view-all-link">View All</a>
+        </div>
+        <hr class="section-divider">
+        
+        <div class="movies-grid">
+            <img src="https://s3.amazonaws.com/nightjarprod/content/uploads/sites/261/2025/02/22162818/wTxYZNj3NselE9H9dST2GUn4UYE1-683x1024.jpg" alt="Movie 1" class="movie-poster" style="background: grey;"> 
+            <img src="https://images.justwatch.com/poster/336489292/s718/chainsaw-man-the-movie-reze-arc.jpg" alt="Movie 2" class="movie-poster" style="background: grey;">
+            <img src="https://play-lh.googleusercontent.com/skArSY8m4e4g3ggAR8gmGobZ_Gl8cd1qLlmrUSX9WzbcFkvxeLnQVi97SJGEojt_kRbSbFynQYdCApKlqg" alt="Movie 3" class="movie-poster" style="background: grey;">
+            <img src="https://m.media-amazon.com/images/M/MV5BNzJkMjBjYzUtMjZjNy00MTg5LTkxNzgtMmM3ZWZjYzRjMDliXkEyXkFqcGc@._V1_.jpg" alt="Movie 4" class="movie-poster" style="background: grey;">
+            <img src="https://resizing.flixster.com/wV43LjsGt0QL6XSY-smx2uiCReI=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzlhMmM2NWRlLWNlNmYtNDk4Zi1iNzlmLTE4YTg2NzRiZWU5YS5qcGc=" alt="Movie 5" class="movie-poster" style="background: grey;"> 
+            <img src="https://m.media-amazon.com/images/M/MV5BYmQwNzRiNmItODc4Ny00Mjk4LThmYWQtNjI5OGU4OGUxMmY0XkEyXkFqcGc@._V1_.jpg" alt="Movie 6" class="movie-poster" style="background: grey;">
+            <img src="https://upload.wikimedia.org/wikipedia/en/3/32/A_Silent_Voice_Film_Poster.jpg" alt="Movie 7" class="movie-poster" style="background: grey;">
+            <img src="https://moviesfilmsandflix.com/wp-content/uploads/2023/10/mv5bzwuxztllzgitzjfhys00ndi4ltgwodatyzninzeznjnmmzrkxkeyxkfqcgdeqxvymte0mzqwmjgz._v1_.jpg" alt="Movie 8" class="movie-poster" style="background: grey;">
+        </div>
+    </div>
+
+    <div class="section-container">
+        <h3 class="section-title">Rating</h3>
+        <hr class="section-divider">
+        <div class="rating-placeholder">
+            <p>Your rating activity will appear here.</p>
+        </div>
+    </div>
+
+    <div class="section-container">
+        <h3 class="section-title">Last rated movies</h3>
+        <hr class="section-divider">
+        <div class="reviews-list">
+            <div class="review-card">
+                <div class="review-poster-wrapper">
+                    <img src="https://fwcdn.pl/fpo/85/13/868513/8133073.3.jpg" alt="Deadpool & Wolverine" class="review-poster">
+                </div>
+                <div class="review-content">
+                    <div class="movie-header">
+                        <h4 class="movie-title">Deadpool & Wolverine <span class="movie-year">2024</span></h4>
+                    </div>
+                    <p class="movie-description">
+                        Deadpool is offered a place in the Marvel Cinematic Universe by the Time Variance Authority, but instead recruits a variant of Wolverine to save his universe from extinction
+                    </p>
+                    
+                    <div class="genres-list">
+                        <span class="genre-tag">Comedy</span>
+                        <span class="genre-tag">Romance</span>
+                        <span class="genre-tag">Action</span>
+                    </div>
+
+                    <hr class="section-divider">
+                    <div class="user-comment">
+                        <span class="comment-label">Review:</span>
+                        <p>Best war movie I've seen in years. I was bawling my eyes out during "that" scene between the two soldiers in the crater. Outstanding performances all around.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="reviews-list">
+            <div class="review-card">
+                <div class="review-poster-wrapper">
+                    <img src="https://fwcdn.pl/fpo/85/13/868513/8133073.3.jpg" alt="Deadpool & Wolverine" class="review-poster">
+                </div>
+                <div class="review-content">
+                    <div class="movie-header">
+                        <h4 class="movie-title">Deadpool & Wolverine <span class="movie-year">2024</span></h4>
+                    </div>
+                    <p class="movie-description">
+                        Deadpool is offered a place in the Marvel Cinematic Universe by the Time Variance Authority, but instead recruits a variant of Wolverine to save his universe from extinction
+                    </p>
+                    
+                    <div class="genres-list">
+                        <span class="genre-tag">Comedy</span>
+                        <span class="genre-tag">Romance</span>
+                        <span class="genre-tag">Action</span>
+                    </div>
+
+                    <hr class="section-divider">
+                    <div class="user-comment">
+                        <span class="comment-label">Review:</span>
+                        <p>Best war movie I've seen in years. I was bawling my eyes out during "that" scene between the two soldiers in the crater. Outstanding performances all around.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
 {% endblock %}
