@@ -14,8 +14,9 @@ from src.common.models import User
 from src.common.schemes import CreateUserForm
 from src.settings import settings
 
+
 bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
-oauth2_bearer = OAuth2PasswordBearer(tokenUrl="api/auth/login")
+oauth2_bearer = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 
 def create_user(db_session: Session, form: CreateUserForm) -> User:

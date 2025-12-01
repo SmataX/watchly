@@ -3,7 +3,8 @@
 from fastapi import APIRouter, status
 from src.common.models import Movie
 from src.common.schemes import AddMovieForm
-from src.common.deps import SessionDep, UserDep
+from src.modules.auth.deps import UserDep
+from src.common.db import SessionDep
 from src.modules.movies.movies_operations import add_movie, get_all_movies, get_movie_by_id, update_movie, delete_movie, get_random_movies
 
 

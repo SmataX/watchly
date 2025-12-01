@@ -4,11 +4,11 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, status
 from fastapi.security import OAuth2PasswordRequestForm
-
-from src.common.deps import SessionDep, UserDep
 from src.common.models import Token
 from src.common.schemes import CreateUserForm
 from .auth_operations import create_user, login_for_access_token, get_current_user
+from src.modules.auth.deps import UserDep
+from src.common.db import SessionDep
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 

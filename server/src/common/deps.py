@@ -8,5 +8,5 @@ from src.modules.auth.auth_operations import get_current_user
 
 
 
-SessionDep = Annotated[Session, Depends(get_session)]
-UserDep = Annotated[dict, Depends(get_current_user)]
+# SessionDep = Annotated[Session, Depends(get_session)]
+# UserDep = Annotated[dict, Depends(get_current_user)]

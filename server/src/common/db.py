@@ -3,6 +3,8 @@
 from sqlmodel import SQLModel, create_engine, Session
 from src.common import models
 from src.settings import settings
+from typing import Annotated
+from fastapi import Depends
 
 
 
@@ -15,3 +17,5 @@ def create_db_and_tables():
 def get_session():
     with Session(engine) as session:
         yield session
+
+SessionDep = Annotated[Session, Depends(get_session)]
