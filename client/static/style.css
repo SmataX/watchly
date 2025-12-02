@@ -399,3 +399,203 @@ a {
     margin-top: 20px;  
     margin-bottom: 20px;
 }
+
+/* --- MAIN --- */
+.wtch-container {
+    color: #ffffff;
+    font-family: 'Arial', sans-serif;
+    padding: 40px;
+    max-width: 1150px;
+    margin: 0 auto;
+}
+
+.wtch-hero-section {
+    position: relative;
+    width: 100%;
+    height: 450px;
+    background-image: url('https://www.plex.tv/wp-content/uploads/2025/03/Watch-Free-Hero-2048x1152-1.png');
+    background-size: cover;
+    background-position: center top;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.wtch-hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(11,11,11,1) 100%);
+    z-index: 1;
+}
+
+.wtch-hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+}
+
+.wtch-main-title {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #fff;
+    text-transform: uppercase;
+    line-height: 1.1;
+    margin-bottom: 30px;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+.wtch-search-wrapper {
+    position: relative;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.wtch-search-input {
+    width: 100%;
+    padding: 15px 20px;
+    border-radius: 4px;
+    border: none;
+    font-size: 14px;
+    outline: none;
+    color: #272727;
+}
+
+.wtch-search-btn {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    bottom: 5px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #666666;
+    padding: 0 10px;
+}
+
+.wtch-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #303030;
+    padding-bottom: 10px;
+}
+
+.wtch-section-title {
+    font-size: 18px;
+    font-weight: normal;
+    color: #e7e7e7;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.wtch-icon-clock, .wtch-icon-trend {
+    color: #f5c413; 
+    font-weight: bold;
+}
+
+.wtch-static-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.wtch-card {
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.wtch-card:hover {
+    transform: scale(1.03);
+}
+
+.wtch-poster-wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 150%;
+    overflow: hidden;
+    border-radius: 4px;
+    background-color: #1b1b1b;
+}
+
+.wtch-poster {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.wtch-overlay-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 10px 10px;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+    color: #fff;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+}
+
+.wtch-movies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
+    gap: 20px;
+}
+
+.wtch-movie-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.wtch-movie-poster-box {
+    width: 100%;
+    aspect-ratio: 2/3;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+    background-color: #1a1a1a;
+}
+
+.wtch-movie-poster-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.2s;
+}
+
+.wtch-movie-item:hover .wtch-movie-poster-box img {
+    opacity: 0.8;
+}
+
+.wtch-movie-info {
+    font-size: 13px;
+}
+
+.wtch-movie-title {
+    font-size: 14px;
+    color: #fff;
+    margin: 0 0 4px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.wtch-movie-year {
+    color: #8f8f8f;
+    font-size: 12px;
+}
