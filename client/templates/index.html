@@ -1,23 +1,266 @@
-{% extends "base.html" %}
+﻿{% extends "base.html" %}
+
 {% block content %}
-<hr>
-    <h1>Welcome to the Watchly</h1>
-    <p>This content is visible to everyone.</p>
 
-    {% if user %}
-        <p>This content is only for {{ user.username }}.</p>
-    {% endif %}
+<!-- BANNER SECTION-->
+<section class="banner-section">
+    <h1 class="banner-title">FIND 1000+ MOVIES <br> RATE THEM</h1>
 
-    {% if movies %}
-    <h2>Random Movies</h2>
-    {% for movie in movies %}
-        <div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0;">
-            <h3>{{ movie.title }} ({{ movie.release_date }})</h3>
-            <p>{{ movie.description }}</p>
-            <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}">
+    <div class="search-container">
+        <div class="search-icon">🔍</div>
+        <input type="text" class="search-input" placeholder="SEARCH">
+    </div>
+</section>
+
+<div class="homepage-wrapper">
+    <!-- LATEST RATINGS SECTION -->
+    <div class="section-container">
+        <div class="section-header-row">
+            <h3 class="section-title">Latest Ratings</h3>
+            <a href="#" class="view-all-link">View All</a>
         </div>
-    {% endfor %}
-    {% else %}
-    <p>Can't find any movie</p>
-    {% endif %}
+        <hr class="section-divider">
+
+        <div class="movies-grid-homepage">
+            <div class="movie-card-rating">
+                <img src="https://i.pinimg.com/736x/03/4a/24/034a248bb847a2a89890ebb42130c4db.jpg" alt="HIMSAN TRAI" class="movie-poster-large">
+                <div class="movie-title-overlay">HIMSAN TRAI</div>
+            </div>
+
+            <div class="movie-card-rating">
+                <img src="https://iftm.tmgrup.com.tr/2023/05/10/oppenheimer-fragmani-izle-oppenheimer-konusu-ne-oyuncu-kadrosu-ve-vizyon-tarihi-ne-1683724550349.jpeg" alt="OPPENLINER" class="movie-poster-large">
+                <div class="movie-title-overlay">OPPENLINER</div>
+            </div>
+
+            <div class="movie-card-rating">
+                <img src="https://shuminuma.com/wp-content/uploads/2021/06/Amazing_Spider-Man_Poster-768x1138.jpg" alt="SCREAM" class="movie-poster-large">
+                <div class="movie-title-overlay">SPIDER MAN</div>
+            </div>
+
+            <div class="movie-card-rating">
+                <img src="https://static.wixstatic.com/media/14d182_06512cc568a5493897d0d73fb470ca69~mv2.png/v1/fill/w_639,h_1000,al_c,q_90,usm_0.66_1.00_0.01/14d182_06512cc568a5493897d0d73fb470ca69~mv2.png" alt="THE BATMAN" class="movie-poster-large">
+                <div class="movie-title-overlay">SCREAM</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TRENDING NOW SECTION -->
+    <div class="section-container">
+        <div class="section-header-row">
+            <h3 class="section-title">TRENDING NOW</h3>
+            <a href="#" class="view-all-link">View All</a>
+        </div>
+        <hr class="section-divider">
+
+        <div class="movies-grid-homepage">
+            <!-- Pierwszy rząd - pozycje 1-4 -->
+            <div class="movie-card-trending">
+                <img src="https://cineboom.bg/wp-content/uploads/2018/10/jokera-bg-poster.jpg" alt="Trending 1" class="movie-poster-large">
+                <div class="trending-badge">#1</div>
+                <div class="movie-title-overlay">JOKER</div>
+            </div>
+
+            <div class="movie-card-trending">
+                <img src="https://fwcdn.pl/fpo/08/91/500891/7354571_1.3.jpg" alt="Trending 2" class="movie-poster-large">
+                <div class="trending-badge">#2</div>
+                <div class="movie-title-overlay">INCEPCJA</div>
+            </div>
+
+            <div class="movie-card-trending">
+                <img src="https://www.sliceofscifi.com/wp-content/uploads/2008/06/wall_e_1.jpg" alt="Trending 3" class="movie-poster-large">
+                <div class="trending-badge">#3</div>
+                <div class="movie-title-overlay">WALL·E</div>
+            </div>
+
+            <div class="movie-card-trending">
+                <img src="https://medias.spotern.com/wanted/w640/53/53865-1581583121.jpg" alt="Trending 4" class="movie-poster-large">
+                <div class="trending-badge">#4</div>
+                <div class="movie-title-overlay">PARASITE</div>
+            </div>
+
+            <!-- Drugi rząd - pozycje 5-8 -->
+            <div class="movie-card-trending">
+                <img src="https://cineboom.bg/wp-content/uploads/2018/10/jokera-bg-poster.jpg" alt="Trending 5" class="movie-poster-large">
+                <div class="trending-badge">#5</div>
+                <div class="movie-title-overlay">JOKER</div>
+            </div>
+
+            <div class="movie-card-trending">
+                <img src="https://fwcdn.pl/fpo/08/91/500891/7354571_1.3.jpg" alt="Trending 6" class="movie-poster-large">
+                <div class="trending-badge">#6</div>
+                <div class="movie-title-overlay">INCEPCJA</div>
+            </div>
+
+            <div class="movie-card-trending">
+                <img src="https://www.sliceofscifi.com/wp-content/uploads/2008/06/wall_e_1.jpg" alt="Trending 7" class="movie-poster-large">
+                <div class="trending-badge">#7</div>
+                <div class="movie-title-overlay">WALL·E</div>
+            </div>
+
+            <div class="movie-card-trending">
+                <img src="https://medias.spotern.com/wanted/w640/53/53865-1581583121.jpg" alt="Trending 8" class="movie-poster-large">
+                <div class="trending-badge">#8</div>
+                <div class="movie-title-overlay">PARASITE</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JUST REVIEWED SECTION -->
+    <div class="section-container">
+        <h3 class="section-title">Just Reviewed...</h3>
+        <hr class="section-divider">
+
+        <div class="reviews-list">
+            <div class="review-card">
+                <div class="review-poster-wrapper">
+                    <div class="poster-container">
+                        <img src="https://fwcdn.pl/fpo/85/13/868513/8133073.3.jpg" alt="Deadpool & Wolverine" class="review-poster">
+                    </div>
+                </div>
+                <div class="review-content">
+                    <div class="movie-header">
+                        <h4 class="movie-title">Deadpool & Wolverine <span class="movie-year">2024</span></h4>
+                    </div>
+
+                    <div class="genres-list">
+                        <span class="genre-tag">Comedy</span>
+                        <span class="genre-tag">Romance</span>
+                        <span class="genre-tag">Action</span>
+                    </div>
+
+                    <hr class="section-divider">
+                    <div class="user-comment">
+                        <div class="comment-header">
+                            <div class="comment-user-info">
+                                <div class="comment-user-avatar">
+                                    <img src="https://i.pinimg.com/originals/82/47/0b/82470b4ed44c3edacfcd4201e2297050.jpg?nii=t" alt="User Avatar">
+                                </div>
+                                <span class="comment-username">SigmaKaro</span>
+                                <div class="user-rating-stars">★★★★★ 5.0</div>
+                            </div>
+                        </div>
+                        <p>Best war movie I've seen in years. I was bawling my eyes out during "that" scene between the two soldiers in the crater. Outstanding performances all around.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="reviews-list">
+            <div class="review-card">
+                <div class="review-poster-wrapper">
+                    <div class="poster-container">
+                        <img src="https://fwcdn.pl/fpo/85/13/868513/8133073.3.jpg" alt="Deadpool & Wolverine" class="review-poster">
+                    </div>
+                </div>
+                <div class="review-content">
+                    <div class="movie-header">
+                        <h4 class="movie-title">Deadpool & Wolverine <span class="movie-year">2024</span></h4>
+                    </div>
+
+                    <div class="genres-list">
+                        <span class="genre-tag">Comedy</span>
+                        <span class="genre-tag">Romance</span>
+                        <span class="genre-tag">Action</span>
+                    </div>
+
+                    <hr class="section-divider">
+                    <div class="user-comment">
+                        <div class="comment-header">
+                            <div class="comment-user-info">
+                                <div class="comment-user-avatar">
+                                    <img src="https://i.pinimg.com/originals/82/47/0b/82470b4ed44c3edacfcd4201e2297050.jpg?nii=t" alt="User Avatar">
+                                </div>
+                                <span class="comment-username">SigmaKaro</span>
+                                <div class="user-rating-stars">★★★★★ 5.0</div>
+                            </div>
+                        </div>
+                        <p>Best war movie I've seen in years. I was bawling my eyes out during "that" scene between the two soldiers in the crater. Outstanding performances all around.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="reviews-list">
+            <div class="review-card">
+                <div class="review-poster-wrapper">
+                    <div class="poster-container">
+                        <img src="https://fwcdn.pl/fpo/85/13/868513/8133073.3.jpg" alt="Deadpool & Wolverine" class="review-poster">
+                    </div>
+                </div>
+                <div class="review-content">
+                    <div class="movie-header">
+                        <h4 class="movie-title">Deadpool & Wolverine <span class="movie-year">2024</span></h4>
+                    </div>
+
+                    <div class="genres-list">
+                        <span class="genre-tag">Comedy</span>
+                        <span class="genre-tag">Romance</span>
+                        <span class="genre-tag">Action</span>
+                    </div>
+
+                    <hr class="section-divider">
+                    <div class="user-comment">
+                        <div class="comment-header">
+                            <div class="comment-user-info">
+                                <div class="comment-user-avatar">
+                                    <img src="https://i.pinimg.com/originals/82/47/0b/82470b4ed44c3edacfcd4201e2297050.jpg?nii=t" alt="User Avatar">
+                                </div>
+                                <span class="comment-username">SigmaKaro</span>
+                                <div class="user-rating-stars">★★★★★ 5.0</div>
+                            </div>
+                        </div>
+                        <p>Best war movie I've seen in years. I was bawling my eyes out during "that" scene between the two soldiers in the crater. Outstanding performances all around.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOP CONTRIBUTORS SECTION -->
+    <div class="section-container">
+        <div class="section-header-row">
+            <h3 class="section-title">Top Contributors</h3>
+            <a href="#" class="view-all-link">View All</a>
+        </div>
+        <hr class="section-divider">
+
+        <div class="contributors-grid">
+            <div class="contributor-card">
+                <div class="contributor-avatar">
+                    <img src="https://i.pinimg.com/originals/82/47/0b/82470b4ed44c3edacfcd4201e2297050.jpg?nii=t" alt="User123">
+                </div>
+                <div class="contributor-info">
+                    <h4 class="contributor-name">User123</h4>
+                    <div class="contributor-stats">
+                        <span class="reviews-count">847 reviews</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contributor-card">
+                <div class="contributor-avatar">
+                    <img src="https://i.pinimg.com/originals/82/47/0b/82470b4ed44c3edacfcd4201e2297050.jpg?nii=t" alt="User456">
+                </div>
+                <div class="contributor-info">
+                    <h4 class="contributor-name">User456</h4>
+                    <div class="contributor-stats">
+                        <span class="reviews-count">723 reviews</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contributor-card">
+                <div class="contributor-avatar">
+                    <img src="https://i.pinimg.com/originals/82/47/0b/82470b4ed44c3edacfcd4201e2297050.jpg?nii=t" alt="MovieLover">
+                </div>
+                <div class="contributor-info">
+                    <h4 class="contributor-name">MovieLover</h4>
+                    <div class="contributor-stats">
+                        <span class="reviews-count">592 reviews</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
 {% endblock %}
