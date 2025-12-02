@@ -206,10 +206,10 @@ async def index(
     movies = []
 
     try:
-        respone = await client.get("/movies/random?limit=10")
+        response = await client.get("/movies/random?limit=10")
 
-        if respone.status_code == 200:
-            movies = respone.json()
+        if response.status_code == 200:
+            movies = response.json()
     except httpx.RequestError:
         pass
 
@@ -240,21 +240,37 @@ def movies(request: Request):
         "request": request, 
     })
 
-@app.get("/user_profile")
-def movies(request: Request):
+@app.get("/profile/{username}")
+async def user_profile(
+    request: Request, 
+    user: Optional[dict] = Depends(get_optional_user),
+    client: httpx.AsyncClient = Depends(get_http_client),
+    username: str = ""
+):
+    user_data = None
+
+    try:
+        response = await client.get(f"/user/{username}")
+
+        if response.status_code == 200:
+            user_data = response.json()
+    except httpx.RequestError:
+        pass
+
     return templates.TemplateResponse("user_profile.html", {
         "request": request, 
+        "user": user,
+        "user_data": user_data,
     })
 
 @app.get("/friends")
-def movies(request: Request):
+def friends(request: Request):
     return templates.TemplateResponse("friends.html", {
         "request": request, 
     })
 
 @app.get("/reviews")
-def movies(request: Request):
+def reviews(request: Request):
     return templates.TemplateResponse("reviews.html", {
         "request": request, 
     })
-
