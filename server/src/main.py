@@ -21,3 +21,6 @@ app = FastAPI(lifespan=lifespan)
 app.include_router(auth_router)
 app.include_router(movies_router)
 app.include_router(user_router)
+
+from src.modules.reviews.routes import router as reviews_router
+app.include_router(reviews_router)
