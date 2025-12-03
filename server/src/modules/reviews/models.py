@@ -1,18 +1,21 @@
 from datetime import datetime, date
-from typing import Optional, List
+from typing import Optional, List, TYPE_CHECKING
 from sqlmodel import SQLModel, Field, Relationship
 from pydantic import BaseModel
 
-from typing import Optional, List
+from typing import Optional
 from datetime import datetime, date
 from sqlmodel import Field, SQLModel, Relationship
 
-from src.modules.user.models import User
-from src.modules.movies.models import Movie
+if TYPE_CHECKING:
+    from src.modules.user.models import User
+    from src.modules.movies.models import Movie
 
-
-class Rating(SQLModel, table=True):
-    __tablename__ = "movies_ratings"
+# --------------------
+# Rated Movies
+# --------------------
+class RatedMovie(SQLModel, table=True):
+    __tablename__ = "rated_movies"
 
     id: Optional[int] = Field(default=None, primary_key=True)
     user_id: int = Field(foreign_key="users.id")
@@ -20,8 +23,8 @@ class Rating(SQLModel, table=True):
     rating: int = Field(ge=1, le=10)
     created_at: datetime = Field(default_factory=datetime.now)
 
-    user: "User" = Relationship(back_populates="movies_ratings")
-    movie: "Movie" = Relationship(back_populates="movies_ratings")
+    user: "User" = Relationship(back_populates="rated_movies")
+    movie: "Movie" = Relationship(back_populates="ratings")
 
 class Review():
     pass

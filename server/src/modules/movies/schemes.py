@@ -5,7 +5,8 @@ from datetime import date
 
 class AddMovieForm(BaseModel):
     title: str
-    description: str
+    overview: str
+    director: str
     duration: int
-    poster_url: str | None = None
+    poster_path: str | None = None
     release_date: date
