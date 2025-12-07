@@ -10,3 +10,10 @@ class AddMovieForm(BaseModel):
     duration: int
     poster_path: str | None = None
     release_date: date
+
+class MovieDataShort(BaseModel):
+    id: int
+    title: str
+    poster_path: str
+    release_date: date
+    rating: int

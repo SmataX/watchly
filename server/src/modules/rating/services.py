@@ -3,7 +3,7 @@ from sqlmodel import Session, select, col
 
 from src.modules.user.models import User
 from src.modules.movies.models import Movie
-from src.modules.reviews.models import RatedMovie
+from src.modules.rating.models import RatedMovie
 
 class RatingOperations:
     def add(self, db_session: Session, user: User, movie_id: int, rating_value: int) -> RatedMovie:
@@ -103,3 +103,10 @@ class RatingOperations:
         return db_session.exec(
             select(RatedMovie).where(RatedMovie.movie_id == movie_id)
         ).all()
+    
+    def get_avg_rating(self, db_session: Session, movie_id: int) -> float:
+        """Get avg rating for a movie"""
+
+        all_ratings_obj = self.get_all_for_movie(db_session=db_session, movie_id=movie_id)
+        ratings = [r.rating for r in all_ratings_obj]
+        return round(sum(ratings) / len(ratings), 0) if len(ratings) > 0 else 0

@@ -10,7 +10,7 @@ from datetime import datetime, date
 from sqlmodel import Field, SQLModel, Relationship
 
 if TYPE_CHECKING:
-    from src.modules.reviews.models import RatedMovie, Review
+    from src.modules.rating.models import RatedMovie
 
 # --------------------
 # Movie Model
