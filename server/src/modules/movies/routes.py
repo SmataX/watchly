@@ -2,8 +2,9 @@
 
 from fastapi import APIRouter, status
 from .models import Movie
-from .schemes import AddMovieForm
+from .schemes import AddMovieForm, MovieDataShort
 from src.modules.auth.deps import UserDep
+from src.modules.rating.services import RatingOperations
 from src.core.deps import SessionDep
 from .services import add_movie, get_all_movies, get_movie_by_id, update_movie, delete_movie, get_random_movies
 
@@ -14,9 +15,18 @@ movies_router = APIRouter(prefix="/movies", tags=["movies"])
 def get_random(session: SessionDep, limit: int = 10):
     return get_random_movies(session, limit)
 
-@movies_router.get("", response_model=list[Movie])
+@movies_router.get("", response_model=list[MovieDataShort])
 def get_all(session: SessionDep, skip: int = 0, limit: int = 100):
-    return get_all_movies(session, skip, limit)
+    rating_operations = RatingOperations()
+
+    movie_list = get_all_movies(session, skip, limit)
+    final_list = []
+
+    for movie in movie_list:
+        avg_rating = rating_operations.get_avg_rating(session, movie.id)
+        final_list.append(MovieDataShort(id=movie.id, title=movie.title, poster_path=movie.poster_path, release_date=movie.release_date, rating=avg_rating))
+
+    return final_list
 
 
 @movies_router.get("/{id}", response_model=Movie)
