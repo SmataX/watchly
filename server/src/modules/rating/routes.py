@@ -1,17 +1,14 @@
 from fastapi import APIRouter, status
 from src.core.deps import SessionDep
 from src.modules.auth.deps import UserDep
-from src.modules.reviews.schemas import RatingCreate, RatingUpdate, RatingRead
-from src.modules.reviews.services import RatingOperations
+from src.modules.rating.schemas import RatingCreate, RatingUpdate, RatingRead
+from src.modules.rating.services import RatingOperations
 
 
 router = APIRouter(prefix="/reviews", tags=["Reviews"])
 service = RatingOperations()
 
 
-# ----------
-# Ratings routes
-# ----------
 @router.post("/set_rating", status_code=status.HTTP_201_CREATED)
 def set_rating(data: RatingCreate, session: SessionDep, user: UserDep):
     """Add a new rating."""

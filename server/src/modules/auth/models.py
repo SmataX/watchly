@@ -4,7 +4,7 @@ from sqlmodel import SQLModel, Field, Relationship
 from pydantic import BaseModel
 
 if TYPE_CHECKING:
-    from src.modules.reviews.models import Review, RatedMovie
+    from src.modules.rating.models import Review, RatedMovie
 
 
 # --------------------

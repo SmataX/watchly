@@ -3,7 +3,7 @@ from sqlmodel import Session, select, col
 
 from src.modules.user.models import User
 from src.modules.movies.models import Movie
-from src.modules.reviews.models import RatedMovie
+from src.modules.rating.models import RatedMovie
 
 class RatingOperations:
     def add(self, db_session: Session, user: User, movie_id: int, rating_value: int) -> RatedMovie:

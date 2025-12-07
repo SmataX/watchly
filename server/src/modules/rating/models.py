@@ -25,6 +25,3 @@ class RatedMovie(SQLModel, table=True):
 
     user: "User" = Relationship(back_populates="rated_movies")
     movie: "Movie" = Relationship(back_populates="ratings")
-
-class Review():
-    pass
