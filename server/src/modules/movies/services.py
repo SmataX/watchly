@@ -62,3 +62,6 @@ def get_random_movies(db_session: Session, limit: int = 10):
     return db_session.exec(
         select(Movie).order_by(func.random()).limit(limit)
     )
+
+# def get_genres_for_movie(db_session: Session, movie_id: int) -> list[str]:
+#     result = db_session.exec(select(Genre))

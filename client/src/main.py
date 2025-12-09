@@ -118,9 +118,21 @@ async def index(
 
 
 @app.get("/all_movies")
-def movies(request: Request):
+async def movies(request: Request, client: httpx.AsyncClient = Depends(get_http_client)):
+    movies = []
+    try:
+        response = await client.get(f"/movies/long")
+
+        if response.status_code == 200:
+            movies = response.json()
+    except httpx.RequestError:
+        pass
+
+
+
     return templates.TemplateResponse("all_movies.html", {
         "request": request, 
+        "movies": movies
     })
 
 @app.get("/profile/{username}")
@@ -147,9 +159,10 @@ async def user_profile(
     })
 
 @app.get("/friends")
-def friends(request: Request):
+def friends(request: Request, user: Optional[dict] = Depends(get_optional_user)):
     return templates.TemplateResponse("friends.html", {
         "request": request, 
+        "user": user
     })
 
 @app.get("/reviews")

@@ -17,3 +17,15 @@ class MovieDataShort(BaseModel):
     poster_path: str
     release_date: date
     rating: int
+
+class MovieDataLong(BaseModel):
+    id: int
+    title: str
+    poster_path: str
+    release_date: date
+    global_rating: int
+    friends_rating: int
+    user_rating: int
+    genres: list[str]
+    duration: int
+    overview: str

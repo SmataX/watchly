@@ -2,7 +2,7 @@
 
 from fastapi import APIRouter, status
 from .models import Movie
-from .schemes import AddMovieForm, MovieDataShort
+from .schemes import AddMovieForm, MovieDataShort, MovieDataLong
 from src.modules.auth.deps import UserDep
 from src.modules.rating.services import RatingOperations
 from src.core.deps import SessionDep
@@ -25,6 +25,23 @@ def get_all(session: SessionDep, skip: int = 0, limit: int = 100):
     for movie in movie_list:
         avg_rating = rating_operations.get_avg_rating(session, movie.id)
         final_list.append(MovieDataShort(id=movie.id, title=movie.title, poster_path=movie.poster_path, release_date=movie.release_date, rating=avg_rating))
+
+    return final_list
+
+
+@movies_router.get("/long", response_model=list[MovieDataLong])
+def get_long_data(session: SessionDep, skip: int = 0, limit: int = 100):
+    rating_operations = RatingOperations()
+
+    movie_list = get_all_movies(session, skip, limit)
+    final_list = []
+
+    for movie in movie_list:
+        genres = []
+
+
+        avg_rating = rating_operations.get_avg_rating(session, movie.id)
+        final_list.append(MovieDataLong(id=movie.id, title=movie.title, poster_path=movie.poster_path, release_date=movie.release_date, global_rating=avg_rating, friends_rating=avg_rating, user_rating=avg_rating, genres=genres, duration=movie.duration, overview=movie.overview))
 
     return final_list
 
