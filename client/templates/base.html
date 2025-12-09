@@ -18,7 +18,12 @@
             <a href="/all_movies">Movies</a>
             <a href="/reviews">Reviews</a>
             <a href="/friends">Friends</a>
-            <a href="/profile/{{ user.username }}">My Ratings</a>
+            
+            {% if user %}
+                <a href="/profile/{{ user.username }}">My Ratings</a>
+            {% else %}
+                <a href="/login">My Ratings</a>
+            {% endif %}
         </nav>
 
         <div>
