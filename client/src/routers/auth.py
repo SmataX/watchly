@@ -1,7 +1,8 @@
 import httpx
 from fastapi import APIRouter, Request, Form, status, Depends
 from fastapi.responses import RedirectResponse, HTMLResponse
-from src.main import templates, get_http_client
+from src.main import templates
+from src.core.deps import get_http_client, get_optional_user
 
 router = APIRouter()
 
