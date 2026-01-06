@@ -82,22 +82,34 @@ async def index(
     })
 
 
+import asyncio
+
 @app.get("/all_movies")
 async def movies(request: Request, client: httpx.AsyncClient = Depends(get_http_client)):
-    movies = []
+    movies_list = []
+    genres_list = []
+
     try:
-        response = await client.get(f"/movies")
+        task_movies = client.get("/movies", params=request.query_params)
+        task_genres = client.get("/movies/genres")
 
-        if response.status_code == 200:
-            movies = response.json()
-    except httpx.RequestError:
-        pass
+        results = await asyncio.gather(task_movies, task_genres, return_exceptions=True)
+        
+        res_movies, res_genres = results
 
+        if not isinstance(res_movies, Exception) and res_movies.status_code == 200:
+            movies_list = res_movies.json()
+            
+        if not isinstance(res_genres, Exception) and res_genres.status_code == 200:
+            genres_list = res_genres.json()
 
+    except Exception as e:
+        print(f"Error fetching data: {e}")
 
     return templates.TemplateResponse("all_movies.html", {
         "request": request, 
-        "movies": movies
+        "movies": movies_list,
+        "genres": genres_list
     })
 
 

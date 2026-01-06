@@ -23,10 +23,10 @@
     <div class="allmovies_main_layout">
         
         <aside class="allmovies_filter_sidebar">
-            <form method="GET" action="."> 
+            <form method="GET" action="all_movies"> 
                 
                 <section class="allmovies_filter_section">
-                    <p>Showing <span style="font-weight: bold; color: white">2</span> movies</p>
+                    <p>Showing <span style="font-weight: bold; color: white">{{ movies|length}}</span> movies</p>
                     <h3>Sort by</h3>
                     <ul class="allmovies_category_list">
                         <li>
@@ -47,13 +47,9 @@
                 <section class="allmovies_filter_section">
                     <h3>Genres</h3>
                     <ul class="allmovies_genre_list">
-                        <li><label><input type="checkbox" name="genre" value="Action"> Action</label></li>
-                        <li><label><input type="checkbox" name="genre" value="Comedy"> Comedy</label></li>
-                        <li><label><input type="checkbox" name="genre" value="Drama"> Drama</label></li>
-                        <li><label><input type="checkbox" name="genre" value="Horror"> Horror</label></li>
-                        <li><label><input type="checkbox" name="genre" value="Romance"> Romance</label></li>
-                        <li><label><input type="checkbox" name="genre" value="SciFi"> Sci-Fi</label></li>
-                        <li><label><input type="checkbox" name="genre" value="Fantasy"> Fantasy</label></li>
+                        {% for genre in genres %}
+                        <li><label><input type="checkbox" name="genre" value="{{ genre.name }}"> {{ genre.name }}</label></li>
+                        {% endfor %}
                     </ul>
                 </section>
 
