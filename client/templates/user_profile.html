@@ -66,7 +66,7 @@
         </div>
     </div>
 
-    <div class="section-container">
+    <!-- <div class="section-container">
         <div class="section-header-row">
             <h3 class="section-title">Favorite Movies</h3>
             <a href="#" class="view-all-link">View All</a>
@@ -83,14 +83,24 @@
             <img src="https://upload.wikimedia.org/wikipedia/en/3/32/A_Silent_Voice_Film_Poster.jpg" alt="Movie 7" class="movie-poster" style="background: grey;">
             <img src="https://moviesfilmsandflix.com/wp-content/uploads/2023/10/mv5bzwuxztllzgitzjfhys00ndi4ltgwodatyzninzeznjnmmzrkxkeyxkfqcgdeqxvymte0mzqwmjgz._v1_.jpg" alt="Movie 8" class="movie-poster" style="background: grey;">
         </div>
-    </div>
+    </div> -->
 
     <div class="section-container">
         <h3 class="section-title">Rating</h3>
         <hr class="section-divider">
+        {% if user_data['rated_movies'] %}
+            {% for movie in user_data['rated_movies'] %}
+                <div>
+                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
+                    <span>{{ movie.title }} </span>
+                    <span>{{ movie.rating }}</span>
+                </div>
+            {% endfor %}
+        {% else %}
         <div class="rating-placeholder">
             <p>Your rating activity will appear here.</p>
         </div>
+        {% endif %}
     </div>
 
     <div class="section-container">
