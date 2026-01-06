@@ -6,7 +6,7 @@ from .schemes import MovieData
 from src.modules.auth.deps import UserDep
 from src.modules.rating.services import RatingOperations
 from src.core.deps import SessionDep
-from .services import get_movie_by_id, MovieOperations, GenreOperations
+from .services import MovieOperations, GenreOperations
 from random import randint
 
 

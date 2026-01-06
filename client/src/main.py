@@ -121,7 +121,7 @@ async def index(
 async def movies(request: Request, client: httpx.AsyncClient = Depends(get_http_client)):
     movies = []
     try:
-        response = await client.get(f"/movies/long")
+        response = await client.get(f"/movies")
 
         if response.status_code == 200:
             movies = response.json()
