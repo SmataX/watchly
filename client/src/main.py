@@ -125,3 +125,10 @@ def reviews(request: Request):
     return templates.TemplateResponse("reviews.html", {
         "request": request, 
     })
+
+@app.get("/movie_page")
+def movie_page(request: Request):
+    return templates.TemplateResponse("movie_page.html", {
+        "request": request, 
+    })
+
