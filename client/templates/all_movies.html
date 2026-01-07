@@ -83,7 +83,7 @@
         <main class="allmovies_main_content">
             <div class="allmovies_movie_grid">
                 {% for movie in movies %}
-                <a href="/movie/{{ movie.id }}" style="text-decoration: none; color: inherit;">
+                <a href="/movies/{{ movie.id }}" style="text-decoration: none; color: inherit;">
                 <div class="allmovies_card">
                         <div class="allmovies_card_poster">
                         <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="Deadpool Poster">

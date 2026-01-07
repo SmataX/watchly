@@ -74,8 +74,25 @@ def get_genres(session: SessionDep):
     return GenreOperations.get_all_genres(session)
 
 
-@movies_router.get("/{id}", response_model=Movie)
+@movies_router.get("/{id}", response_model=MovieData)
 def get_by_id(id: int, session: SessionDep):
     movies_service = MovieOperations()
+    rating_service = RatingOperations()
 
-    return movies_service.get_movie(session, id)
+    movie = movies_service.get_movie(session, id) 
+    avg_rating = rating_service.get_avg_rating(session, movie.id)
+        
+    genres_list = [g.genre.name for g in movie.genres] if hasattr(movie, 'genres') else []
+
+    return MovieData(
+            id=movie.id, 
+            title=movie.title, 
+            poster_path=movie.poster_path, 
+            release_date=movie.release_date, 
+            global_rating=avg_rating, 
+            friends_rating=0, 
+            user_rating=avg_rating, 
+            genres=genres_list, 
+            duration=movie.duration, 
+            overview=movie.overview
+        )

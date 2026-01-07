@@ -28,34 +28,31 @@
              <!-- Gatunki -->
 
             <div class="genres-container">
-
-                <span class="genre-tag">Wzruszające</span>
-
-                <span class="genre-tag">Psychologiczny</span>
-
-                <span class="genre-tag">Sci - fi</span>
+                {% for genre in movie.genres %}
+                <span class="genre-tag">{{ genre }}</span>
+                {% endfor %}
 
             </div>
 
             <div class="ratings-container">
                 <div class="rating-box">
                     <div class="rating-title">Global Rating</div>
-                    <div class="rating-value">★ 4.8</div> 
+                    <div class="rating-value">★ {{ movie.global_rating }}</div> 
                 </div>
 
                 <div class="rating-box">
                     <div class="rating-title">Friends Average</div>
-                    <div class="rating-value">★ 4.9</div>
+                    <div class="rating-value">★ {{ movie.friends_rating }}</div>
                 </div>
 
                 <div class="rating-box">
                     <div class="rating-title">Your Rating</div>
-                    <div class="rating-value">★ 4.5</div>
+                    <div class="rating-value">★ {{ movie.user_rating }}</div>
                 </div>
 
                 <div class="rating-box">
                     <div class="rating-title">Awards</div>
-                    <div class="awards-value">15</div>
+                    <div class="awards-value">0</div>
                 </div>
             </div>
         </div>
@@ -98,7 +95,7 @@
             <div class="trailer-column">
                 <div class="trailer-video-wrapper">
                     <iframe class="trailer-video"
-                            src="https://www.youtube.com/embed/zSWdZVtXT7E"
+                            src=""
                             title="Trailer"
                             frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -146,16 +143,16 @@
 
         <div class="photos-grid">
             <div class="photo-item item-1">
-                <img src="https://images.static-bluray.com/reviews/16336_1.jpg" alt="Scene 1">
+                <img src="https://placehold.net/400x400.png" alt="Scene 1">
             </div>
             <div class="photo-item item-2">
-                <img src="https://fwcdn.pl/webv/24/25/32425/a2_32417_4.32425.4.jpg" alt="Scene 2">
+                <img src="https://placehold.net/400x400.png" alt="Scene 2">
             </div>
             <div class="photo-item item-3">
-                <img src="https://bi.im-g.pl/im/28/af/1e/z32175144Q,kadr-z-filmu--Interstellar--rez--Christopher-Nolan.jpg" alt="Scene 3">
+                <img src="https://placehold.net/400x400.png" alt="Scene 3">
             </div>
             <div class="photo-item item-4">
-                <img src="https://bi.im-g.pl/im/bd/b2/14/z21701053IEG,Interstellar.jpg" alt="Scene 4">
+                <img src="https://placehold.net/400x400.png" alt="Scene 4">
             </div>
         </div>
     </div>
