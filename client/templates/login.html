@@ -1,23 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login</title>
+    <title>{% block title %}Login{% endblock %}</title>
+    {% block extra_css %}
+    <link rel="stylesheet" href="/static/auth_style.css">
+    {% endblock %}
 </head>
-<body style="background-color: black; color: white;">
-    <a href="./" style="text-decoration: none; color: white; "><h1>Watchly</h1></a>
-    <h2>Login</h2>
-    <form action="/login" method="post">
-        <label>Username:</label>
-        <input type="text" name="username" required>
-        <br>
-        <label>Password:</label>
-        <input type="password" name="password" required>
-        <br>
-        <button type="submit">Login</button>
-        <a href="/register" style="text-decoration: none; color: rgb(190, 207, 255); font-weight: bold;">Register</a>
-    </form>
-    {% if error %}
+    <body>
+        <div class="authContainer">
+            <a href="./" class="logoText" ><h1>WATCHLY</h1></a>
+            <a href="./"><img src="./static/images/logo.png" alt="Watchly Logo" class="logo"></a>
+            <h2 class="mainTitle">Sign in</h2>
+            <p class="subTitle">Welcome Back</p>
+            <form class="authForm" action="/login" method="post">
+
+                <input class="inputButton" type="text" name="username" placeholder="Username" required>
+                <br>
+
+                <input class="inputButton" type="password" name="password" placeholder="Password" required>
+                <br>
+                <button class="inputButton" type="submit">Continue with Email</button>
+
+            </form>
+            <hr class="hrLine" />
+
+            <button class="inputButton">Continue with Google</button>
+            <div class="footerText">
+                <p>Don't habe an account?  <a href="/register">Sign Up</a></p>
+            </div>
+        </div>
+        {% if error %}
         <p style="color: red;">{{ error }}</p>
-    {% endif %}
-</body>
+        {% endif %}
+    </body>
 </html>

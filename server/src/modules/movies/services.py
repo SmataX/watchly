@@ -1,64 +1,116 @@
 # src/modules/movies/movies_operations.py
 
 from fastapi import HTTPException, status
-from sqlmodel import Session, select, func
-from .schemes import AddMovieForm
-from .models import Movie
+from sqlmodel import Session, select, func, extract
+from typing import Optional
+from .schemes import MovieData
+from .models import Movie, Genre, MovieGenre
+from src.modules.rating.models import RatedMovie
 
 
-def get_all_movies(db_session: Session, skip: int = 0, limit: int = 100):
-    """Retrieves all movies with pagination."""
-    return db_session.exec(
-        select(Movie).offset(skip).limit(limit)
-    ).all()
+class MovieOperations:
+    @staticmethod
+    def get_all_movies(db_session: Session, skip: int = 0, limit: int = 100) -> list[Movie]:
+        """Retrieves all movies with pagination."""
 
+        return db_session.exec(
+            select(Movie).offset(skip).limit(limit)
+        ).all()
+    
 
-def get_movie_by_id(db_session: Session, id: int):
-    """Retrieves a movie by its ID."""
-    movie = db_session.get(Movie, id)
+    @staticmethod
+    def get_all_movies_where(
+        db_session: Session, 
+        skip: int = 0, 
+        limit: int = 100, 
+        genres: Optional[list[str]] = None, 
+        rating_min: Optional[float] = 0, 
+        rating_max: Optional[float] = 10, 
+        year_min: Optional[int] = 1000, 
+        year_max: Optional[int] = 3000
+    ) -> list[Movie]:
 
-    if not movie:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, 
-            detail=f"Movie with id {id} not found."
+        query = select(Movie)
+        print(genres)
+
+        if year_min is not None:
+            query = query.filter(extract("year", Movie.release_date) >= year_min)
+        if year_max is not None:
+            query = query.filter(extract("year", Movie.release_date) <= year_max)
+
+        if genres:
+            query = query.join(MovieGenre, Movie.id == MovieGenre.movie_id)
+            query = query.join(Genre, MovieGenre.genre_id == Genre.id)
+            query = query.where(Genre.name.in_(genres))
+
+        if rating_min > 0 or rating_max < 10:
+            query = query.outerjoin(RatedMovie, Movie.id == RatedMovie.movie_id)
+            query = query.group_by(Movie.id)
+            
+            avg_rating = func.coalesce(func.avg(RatedMovie.rating), 0)
+            
+            if rating_min is not None:
+                query = query.having(avg_rating >= rating_min)
+            if rating_max is not None:
+                query = query.having(avg_rating <= rating_max)
+        
+        elif genres:
+            query = query.distinct()
+
+        return db_session.exec(query.offset(skip).limit(limit)).all()
+    
+
+    @staticmethod
+    def get_random_movies(db_session: Session, limit: int = 100) -> list[Movie]:
+        """Retrives a random selection of movies."""
+
+        return db_session.exec(
+            select(Movie).order_by(func.random()).limit(limit)
         )
-    return movie
 
+    @staticmethod
+    def get_movie(db_session: Session, movie_id: int) -> Movie:
+        """Retrieves a movie by its ID."""
 
-def add_movie(db_session: Session, form: AddMovieForm):
-    """Adds a new movie to the database."""
-    movie = Movie.model_validate(form)
+        movie = db_session.get(Movie, movie_id)
 
-    db_session.add(movie)
-    db_session.commit()
-    db_session.refresh(movie)
-    return form
-
-
-def update_movie(db_session: Session, id: int, data: Movie):
-    """Updates a movie by its ID."""
-    movie = get_movie_by_id(db_session, id)
-    movie_data = data.model_dump(exclude_unset=True)
+        if not movie:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, 
+                detail=f"Movie with id {movie_id} not found."
+            )
+        return movie
     
-    movie.sqlmodel_update(movie_data)
-    
-    db_session.add(movie)
-    db_session.commit()
-    db_session.refresh(movie)
-    
-    return movie
+    @staticmethod
+    def convert_to_movie_data(db_session: Session, movie: Movie) -> MovieData:
+
+        movie_data = MovieData(
+            id=movie.id,
+            title=movie.title,
+            poster_path=movie.poster_path,
+            release_date=movie.release_date,
+            global_rating=0,
+            friends_rating=0,
+            user_rating=0,
+            genres=[g.name for g in GenreOperations.get_all_genres_for_movie(movie.id)],
+            duration=movie.duration,
+            overview=movie.overview
+        )
+        
+        return movie_data
 
 
-def delete_movie(db_session: Session, id: int):
-    """Deletes a movie by its ID."""
-    movie = get_movie_by_id(db_session, id)
-    
-    db_session.delete(movie)
-    db_session.commit()
-    return True
+class GenreOperations:
+    @staticmethod
+    def get_all_genres(db_session: Session) -> list[Genre]:
+        return db_session.exec(select(Genre)).all()
 
-def get_random_movies(db_session: Session, limit: int = 10):
-    """Retrives a random selection of movies."""
-    return db_session.exec(
-        select(Movie).order_by(func.random()).limit(limit)
-    )
+    @staticmethod
+    def get_all_genres_for_movie(db_session: Session, movie_id: int) -> list[Genre]:
+        statement = (
+            select(Genre)
+            .join(MovieGenre, Genre.id == MovieGenre.genre_id)
+            .where(MovieGenre.movie_id == 1)
+        )
+
+        return db_session.exec(statement).all()

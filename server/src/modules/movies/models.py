@@ -52,9 +52,8 @@ class Genre(SQLModel, table=True):
 class MovieGenre(SQLModel, table=True):
     __tablename__ = "movie_genre"
 
-    id: Optional[int] = Field(default=None, primary_key=True)
-    movie_id: int = Field(foreign_key="movies.id", nullable=False)
-    genre_id: int = Field(foreign_key="genre.id", nullable=False)
+    movie_id: int = Field(foreign_key="movies.id", nullable=False, primary_key=True)
+    genre_id: int = Field(foreign_key="genre.id", nullable=False, primary_key=True)
 
     # Relationships
     movie: Movie = Relationship(back_populates="genres")

@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WATCHLY</title>
+    <title>{% block title %}WATCHLY{% endblock %}</title>
     <link rel="stylesheet" href="/static/style.css">
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
 
@@ -18,7 +19,9 @@
             <a href="/all_movies">Movies</a>
             <a href="/reviews">Reviews</a>
             <a href="/friends">Friends</a>
+            {% if user %}
             <a href="/profile/{{ user.username }}">My Ratings</a>
+            {% endif %}
         </nav>
 
         <div>

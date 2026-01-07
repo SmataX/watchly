@@ -23,11 +23,11 @@
                 <p class="bio-text">{{ user_data['description'] }}</p>
 
                 <div class="follow-stats">
-                    <span><strong>585</strong> Following</span>
-                    <span><strong>63</strong> Followers</span>
+                    <span><strong>{{ user_data['following'] }}</strong> Following</span>
+                    <span><strong>{{ user_data['followers'] }}</strong> Followers</span>
                 </div>
                 
-                <p class="member-since">Member since <span class="date-account">July 2025</span></p>
+                <p class="member-since">Member since <span class="date-account">{{ user_data['created_at'] }}</span></p>
             </div>
         </div>
     </div>
@@ -44,7 +44,7 @@
             <div class="stat-header">
                 <span>Average rating</span>
                 <span class="icon">↗</span> </div>
-            <div class="stat-number">4.2</div>
+            <div class="stat-number">{{ user_data['avg_rating'] }}</div>
         </div>
 
         <div class="stat-box">
@@ -55,7 +55,7 @@
         </div>
     </div>
 
-    <div class="section-container">
+    <!-- <div class="section-container">
         <h3 class="section-title">Favorite Genres</h3>
         <hr class="section-divider">
         <div class="genres-list">
@@ -64,9 +64,9 @@
             <span class="genre-tag">Horror</span>
             <span class="genre-tag">Thriller</span>
         </div>
-    </div>
+    </div> -->
 
-    <div class="section-container">
+    <!-- <div class="section-container">
         <div class="section-header-row">
             <h3 class="section-title">Favorite Movies</h3>
             <a href="#" class="view-all-link">View All</a>
@@ -83,14 +83,24 @@
             <img src="https://upload.wikimedia.org/wikipedia/en/3/32/A_Silent_Voice_Film_Poster.jpg" alt="Movie 7" class="movie-poster" style="background: grey;">
             <img src="https://moviesfilmsandflix.com/wp-content/uploads/2023/10/mv5bzwuxztllzgitzjfhys00ndi4ltgwodatyzninzeznjnmmzrkxkeyxkfqcgdeqxvymte0mzqwmjgz._v1_.jpg" alt="Movie 8" class="movie-poster" style="background: grey;">
         </div>
-    </div>
+    </div> -->
 
     <div class="section-container">
         <h3 class="section-title">Rating</h3>
         <hr class="section-divider">
+        {% if user_data['rated_movies'] %}
+            {% for movie in user_data['rated_movies'] %}
+                <div>
+                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
+                    <span>{{ movie.title }} </span>
+                    <span>{{ movie.rating }}</span>
+                </div>
+            {% endfor %}
+        {% else %}
         <div class="rating-placeholder">
             <p>Your rating activity will appear here.</p>
         </div>
+        {% endif %}
     </div>
 
     <div class="section-container">
