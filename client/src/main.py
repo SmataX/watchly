@@ -132,3 +132,35 @@ def movie_page(request: Request):
         "request": request, 
     })
 
+
+@app.get("/movie/{movie_id}")
+async def movie_detail(request: Request, movie_id: int, client: httpx.AsyncClient = Depends(get_http_client)):
+    # 1. Pobieramy listę wszystkich filmów z Twojego serwera backendu (działa na porcie 8001)
+    # Używamy tej samej ścieżki co w 'all_movies' (zakładam, że jest to /movies)
+    try:
+        response = await client.get("http://127.0.0.1:8001/movies")
+        all_movies = response.json()
+        
+        # 2. Szukamy w tej liście filmu, który ma identyczne ID jak to w linku
+        # Funkcja next() przeszukuje listę i zwraca pierwszy pasujący element
+        selected_movie = next((m for m in all_movies if m["id"] == movie_id), None)
+        
+    except Exception as e:
+        print(f"Błąd połączenia z backendem: {e}")
+        selected_movie = None
+
+    # 3. Zabezpieczenie: Jeśli filmu nie ma w bazie lub backend nie odpowiada
+    if not selected_movie:
+        selected_movie = {
+            "title": "Nie znaleziono filmu",
+            "overview": f"Nie udało się pobrać danych dla ID: {movie_id}",
+            "poster_path": "", # Pusty plakat
+            "genres": [],
+            "global_rating": 0
+        }
+
+    # 4. Wysyłamy znaleziony film (selected_movie) do HTML jako zmienną "movie"
+    return templates.TemplateResponse("movie_page.html", {
+        "request": request, 
+        "movie": selected_movie 
+    })

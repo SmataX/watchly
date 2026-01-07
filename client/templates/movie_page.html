@@ -1,60 +1,58 @@
 {% extends "base.html" %}
+
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', path='/movie_page_style.css') }}">
 {% endblock %}
 
 {% block content %}
-<!-- BANER z PLAKATEM -->
 <div class="movie-hero">
     <div class="movie-hero-background"></div>
     <div class="hero-gradient-overlay"></div>
+    
     <div class="movie-hero-content">
-        <!-- LEWA KOLUMNA - PLAKAT -->
         <div class="poster-column">
-            <img src="https://m.media-amazon.com/images/M/MV5BZjdkOTU3MDktN2IxOS00OGEyLWFmMjktY2FiMmZkNWIyODZiXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_FMjpg_UX1000_.jpg"
-                 alt="Interstellar poster"
+            <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}"
+                 alt="{{ movie.title }} poster"
                  class="movie-poster">
-
         </div>
 
-        <!-- PRAWA KOLUMNA - INFORMACJE -->
         <div class="info-column">
             <div class="movie-title-wrapper">
-                <h1 class="movie-title">Interstellar</h1>
+                <h1 class="movie-title">{{ movie.title }}</h1>
                 <div class="movie-basic-info">
-                    <span class="movie-year">2014</span>
-                    <span class="movie-duration">2h 49m</span>
+                    <span class="movie-year">{{ movie.release_date }}</span>
+                    <span class="movie-duration">{{ movie.duration }} min</span>
                 </div>
             </div>
 
-            <!-- Gatunki -->
+             <!-- Gatunki -->
+
             <div class="genres-container">
+
                 <span class="genre-tag">Wzruszające</span>
+
                 <span class="genre-tag">Psychologiczny</span>
+
                 <span class="genre-tag">Sci - fi</span>
+
             </div>
 
-            <!-- BOXY z OCENAMI -->
             <div class="ratings-container">
-                <!--  Global Rating -->
                 <div class="rating-box">
                     <div class="rating-title">Global Rating</div>
-                    <div class="rating-value">★ 4.8</div>
+                    <div class="rating-value">★ 4.8</div> 
                 </div>
 
-                <!-- Friends Average -->
                 <div class="rating-box">
                     <div class="rating-title">Friends Average</div>
                     <div class="rating-value">★ 4.9</div>
                 </div>
 
-                <!--  Your Rating -->
                 <div class="rating-box">
                     <div class="rating-title">Your Rating</div>
                     <div class="rating-value">★ 4.5</div>
                 </div>
 
-                <!-- Awards -->
                 <div class="rating-box">
                     <div class="rating-title">Awards</div>
                     <div class="awards-value">15</div>
@@ -64,24 +62,19 @@
     </div>
 </div>
 
-<!-- POD BANEREM -->
 <div class="main-content">
-    <!-- SYNOPSIS -->
     <div class="details-section">
         <h2 class="section-title">Synopsis</h2>
         <div class="synopsis-text">
-            Byt ludzkości na Ziemi dobiega końca wskutek zmian klimatycznych. Grupa naukowców odkrywa tunel czasoprzestrzenny, który umożliwia poszukiwanie nowego domu.
+            {{ movie.overview }}
         </div>
     </div>
-    <!-- TRAILER + BOXY -->
+
     <div class="trailer-section">
         <div class="trailer-wrapper">
-            <!-- BOXY AKCJI -->
             <div class="action-boxes-column">
-                <!-- Rate box -->
                 <div class="action-box rate-box">
                     <div class="action-title">Rate</div>
-
                     <div class="rating-stars" id="ratingStars">
                         <span class="star" data-value="1">★</span>
                         <span class="star" data-value="2">★</span>
@@ -89,49 +82,35 @@
                         <span class="star" data-value="4">★</span>
                         <span class="star" data-value="5">★</span>
                     </div>
-
-
                 </div>
 
-                <!-- Add to favourite bsox -->
                 <div class="action-box favorite-box">
                     <div class="action-title">Add to Favourite</div>
                     <div class="action-icon">❤</div>
-
-
                 </div>
 
-                <!-- Add to watchlist box -->
                 <div class="action-box watchlist-box">
                     <div class="action-title">Add to Watchlist</div>
                     <div class="action-icon">➕</div>
-
-
                 </div>
             </div>
 
-            <!--  TRAILER -->
             <div class="trailer-column">
-
                 <div class="trailer-video-wrapper">
                     <iframe class="trailer-video"
                             src="https://www.youtube.com/embed/zSWdZVtXT7E"
-                            title="Interstellar Trailer"
+                            title="Trailer"
                             frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowfullscreen>
                     </iframe>
                 </div>
-
             </div>
-
         </div>
-
     </div>
-    <!-- BOX Z DIRECTOR, WRITERS, PRODUCTION -->
+
     <div class="crew-section">
         <div class="crew-box">
-            <!-- Director -->
             <div class="crew-item">
                 <div class="crew-category">Director</div>
                 <div class="crew-names">
@@ -141,63 +120,53 @@
 
             <hr class="crew-divider">
 
-            <!-- Writers -->
             <div class="crew-item">
                 <div class="crew-category">Writers</div>
                 <div class="crew-names">
                     <p>Christopher Nolan, Jonathan Nolan</p>
-
                 </div>
             </div>
 
             <hr class="crew-divider">
 
-            <!-- Production -->
             <div class="crew-item">
                 <div class="crew-category">Production</div>
                 <div class="crew-names">
                     <p>USA, Wielka Brytania</p>
-
                 </div>
             </div>
         </div>
     </div>
-    <!-- ZDJECIA-->
+
     <div class="photos-section">
         <div class="photos-header">
             <h2 class="section-title">Photos</h2>
             <a href="#" class="view-all-link" id="viewAllLink">View All </a>
-
         </div>
 
         <div class="photos-grid">
-            <!-- PIERWSZY RZĄD -->
             <div class="photo-item item-1">
-                <img src="https://images.static-bluray.com/reviews/16336_1.jpg" alt="Interstellar scene 1">
+                <img src="https://images.static-bluray.com/reviews/16336_1.jpg" alt="Scene 1">
             </div>
-
             <div class="photo-item item-2">
-                <img src="https://fwcdn.pl/webv/24/25/32425/a2_32417_4.32425.4.jpg" alt="Interstellar scene 2">
+                <img src="https://fwcdn.pl/webv/24/25/32425/a2_32417_4.32425.4.jpg" alt="Scene 2">
             </div>
-
-            <!-- DRUGI RZĄD -->
             <div class="photo-item item-3">
-                <img src="https://bi.im-g.pl/im/28/af/1e/z32175144Q,kadr-z-filmu--Interstellar--rez--Christopher-Nolan.jpg" alt="Interstellar scene 3">
+                <img src="https://bi.im-g.pl/im/28/af/1e/z32175144Q,kadr-z-filmu--Interstellar--rez--Christopher-Nolan.jpg" alt="Scene 3">
             </div>
-
             <div class="photo-item item-4">
-                <img src="https://bi.im-g.pl/im/bd/b2/14/z21701053IEG,Interstellar.jpg" alt="Interstellar scene 4">
+                <img src="https://bi.im-g.pl/im/bd/b2/14/z21701053IEG,Interstellar.jpg" alt="Scene 4">
             </div>
         </div>
     </div>
-    <!-- SEKCJA DLA USER REVIEWS -->
+
     <div>
         <div class="user-reviews">
             <h2>No Reviews Yet</h2>
             <p> Be the first to share your thoughts about this movie!</p>
          </div>
     </div>
-    <!-- WROTE REVIEW-->
+
     <div class="review">
         <div class="review-header">
             <span class="review-title">Write a review:</span>
@@ -219,6 +188,4 @@
     </div>
 
 </div>
-
-
-    {% endblock %}
+{% endblock %}
