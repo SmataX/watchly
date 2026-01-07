@@ -26,7 +26,3 @@ app.include_router(user_router)
 
 from src.modules.rating.routes import router as reviews_router
 app.include_router(reviews_router)
-
-
-
-rating_operations = RatingOperations()

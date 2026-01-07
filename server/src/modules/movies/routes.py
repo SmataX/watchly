@@ -1,34 +1,32 @@
-# src/modules/movies/routes.py
+from typing import Optional
 
-from fastapi import APIRouter, Query
-from .models import Movie, Genre
-from .schemes import MovieData
+from fastapi import APIRouter, Query, Depends
+
+from src.core.deps import SessionDep
 from src.modules.auth.deps import UserDep
 from src.modules.rating.services import RatingOperations
-from src.core.deps import SessionDep
-from .services import MovieOperations, GenreOperations
-from random import randint
-from typing import Optional
+
+from .models import Movie, Genre
+from .schemes import MovieData
+from .services import GenreOperations
+from .deps import MoviesOperationsDep
 
 
 movies_router = APIRouter(prefix="/movies", tags=["movies"])
 
+
 @movies_router.get("", response_model=list[MovieData])
 def get_movies(
-    session: SessionDep, 
+    movie_operations: MoviesOperationsDep,
     skip: int = 0, 
     limit: int = 100,
     genre: Optional[list[str]] = Query(None),
     rating_min: float = 0,
     rating_max: float = 10,
     year_min: int = 1000, 
-    year_max: int = 3000
+    year_max: int = 3000,
 ):
-    movies_service = MovieOperations()
-    rating_service = RatingOperations()
-
-    movie_list = movies_service.get_all_movies_where(
-        db_session=session, 
+    movies_list = movie_operations.get_all_movies_where(
         skip=skip, 
         limit=limit,
         genres=genre,
@@ -38,36 +36,14 @@ def get_movies(
         year_max=year_max
     )
 
-    final_list = []
-
-    for movie in movie_list:
-        avg_rating = rating_service.get_avg_rating(session, movie.id)
-        
-        genres_list = [g.genre.name for g in movie.genres] if hasattr(movie, 'genres') else []
-
-        final_list.append(MovieData(
-            id=movie.id, 
-            title=movie.title, 
-            poster_path=movie.poster_path, 
-            release_date=movie.release_date, 
-            global_rating=avg_rating, 
-            friends_rating=avg_rating, 
-            user_rating=avg_rating, 
-            genres=genres_list, 
-            duration=movie.duration, 
-            overview=movie.overview
-        ))
-
-    return final_list
+    return [movie_operations.get_full_data(movie) for movie in movies_list]
 
 
 @movies_router.get("/random", response_model=list[MovieData])
-def get_random(session: SessionDep, limit: int):
-    movies_service = MovieOperations()
+def get_random(limit: int, movie_operations: MoviesOperationsDep):
+    movies = movie_operations.get_random_movies(limit=limit)
+    return [movie_operations.get_full_data(movie) for movie in movies]
 
-    movies = movies_service.get_random_movies(db_session=session, limit=limit)
-
-    return movies
 
 @movies_router.get("/genres", response_model=list[Genre])
 def get_genres(session: SessionDep):
@@ -75,24 +51,5 @@ def get_genres(session: SessionDep):
 
 
 @movies_router.get("/{id}", response_model=MovieData)
-def get_by_id(id: int, session: SessionDep):
-    movies_service = MovieOperations()
-    rating_service = RatingOperations()
-
-    movie = movies_service.get_movie(session, id) 
-    avg_rating = rating_service.get_avg_rating(session, movie.id)
-        
-    genres_list = [g.genre.name for g in movie.genres] if hasattr(movie, 'genres') else []
-
-    return MovieData(
-            id=movie.id, 
-            title=movie.title, 
-            poster_path=movie.poster_path, 
-            release_date=movie.release_date, 
-            global_rating=avg_rating, 
-            friends_rating=0, 
-            user_rating=avg_rating, 
-            genres=genres_list, 
-            duration=movie.duration, 
-            overview=movie.overview
-        )
+def get_by_id(id: int, movie_operations: MoviesOperationsDep, ):
+    return movie_operations.get_full_data(movie_operations.get_movie(id) )

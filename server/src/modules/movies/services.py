@@ -1,26 +1,31 @@
-# src/modules/movies/movies_operations.py
-
-from fastapi import HTTPException, status
-from sqlmodel import Session, select, func, extract
 from typing import Optional
+
+from fastapi import HTTPException, status, Depends
+from sqlmodel import Session, select, func, extract
+
+from src.core.deps import get_session
+from src.modules.rating.models import RatedMovie
+from src.modules.rating.services import RatingOperations
+
 from .schemes import MovieData
 from .models import Movie, Genre, MovieGenre
-from src.modules.rating.models import RatedMovie
 
 
 class MovieOperations:
-    @staticmethod
-    def get_all_movies(db_session: Session, skip: int = 0, limit: int = 100) -> list[Movie]:
+    def __init__(self, session: Session):
+        self.session = session
+        self.rating_operations = RatingOperations(session)
+
+    def get_all_movies(self, skip: int = 0, limit: int = 100) -> list[Movie]:
         """Retrieves all movies with pagination."""
 
-        return db_session.exec(
+        return self.session.exec(
             select(Movie).offset(skip).limit(limit)
         ).all()
     
 
-    @staticmethod
     def get_all_movies_where(
-        db_session: Session, 
+        self,
         skip: int = 0, 
         limit: int = 100, 
         genres: Optional[list[str]] = None, 
@@ -57,22 +62,21 @@ class MovieOperations:
         elif genres:
             query = query.distinct()
 
-        return db_session.exec(query.offset(skip).limit(limit)).all()
+        return self.session.exec(query.offset(skip).limit(limit)).all()
     
 
-    @staticmethod
-    def get_random_movies(db_session: Session, limit: int = 100) -> list[Movie]:
+    def get_random_movies(self, limit: int = 100) -> list[Movie]:
         """Retrives a random selection of movies."""
 
-        return db_session.exec(
+        return self.session.exec(
             select(Movie).order_by(func.random()).limit(limit)
         )
 
-    @staticmethod
-    def get_movie(db_session: Session, movie_id: int) -> Movie:
+
+    def get_movie(self, movie_id: int) -> Movie:
         """Retrieves a movie by its ID."""
 
-        movie = db_session.get(Movie, movie_id)
+        movie = self.session.get(Movie, movie_id)
 
         if not movie:
             raise HTTPException(
@@ -81,23 +85,31 @@ class MovieOperations:
             )
         return movie
     
-    @staticmethod
-    def convert_to_movie_data(db_session: Session, movie: Movie) -> MovieData:
+
+    def get_full_data(
+        self, 
+        movie: Movie,
+    ) -> MovieData:
+        avg_rating = self.rating_operations.get_avg_rating(movie.id)
+        genres_list = [g.genre.name for g in movie.genres] if hasattr(movie, 'genres') else []
 
         movie_data = MovieData(
-            id=movie.id,
-            title=movie.title,
-            poster_path=movie.poster_path,
-            release_date=movie.release_date,
-            global_rating=0,
-            friends_rating=0,
-            user_rating=0,
-            genres=[g.name for g in GenreOperations.get_all_genres_for_movie(movie.id)],
-            duration=movie.duration,
+            id=movie.id, 
+            title=movie.title, 
+            poster_path=movie.poster_path, 
+            release_date=movie.release_date, 
+            global_rating=avg_rating, 
+            friends_rating=avg_rating, 
+            user_rating=avg_rating, 
+            genres=genres_list, 
+            duration=movie.duration, 
             overview=movie.overview
         )
         
         return movie_data
+    
+def get_movie_operations(session: Session = Depends(get_session)):
+    return MovieOperations(session)
 
 
 class GenreOperations:
@@ -114,3 +126,6 @@ class GenreOperations:
         )
 
         return db_session.exec(statement).all()
+    
+
+
