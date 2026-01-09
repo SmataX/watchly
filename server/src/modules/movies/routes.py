@@ -44,6 +44,14 @@ def get_random(limit: int, movie_operations: MoviesOperationsDep):
     movies = movie_operations.get_random_movies(limit=limit)
     return [movie_operations.get_full_data(movie) for movie in movies]
 
+@movies_router.get("/search", response_model=list[MovieData])
+def search_movies_endpoint(
+    title: str, 
+    movie_operations: MoviesOperationsDep, 
+    limit: int = 5
+):
+    movies = movie_operations.search_movies(title, limit)
+    return [movie_operations.get_full_data(movie) for movie in movies]
 
 @movies_router.get("/genres", response_model=list[Genre])
 def get_genres(session: SessionDep):
