@@ -5,7 +5,7 @@ from src.modules.rating.schemas import RatingCreate, RatingUpdate, RatingRead
 from src.modules.rating.deps import RatingOperationsDep
 
 
-router = APIRouter(prefix="/reviews", tags=["Reviews"])
+router = APIRouter(prefix="/rating", tags=["Rating"])
 
 
 @router.post("/set_rating", status_code=status.HTTP_201_CREATED)

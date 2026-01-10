@@ -25,5 +25,8 @@ app.include_router(auth_router)
 app.include_router(movies_router)
 app.include_router(user_router)
 
-from src.modules.rating.routes import router as reviews_router
+from src.modules.rating.routes import router as rating_router
+app.include_router(rating_router)
+
+from src.modules.reviews.routes import router as reviews_router
 app.include_router(reviews_router)

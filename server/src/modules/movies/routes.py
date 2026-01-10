@@ -5,6 +5,8 @@ from fastapi import APIRouter, Query, Depends
 from src.core.deps import SessionDep
 from src.modules.auth.deps import UserDep
 from src.modules.rating.services import RatingOperations
+from src.modules.reviews.deps import ReviewOperationsDep
+from src.modules.reviews.models import Review
 
 from .models import Movie, Genre
 from .schemes import MovieData
@@ -53,3 +55,15 @@ def get_genres(session: SessionDep):
 @movies_router.get("/{id}", response_model=MovieData)
 def get_by_id(id: int, movie_operations: MoviesOperationsDep, ):
     return movie_operations.get_full_data(movie_operations.get_movie(id) )
+
+# @movies_router.get("/{id}/genres")
+# def get_genres():
+#     pass
+
+@movies_router.get("/{id}/reviews", response_model=list[Review])
+def get_reviews(id: int, review_ops: ReviewOperationsDep):
+    return review_ops.get_all_for_movie(id)
+
+@movies_router.get("/{id}/rating")
+def get_rating():
+    pass

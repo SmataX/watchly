@@ -1,10 +1,9 @@
-from datetime import datetime, date
-from typing import Optional, List, TYPE_CHECKING
+from datetime import datetime
+from typing import Optional, TYPE_CHECKING
 from sqlmodel import SQLModel, Field, Relationship
-from pydantic import BaseModel
 
 from typing import Optional
-from datetime import datetime, date
+from datetime import datetime
 from sqlmodel import Field, SQLModel, Relationship
 
 if TYPE_CHECKING:
