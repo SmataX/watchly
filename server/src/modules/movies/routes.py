@@ -4,7 +4,7 @@ from fastapi import APIRouter, Query, Depends
 
 from src.core.deps import SessionDep
 from src.modules.auth.deps import UserDep
-from src.modules.rating.services import RatingOperations
+from src.modules.rating.deps import RatingOperationsDep
 from src.modules.reviews.deps import ReviewOperationsDep
 from src.modules.reviews.models import Review
 from src.modules.reviews.schemas import ReviewResponse
@@ -66,5 +66,5 @@ def get_reviews(id: int, review_ops: ReviewOperationsDep):
     return review_ops.get_all_for_movie(id)
 
 @movies_router.get("/{id}/rating")
-def get_rating():
-    pass
+def get_avg_rating(id: int, rating_ops: RatingOperationsDep):
+    return rating_ops.get_avg_rating(id)

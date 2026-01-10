@@ -24,7 +24,7 @@ async def user_profile(
     
     user_data = await get_data(f"/user/{user['username']}", client)
 
-    return templates.TemplateResponse("user_profile.html", {
+    return templates.TemplateResponse("profile.html", {
         "request": request, 
         "user": user,
         "user_data": user_data,
@@ -40,7 +40,7 @@ async def user_profile(
 ):
     user_data = await get_data(f"/user/{username}", client)
 
-    return templates.TemplateResponse("user_profile.html", {
+    return templates.TemplateResponse("profile.html", {
         "request": request, 
         "user": user,
         "user_data": user_data,

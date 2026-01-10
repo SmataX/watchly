@@ -1,6 +1,6 @@
 # movies/schemes.py
 
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator, ConfigDict
 from datetime import date
 
 class AddMovieForm(BaseModel):
@@ -23,3 +23,19 @@ class MovieData(BaseModel):
     genres: list[str]
     duration: int
     overview: str
+
+class MovieResponse(BaseModel):
+    title: str
+    poster_path: str
+    release_date: date
+    genres: list[str]
+    duration: int
+    overview: str
+
+    @field_validator("genres", mode="before")
+    @classmethod
+    def convert_genres(cls, v):
+        if not v:
+            return []
+        
+        return [item.genre.name for item in v if hasattr(item, "genre") and item.genre]
