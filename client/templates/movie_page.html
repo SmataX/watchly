@@ -159,8 +159,18 @@
 
     <div>
         <div class="user-reviews">
+            {% if reviews %}
+            {% for review in reviews %}
+            <div>
+                <span>{{ review.user.username }}</span>
+                <span>{{ review.created_at }}</span>
+                <span>{{ review.content }}</span>
+            </div>
+            {% endfor %}
+            {% else %}
             <h2>No Reviews Yet</h2>
             <p> Be the first to share your thoughts about this movie!</p>
+            {% endif %}
          </div>
     </div>
 

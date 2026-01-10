@@ -7,6 +7,7 @@ from src.modules.auth.deps import UserDep
 from src.modules.rating.services import RatingOperations
 from src.modules.reviews.deps import ReviewOperationsDep
 from src.modules.reviews.models import Review
+from src.modules.reviews.schemas import ReviewResponse
 
 from .models import Movie, Genre
 from .schemes import MovieData
@@ -60,7 +61,7 @@ def get_by_id(id: int, movie_operations: MoviesOperationsDep, ):
 # def get_genres():
 #     pass
 
-@movies_router.get("/{id}/reviews", response_model=list[Review])
+@movies_router.get("/{id}/reviews", response_model=list[ReviewResponse])
 def get_reviews(id: int, review_ops: ReviewOperationsDep):
     return review_ops.get_all_for_movie(id)
 

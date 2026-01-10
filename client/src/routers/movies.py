@@ -37,6 +37,7 @@ async def movie_detail(
     user: Optional[dict] = Depends(get_optional_user),
 ):
     movie = await get_data(f"http://127.0.0.1:8001/movies/{movie_id}", client)
+    reviews = await get_data(f"http://127.0.0.1:8001/movies/{movie_id}/reviews", client)
 
     if not movie:
         pass    # Redirect to Not Found page
@@ -44,5 +45,6 @@ async def movie_detail(
     return templates.TemplateResponse("movie_page.html", {
         "request": request, 
         "movie": movie,
-        "user": user
+        "user": user,
+        "reviews": reviews
     })
