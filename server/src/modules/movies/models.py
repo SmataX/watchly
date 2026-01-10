@@ -11,6 +11,7 @@ from sqlmodel import Field, SQLModel, Relationship
 
 if TYPE_CHECKING:
     from src.modules.rating.models import RatedMovie
+    from src.modules.reviews.models import Review
 
 # --------------------
 # Movie Model
@@ -29,7 +30,7 @@ class Movie(SQLModel, table=True):
     # Relationships
     genres: List["MovieGenre"] = Relationship(back_populates="movie")
     ratings: List["RatedMovie"] = Relationship(back_populates="movie")
-    # reviews: List["Review"] = Relationship(back_populates="movie")
+    reviews: List["Review"] = Relationship(back_populates="movie")
 
 
 # --------------------

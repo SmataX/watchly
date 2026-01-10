@@ -12,6 +12,7 @@ from src.modules.rating.services import RatingOperations
 from src.modules.auth.models import *
 from src.modules.movies.models import *
 from src.modules.user.models import *
+from src.modules.reviews.models import *
 
 
 @asynccontextmanager
