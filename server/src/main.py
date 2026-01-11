@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from src.core.db import create_db_and_tables
 
 from src.modules.auth import auth_router
-from src.modules.movies import movies_router 
+
 from src.modules.user import user_router
 
 from src.modules.rating.services import RatingOperations
@@ -22,8 +22,10 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 app.include_router(auth_router)
-app.include_router(movies_router)
 app.include_router(user_router)
+
+from src.modules.movies.routes import router as movies_router 
+app.include_router(movies_router)
 
 from src.modules.rating.routes import router as rating_router
 app.include_router(rating_router)

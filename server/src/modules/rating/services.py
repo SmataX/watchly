@@ -1,7 +1,6 @@
 from fastapi import HTTPException, status, Depends
 from sqlmodel import Session, select, col
 
-from src.modules.user.models import User
 from src.modules.movies.models import Movie
 from src.core.deps import get_session
 
@@ -78,6 +77,11 @@ class RatingOperations:
         all_ratings_obj = self.get_all_for_movie(movie_id)
         ratings = [r.rating for r in all_ratings_obj]
         return round(sum(ratings) / len(ratings), 0) if ratings else 0
+    
+
+    def get_user_rating(self, movie_id: int, user_id: int):
+        q = select(RatedMovie).where(RatedMovie.movie_id == movie_id, RatedMovie.user_id == user_id)
+        return self.session.exec(q).first().rating
 
 
 def get_rating_operations(session: Session = Depends(get_session)):

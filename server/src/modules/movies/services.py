@@ -2,10 +2,10 @@ from typing import Optional
 
 from fastapi import HTTPException, status, Depends
 from sqlmodel import Session, select, func, extract
+from sqlalchemy.orm import joinedload
 
 from src.core.deps import get_session
 from src.modules.rating.models import RatedMovie
-from src.modules.rating.services import RatingOperations
 
 from .schemes import MovieData
 from .models import Movie, Genre, MovieGenre
@@ -14,7 +14,6 @@ from .models import Movie, Genre, MovieGenre
 class MovieOperations:
     def __init__(self, session: Session):
         self.session = session
-        self.rating_operations = RatingOperations(session)
 
     def get_all_movies(self, skip: int = 0, limit: int = 100) -> list[Movie]:
         """Retrieves all movies with pagination."""
@@ -36,7 +35,6 @@ class MovieOperations:
     ) -> list[Movie]:
 
         query = select(Movie)
-        print(genres)
 
         if year_min is not None:
             query = query.filter(extract("year", Movie.release_date) >= year_min)
@@ -73,15 +71,15 @@ class MovieOperations:
         )
 
 
-    def get_movie(self, movie_id: int) -> Movie:
+    def get_movie(self, id: int) -> Movie:
         """Retrieves a movie by its ID."""
-
-        movie = self.session.get(Movie, movie_id)
+        q = select(Movie).where(Movie.id == id).options(joinedload(Movie.genres).joinedload(MovieGenre.genre))
+        movie = self.session.exec(q).first()
 
         if not movie:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, 
-                detail=f"Movie with id {movie_id} not found."
+                detail=f"Movie with id {id} not found."
             )
         return movie
     
@@ -90,7 +88,7 @@ class MovieOperations:
         self, 
         movie: Movie,
     ) -> MovieData:
-        avg_rating = self.rating_operations.get_avg_rating(movie.id)
+        avg_rating = 0
         genres_list = [g.genre.name for g in movie.genres] if hasattr(movie, 'genres') else []
 
         movie_data = MovieData(
@@ -113,19 +111,23 @@ def get_movie_operations(session: Session = Depends(get_session)):
 
 
 class GenreOperations:
-    @staticmethod
-    def get_all_genres(db_session: Session) -> list[Genre]:
-        return db_session.exec(select(Genre)).all()
+    def __init__(self, session: Session):
+        self.session = session
 
-    @staticmethod
-    def get_all_genres_for_movie(db_session: Session, movie_id: int) -> list[Genre]:
-        statement = (
+    def get_all_genres(self) -> list[Genre]:
+        return self.session.exec(select(Genre)).all()
+
+    def get_all_genres_for_movie(self, id: int) -> list[Genre]:
+        q = (
             select(Genre)
             .join(MovieGenre, Genre.id == MovieGenre.genre_id)
-            .where(MovieGenre.movie_id == 1)
+            .where(MovieGenre.movie_id == id)
         )
 
-        return db_session.exec(statement).all()
+        return self.session.exec(q).all()
+    
+def get_genre_operations(session: Session = Depends(get_session)):
+    return GenreOperations(session)
     
 
 

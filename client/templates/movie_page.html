@@ -29,7 +29,7 @@
 
             <div class="genres-container">
                 {% for genre in movie.genres %}
-                <span class="genre-tag">{{ genre }}</span>
+                <span class="genre-tag">{{ genre.name }}</span>
                 {% endfor %}
 
             </div>
@@ -37,17 +37,25 @@
             <div class="ratings-container">
                 <div class="rating-box">
                     <div class="rating-title">Global Rating</div>
-                    <div class="rating-value">★ {{ movie.global_rating }}</div> 
+                    <div class="rating-value">★ {{ avg_rating }}</div> 
                 </div>
 
                 <div class="rating-box">
                     <div class="rating-title">Friends Average</div>
-                    <div class="rating-value">★ {{ movie.friends_rating }}</div>
+                    {% if user_rating %}
+                    <div class="rating-value">★ {{ friends_rating }}</div>
+                    {% else %}
+                    <div class="rating-value">★ -</div>
+                    {% endif %}
                 </div>
 
                 <div class="rating-box">
                     <div class="rating-title">Your Rating</div>
-                    <div class="rating-value">★ {{ movie.user_rating }}</div>
+                    {% if user_rating %}
+                    <div class="rating-value">★ {{ user_rating }}</div>
+                    {% else %}
+                    <div class="rating-value">★ -</div>
+                    {% endif %}
                 </div>
 
                 <div class="rating-box">
