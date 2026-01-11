@@ -56,3 +56,17 @@ async def index(
         "user": user,
         "movies": movies
     })
+
+@app.get("/api/search_movies")
+async def search_movies_api(request: Request, query: str, client: httpx.AsyncClient = Depends(get_http_client)):
+    if not query:
+        return []
+    
+    try:
+        response = await client.get("/movies/search", params={"title": query, "limit": 5})
+        
+        if response.status_code == 200:
+            return response.json()
+    except httpx.RequestError:
+        return []
+    return []

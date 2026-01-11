@@ -1,7 +1,7 @@
 from typing import Optional
 
 from fastapi import HTTPException, status, Depends
-from sqlmodel import Session, select, func, extract
+from sqlmodel import Session, select, func, extract, col
 from sqlalchemy.orm import joinedload
 
 from src.core.deps import get_session
@@ -22,6 +22,13 @@ class MovieOperations:
             select(Movie).offset(skip).limit(limit)
         ).all()
     
+    def search_movies(self, title: str, limit: int = 5) -> list[Movie]:
+        """
+        Dedykowana funkcja do wyszukiwania filmów po tytule.
+        """
+        # Używamy col(Movie.title).contains(title) dla wyszukiwania fragmentu tekstu
+        query = select(Movie).where(col(Movie.title).contains(title)).limit(limit)
+        return self.session.exec(query).all()
 
     def get_all_movies_where(
         self,
