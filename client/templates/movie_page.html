@@ -194,13 +194,15 @@
             </div>
         </div>
 
-        <textarea class="review-textarea" placeholder="Your thoughts..."></textarea>
+        <textarea class="review-textarea" id="user-review-textarea" placeholder="Your thoughts..." maxlength="500" minlength="0"></textarea>
 
         <div class="review-actions">
-            <span class="review-count">0/500</span>
-            <button class="review-submit">Submit</button>
+            <span class="review-count" id="user-review-counter">0/500</span>
+            <button class="review-submit" onclick="submit_review({{ movie.id }})">Submit</button>
         </div>
     </div>
 
 </div>
+
+<script src="{{ url_for('static', path='js/write_review.js') }}"></script>
 {% endblock %}

@@ -1,4 +1,4 @@
-from fastapi import Depends
+from fastapi import Depends, HTTPException, status
 from sqlmodel import select
 from sqlalchemy.orm import joinedload
 
@@ -15,6 +15,17 @@ class ReviewOperations:
         self.session = session
 
     def add(self, review: Review) -> Review:
+
+        # Check if user already write review for this movie
+        q = select(Review).where(Review.movie_id == review.movie_id, Review.user_id == review.user_id)
+        result = self.session.exec(q).first()
+
+        if result:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="You have already write review for this movie."
+            )
+
         self.session.add(review)
         self.session.commit()
         self.session.refresh(review, ['user'])

@@ -36,13 +36,15 @@ async def movie_detail(
     client: httpx.AsyncClient = Depends(get_http_client), 
     user: Optional[dict] = Depends(get_optional_user),
 ):
-    token = request.cookies.get("access_token").split(' ')[1]
+    token = request.cookies.get("access_token")
+    token = token.split(' ')[1] if token else None
 
     movie = await get_data(f"http://127.0.0.1:8001/movies/{movie_id}", client)
     reviews = await get_data(f"http://127.0.0.1:8001/movies/{movie_id}/reviews", client)
     avg_rating = await get_data(f"http://127.0.0.1:8001/movies/{movie_id}/rating", client)
     user_rating = await get_data(f"http://127.0.0.1:8001/movies/{movie_id}/user_rating", client, token)
     friends_rating = await get_data(f"http://127.0.0.1:8001/movies/{movie_id}/friends_rating", client, token)
+    
 
     if not movie:
         pass    # Redirect to Not Found page
