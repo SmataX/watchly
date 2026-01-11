@@ -23,6 +23,7 @@ class Movie(SQLModel, table=True):
     title: str = Field(nullable=False)
     overview: str
     director: str = Field(nullable=False)
+    actors: str = Field(nullable=True)
     duration: int
     poster_path: Optional[str] = Field(default=None)
     release_date: Optional[date] = Field(default=None)

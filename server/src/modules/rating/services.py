@@ -79,9 +79,14 @@ class RatingOperations:
         return round(sum(ratings) / len(ratings), 0) if ratings else 0
     
 
-    def get_user_rating(self, movie_id: int, user_id: int):
-        q = select(RatedMovie).where(RatedMovie.movie_id == movie_id, RatedMovie.user_id == user_id)
-        return self.session.exec(q).first().rating
+    def get_user_rating(self, movie_id: int, user_id: int) -> float:
+        result = self.session.exec(
+            select(RatedMovie).where(RatedMovie.movie_id == movie_id, RatedMovie.user_id == user_id)
+        ).first()
+
+        if result:
+            return result.rating
+        return None
 
 
 def get_rating_operations(session: Session = Depends(get_session)):

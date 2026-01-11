@@ -122,3 +122,14 @@ async def get_current_user(token: Annotated[Optional[str], Depends(get_token)]) 
         
     except JWTError:
         raise credentials_exception
+    
+
+async def get_optional_user(token: Annotated[Optional[str], Depends(get_token)]) -> Optional[Dict[str, Any]]:
+    if not token:
+        return None
+    
+    try:
+        payload = jwt.decode(token, config.SECRET_KEY, algorithms=[config.ALGORITHM])
+        return {'username': payload.get('sub'), 'id': payload.get('id')}
+    except JWTError:
+        return None

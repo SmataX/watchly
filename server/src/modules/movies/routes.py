@@ -3,7 +3,7 @@ from typing import Optional
 from fastapi import APIRouter, Query, Depends
 
 from src.core.deps import SessionDep
-from src.modules.auth.deps import UserDep
+from src.modules.auth.deps import UserDep, UserOptionalDep
 from src.modules.rating.deps import RatingOperationsDep
 from src.modules.rating.schemas import RatingResponse
 from src.modules.reviews.deps import ReviewOperationsDep
@@ -23,9 +23,11 @@ router = APIRouter(prefix="/movies", tags=["movies"])
 def get_genres(genre_ops: GenresOperationsDep):
     return genre_ops.get_all_genres()
 
-@router.get("", response_model=list[MovieData])
+@router.get("")
 def get_movies(
     movie_operations: MoviesOperationsDep,
+    rating_ops: RatingOperationsDep,
+    user: UserOptionalDep,
     skip: int = 0, 
     limit: int = 100,
     genre: Optional[list[str]] = Query(None),
@@ -43,15 +45,29 @@ def get_movies(
         year_min=year_min,
         year_max=year_max
     )
+    data = []
+    for movie in movies_list:
+        user_rating = None
+        friends_rating = None
 
-    return [movie_operations.get_full_data(movie) for movie in movies_list]
+        if user:
+            user_rating = rating_ops.get_user_rating(movie.id, user['id']) or 0
+        
+        data.append({
+            "movie": movie, 
+            "avg_rating": rating_ops.get_avg_rating(movie.id), 
+            "friends_rating": friends_rating, 
+            "user_rating": user_rating
+        })
+
+    return data
 
 
 @router.get("/random", response_model=list[MovieResponse])
 def get_random(limit: int, movie_operations: MoviesOperationsDep):
     return movie_operations.get_random_movies(limit=limit)
 
-@movies_router.get("/search", response_model=list[MovieData])
+@router.get("/search", response_model=list[MovieData])
 def search_movies_endpoint(
     title: str, 
     movie_operations: MoviesOperationsDep, 
@@ -80,7 +96,7 @@ def get_avg_rating(id: int, rating_ops: RatingOperationsDep):
     return rating_ops.get_avg_rating(id)
 
 
-@router.get("/{id}/user_rating", response_model=float)
+@router.get("/{id}/user_rating", response_model=Optional[float])
 def get_user_rating(id: int, user: UserDep, rating_ops: RatingOperationsDep):
     return rating_ops.get_user_rating(id, user['id'])
 

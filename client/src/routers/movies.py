@@ -18,12 +18,15 @@ async def movies(
     client: httpx.AsyncClient = Depends(get_http_client), 
     user: Optional[dict] = Depends(get_optional_user),
 ):
-    movies_list = await get_data("/movies", client)
+    token = request.cookies.get("access_token")
+    token = token.split(' ')[1] if token else None
+
+    data = await get_data("/movies", client, token)
     genres_list = await get_data("/movies/genres", client)
 
     return templates.TemplateResponse("all_movies.html", {
         "request": request, 
-        "movies": movies_list,
+        "data": data,
         "genres": genres_list,
         "user": user
     })

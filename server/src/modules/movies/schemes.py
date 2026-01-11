@@ -32,6 +32,8 @@ class MovieResponse(BaseModel):
     poster_path: str
     release_date: date
     genres: list['GenreResponse']
+    director: str
+    actors: str
     duration: int
     overview: str
 
