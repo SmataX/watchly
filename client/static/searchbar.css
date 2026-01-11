@@ -1,0 +1,44 @@
+/* Styl dla kontenera wyszukiwarki, aby lista była pozycjonowana względem niego */
+.search-container {
+    position: relative; 
+}
+
+/* Lista wyników wyszukiwania */
+#search-results-list {
+    position: absolute;
+    top: 100%; /* Zaraz pod inputem */
+    left: 0;
+    width: 100%;
+    background-color: #1a1a1a; /* Ciemne tło pasujące do motywu */
+    border: 1px solid #333;
+    border-radius: 0 0 8px 8px;
+    list-style: none;
+    padding: 0;
+    margin: 5px 0 0 0;
+    z-index: 1000; /* Musi być nad innymi elementami */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    display: none; /* Domyślnie ukryta */
+}
+
+/* Pojedynczy element listy */
+#search-results-list li {
+    border-bottom: 1px solid #333;
+}
+
+#search-results-list li:last-child {
+    border-bottom: none;
+}
+
+/* Link wewnątrz listy */
+#search-results-list a {
+    display: block;
+    padding: 10px 15px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.9em;
+    transition: background-color 0.2s;
+}
+
+#search-results-list a:hover {
+    background-color: #e50914; /* Kolor akcentu po najechaniu */
+}

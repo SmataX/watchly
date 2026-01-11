@@ -3,7 +3,7 @@
 from datetime import datetime, timedelta, timezone
 from typing import Annotated, Optional, Dict, Any
 
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status, Request
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from jose import jwt, JWTError
 from passlib.context import CryptContext
@@ -20,22 +20,6 @@ oauth2_bearer = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 
 def create_user(db_session: Session, form: RegisterUserScheme) -> User:
-    """
-    Creates a new user in the database.
-    
-    Hashes the password before storage and handles uniqueness constraints
-    (e.g., duplicate username or email) by raising a 400 Bad Request error.
-
-    Args:
-        db_session (Session): The active database session.
-        form (CreateUserForm): The Pydantic model containing registration data.
-
-    Returns:
-        User: The newly created User object.
-
-    Raises:
-        HTTPException: If the email or username already exists.
-    """
     user = User(
         username=form.username,
         email=form.email,
@@ -57,17 +41,6 @@ def create_user(db_session: Session, form: RegisterUserScheme) -> User:
 
 
 def authenticate_user(username: str, password: str, db_session: Session) -> Optional[User]:
-    """
-    Verifies a user's credentials against the database.
-
-    Args:
-        username (str): The username to look up.
-        password (str): The plain-text password to verify.
-        db_session (Session): The active database session.
-
-    Returns:
-        Optional[User]: The User object if credentials are valid, otherwise None.
-    """
     q = select(User).where(User.username == username)
     user = db_session.exec(q).first()
 
@@ -81,18 +54,6 @@ def authenticate_user(username: str, password: str, db_session: Session) -> Opti
 
 
 def create_access_token(username: str, user_id: int, expires_delta: Optional[timedelta] = None) -> str:
-    """
-    Generates a JWT access token.
-
-    Args:
-        username (str): The subject of the token (sub).
-        user_id (int): Custom claim for user ID.
-        expires_delta (Optional[timedelta]): How long the token is valid. 
-                                            Defaults to 30 minutes if None.
-
-    Returns:
-        str: The encoded JWT string.
-    """
     if expires_delta:
         expire = datetime.now(timezone.utc) + expires_delta
     else:
@@ -104,21 +65,6 @@ def create_access_token(username: str, user_id: int, expires_delta: Optional[tim
 
 
 def login_for_access_token(form_data: OAuth2PasswordRequestForm, db_session: Session) -> Dict[str, str]:
-    """
-    Orchestrates the login process.
-
-    Authenticates the user using form data and issues a JWT token if successful.
-
-    Args:
-        form_data (OAuth2PasswordRequestForm): FastAPI standard login form.
-        db_session (Session): The active database session.
-
-    Returns:
-        Dict[str, str]: A dictionary containing the access token and token type.
-
-    Raises:
-        HTTPException: If authentication fails (401).
-    """
     user = authenticate_user(form_data.username, form_data.password, db_session)
 
     if not user:
@@ -137,28 +83,32 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm, db_session: Ses
     return {'access_token': token, 'token_type': 'bearer'}
 
 
-def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]) -> Dict[str, Any]:
-    """
-    Decodes and validates the JWT token to retrieve the current user's identity.
+async def get_token(request: Request) -> Optional[str]:
+    cookie_token = request.cookies.get("access_token")
+    if cookie_token:
+        if " " in cookie_token:
+            return cookie_token.split(" ")[1]
+        return cookie_token
 
-    Note: This does not hit the database, making it fast but stateless.
-    If you need to ensure the user hasn't been deleted since the token was issued,
-    you should add a database query here.
+    header_token = request.headers.get("Authorization")
+    if header_token:
+        scheme, _, param = header_token.partition(" ")
+        if scheme.lower() == "bearer":
+            return param
+            
+    return None
 
-    Args:
-        token (str): The JWT token from the Authorization header.
 
-    Returns:
-        Dict[str, Any]: A dictionary containing the user's username and ID.
-
-    Raises:
-        HTTPException: If the token is invalid or expired (401).
-    """
+async def get_current_user(token: Annotated[Optional[str], Depends(get_token)]) -> Dict[str, Any]:
+    
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
+    
+    if not token:
+        raise credentials_exception
     
     try:
         payload = jwt.decode(token, config.SECRET_KEY, algorithms=[config.ALGORITHM])
@@ -172,3 +122,14 @@ def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]) -> Dict[str,
         
     except JWTError:
         raise credentials_exception
+    
+
+async def get_optional_user(token: Annotated[Optional[str], Depends(get_token)]) -> Optional[Dict[str, Any]]:
+    if not token:
+        return None
+    
+    try:
+        payload = jwt.decode(token, config.SECRET_KEY, algorithms=[config.ALGORITHM])
+        return {'username': payload.get('sub'), 'id': payload.get('id')}
+    except JWTError:
+        return None

@@ -1,34 +1,42 @@
-# src/modules/movies/routes.py
-
-from fastapi import APIRouter, Query
-from .models import Movie, Genre
-from .schemes import MovieData
-from src.modules.auth.deps import UserDep
-from src.modules.rating.services import RatingOperations
-from src.core.deps import SessionDep
-from .services import MovieOperations, GenreOperations
-from random import randint
 from typing import Optional
 
+from fastapi import APIRouter, Query, Depends
 
-movies_router = APIRouter(prefix="/movies", tags=["movies"])
+from src.core.deps import SessionDep
+from src.modules.auth.deps import UserDep, UserOptionalDep
+from src.modules.rating.deps import RatingOperationsDep
+from src.modules.rating.schemas import RatingResponse
+from src.modules.reviews.deps import ReviewOperationsDep
+from src.modules.reviews.models import Review
+from src.modules.reviews.schemas import ReviewResponse
 
-@movies_router.get("", response_model=list[MovieData])
+from .models import Movie, Genre
+from .schemes import MovieData, MovieResponse
+from .services import GenreOperations
+from .deps import MoviesOperationsDep, GenresOperationsDep
+
+
+router = APIRouter(prefix="/movies", tags=["movies"])
+
+
+@router.get("/genres", response_model=list[Genre])
+def get_genres(genre_ops: GenresOperationsDep):
+    return genre_ops.get_all_genres()
+
+@router.get("", response_model=list[MovieData])
 def get_movies(
-    session: SessionDep, 
+    movie_operations: MoviesOperationsDep,
+    rating_ops: RatingOperationsDep,
+    user: UserOptionalDep,
     skip: int = 0, 
     limit: int = 100,
     genre: Optional[list[str]] = Query(None),
     rating_min: float = 0,
     rating_max: float = 10,
     year_min: int = 1000, 
-    year_max: int = 3000
+    year_max: int = 3000,
 ):
-    movies_service = MovieOperations()
-    rating_service = RatingOperations()
-
-    movie_list = movies_service.get_all_movies_where(
-        db_session=session, 
+    movies_list = movie_operations.get_all_movies_where(
         skip=skip, 
         limit=limit,
         genres=genre,
@@ -38,44 +46,61 @@ def get_movies(
         year_max=year_max
     )
 
-    final_list = []
+    data = []
+    for movie in movies_list:
+        user_rating = None
+        friends_rating = None
 
-    for movie in movie_list:
-        avg_rating = rating_service.get_avg_rating(session, movie.id)
+        if user:
+            user_rating = rating_ops.get_user_rating(movie.id, user['id']) or 0
         
-        genres_list = [g.genre.name for g in movie.genres] if hasattr(movie, 'genres') else []
+        data.append({
+            "movie": movie, 
+            "avg_rating": rating_ops.get_avg_rating(movie.id), 
+            "friends_rating": friends_rating, 
+            "user_rating": user_rating
+        })
 
-        final_list.append(MovieData(
-            id=movie.id, 
-            title=movie.title, 
-            poster_path=movie.poster_path, 
-            release_date=movie.release_date, 
-            global_rating=avg_rating, 
-            friends_rating=avg_rating, 
-            user_rating=avg_rating, 
-            genres=genres_list, 
-            duration=movie.duration, 
-            overview=movie.overview
-        ))
-
-    return final_list
+    return data
 
 
-@movies_router.get("/random", response_model=list[MovieData])
-def get_random(session: SessionDep, limit: int):
-    movies_service = MovieOperations()
+@router.get("/random", response_model=list[MovieResponse])
+def get_random(limit: int, movie_operations: MoviesOperationsDep):
+    return movie_operations.get_random_movies(limit=limit)
 
-    movies = movies_service.get_random_movies(db_session=session, limit=limit)
+@router.get("/search", response_model=list[MovieResponse])
+def search_movies_endpoint(
+    title: str, 
+    movie_operations: MoviesOperationsDep, 
+    limit: int = 5
+):
+    return movie_operations.search_movies(title, limit)
 
-    return movies
-
-@movies_router.get("/genres", response_model=list[Genre])
-def get_genres(session: SessionDep):
-    return GenreOperations.get_all_genres(session)
+@router.get("/{id}", response_model=MovieResponse)
+def get_by_id(id: int, movie_operations: MoviesOperationsDep, ):
+    return movie_operations.get_movie(id)
 
 
-@movies_router.get("/{id}", response_model=Movie)
-def get_by_id(id: int, session: SessionDep):
-    movies_service = MovieOperations()
+@router.get("/{id}/genres", response_model=list[Genre])
+def get_genres(id: int, genres_ops: GenresOperationsDep):
+    return genres_ops.get_all_genres_for_movie(id)
 
-    return movies_service.get_movie(session, id)
+
+@router.get("/{id}/reviews", response_model=list[ReviewResponse])
+def get_reviews(id: int, review_ops: ReviewOperationsDep):
+    return review_ops.get_all_for_movie(id)
+
+
+@router.get("/{id}/rating", response_model=float)
+def get_avg_rating(id: int, rating_ops: RatingOperationsDep):
+    return rating_ops.get_avg_rating(id)
+
+
+@router.get("/{id}/user_rating", response_model=Optional[float])
+def get_user_rating(id: int, user: UserDep, rating_ops: RatingOperationsDep):
+    return rating_ops.get_user_rating(id, user['id'])
+
+
+@router.get("/{id}/friends_rating", response_model=float)
+def get_firends_rating(id: int, user: UserDep, rating_ops: RatingOperationsDep):
+    return 0

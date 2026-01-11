@@ -4,7 +4,8 @@ from sqlmodel import SQLModel, Field, Relationship
 from pydantic import BaseModel
 
 if TYPE_CHECKING:
-    from src.modules.rating.models import Review, RatedMovie
+    from src.modules.rating.models import RatedMovie
+    from src.modules.reviews.models import Review
 
 
 # --------------------
@@ -22,7 +23,7 @@ class User(SQLModel, table=True):
     created_at: datetime = Field(default_factory=datetime.now)
 
     rated_movies: list["RatedMovie"] = Relationship(back_populates="user")
-    # reviews: list["Review"] = Relationship(back_populates="user")
+    reviews: list["Review"] = Relationship(back_populates="user")
 
 
 # --------------------

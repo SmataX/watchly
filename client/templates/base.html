@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}WATCHLY{% endblock %}</title>
     <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/searchbar.css">
     {% block extra_css %}{% endblock %}
 </head>
 <body>
@@ -16,7 +17,7 @@
         </div>
 
         <nav class="nav">
-            <a href="/all_movies">Movies</a>
+            <a href="/movies">Movies</a>
             <a href="/reviews">Reviews</a>
             <a href="/friends">Friends</a>
             {% if user %}

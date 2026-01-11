@@ -1,18 +1,24 @@
 from sqlmodel import SQLModel, Field
 from datetime import datetime
+from pydantic import BaseModel
 
-class RatingCreate(SQLModel):
+from src.modules.movies.models import Movie
+from src.modules.auth.models import User
+
+
+class RatingCreateForm(BaseModel):
     movie_id: int
-    rating: int = Field(ge=1, le=5, description="Value between 1 and 5")
+    rating: int
 
-
-class RatingUpdate(SQLModel):
-    rating: int = Field(ge=1, le=5)
-
-
-class RatingRead(SQLModel):
+class RatingGetForm(BaseModel):
     id: int
-    movie_id: int
-    user_id: int
+
+class RatingUpdateForm(BaseModel):
+    id: int
+    rating: int
+
+class RatingResponse(BaseModel):
+    movie: Movie
+    user: User
     rating: int
     created_at: datetime

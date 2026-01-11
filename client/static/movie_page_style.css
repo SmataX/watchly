@@ -11,7 +11,8 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('https://cdn1.naekranie.pl/media/cache/amp/2014/11/1415559199.jpeg');
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+    url('https://media.baamboozle.com/uploads/images/561436/1638135120_484713.jpeg') no-repeat center center fixed;
     background-size: cover;
     background-position: center;
     z-index: 1;
@@ -42,7 +43,7 @@
     gap: 60px;
     max-width: 1400px;
     margin: 0 auto;
-    padding-top: 350px;
+    padding-top: 250px;
 }
 
 /*  PLAKAT */
@@ -168,7 +169,7 @@
     margin: 0 auto;
 }
 
-/* Sekcje poni¿ej banera */
+/* Sekcje poniï¿½ej banera */
 .details-section {
     margin-bottom: 100px;
     margin-top: 40px;
@@ -288,7 +289,7 @@
 
 }
 
-/* DIRECTOR WRITERS I COSTAM - WYRÓWNANE */
+/* DIRECTOR WRITERS I COSTAM - WYRï¿½WNANE */
 .crew-section {
     margin-top: 25px;
     margin-bottom: 20px;
@@ -344,7 +345,7 @@
     flex-wrap: wrap;
 }
 
-/* SEKCJA ZDJÊÆ */
+/* SEKCJA ZDJï¿½ï¿½ */
 .photos-section {
     margin: 60px 0;
     padding: 0 20px;
@@ -363,7 +364,7 @@
         
     }
 
-/* ASYMETRYCZNA SIATKA ZDJÊÆ */
+/* ASYMETRYCZNA SIATKA ZDJï¿½ï¿½ */
 .photos-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
