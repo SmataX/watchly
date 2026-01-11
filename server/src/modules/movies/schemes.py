@@ -1,5 +1,6 @@
 from pydantic import BaseModel, field_validator, ConfigDict
 from datetime import date
+from typing import Optional
 
 from .models import Genre
 
@@ -13,44 +14,27 @@ class AddMovieForm(BaseModel):
 
 
 class MovieData(BaseModel):
-    id: int
-    title: str
-    poster_path: str
-    release_date: date
-    global_rating: int
-    friends_rating: int
-    user_rating: int
-    genres: list[str]
-    duration: int
-    overview: str
+    movie: 'MovieResponse' 
+    avg_rating: float
+    user_rating: Optional[float] = 0.0
+    friends_rating: Optional[float] = 0.0
+    
+    model_config = ConfigDict(from_attributes=True)
 
 class MovieResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
     title: str
-    poster_path: str
+    poster_path: Optional[str]
     release_date: date
     genres: list['GenreResponse']
     director: str
-    actors: str
-    duration: int
-    overview: str
-
-    @field_validator("genres", mode="before")
-    @classmethod
-    def extract_genre_from_association(cls, v):
-        if not v:
-            return []
-            
-        cleaned_genres = []
-        for item in v:
-            if hasattr(item, "genre") and item.genre:
-                cleaned_genres.append(item.genre)
-            elif hasattr(item, "name"):
-                cleaned_genres.append(item)
-                
-        return cleaned_genres
+    actors: Optional[str]
+    duration: Optional[int]
+    overview: Optional[str]
 
 class GenreResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    
     name: str

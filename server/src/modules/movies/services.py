@@ -2,7 +2,7 @@ from typing import Optional
 
 from fastapi import HTTPException, status, Depends
 from sqlmodel import Session, select, func, extract, col
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import joinedload, selectinload
 
 from src.core.deps import get_session
 from src.modules.rating.models import RatedMovie
@@ -42,7 +42,7 @@ class MovieOperations:
     ) -> list[Movie]:
 
         query = select(Movie)
-
+        
         if year_min is not None:
             query = query.filter(extract("year", Movie.release_date) >= year_min)
         if year_max is not None:
@@ -67,6 +67,8 @@ class MovieOperations:
         elif genres:
             query = query.distinct()
 
+        query = query.options(selectinload(Movie.genres))
+
         return self.session.exec(query.offset(skip).limit(limit)).all()
     
 
@@ -80,8 +82,9 @@ class MovieOperations:
 
     def get_movie(self, id: int) -> Movie:
         """Retrieves a movie by its ID."""
-        q = select(Movie).where(Movie.id == id).options(joinedload(Movie.genres).joinedload(MovieGenre.genre))
-        movie = self.session.exec(q).first()
+        movie = self.session.exec(
+            select(Movie).where(Movie.id == id).options(selectinload(Movie.genres))
+        ).first()
 
         if not movie:
             raise HTTPException(
@@ -90,28 +93,6 @@ class MovieOperations:
             )
         return movie
     
-
-    def get_full_data(
-        self, 
-        movie: Movie,
-    ) -> MovieData:
-        avg_rating = 0
-        genres_list = [g.genre.name for g in movie.genres] if hasattr(movie, 'genres') else []
-
-        movie_data = MovieData(
-            id=movie.id, 
-            title=movie.title, 
-            poster_path=movie.poster_path, 
-            release_date=movie.release_date, 
-            global_rating=avg_rating, 
-            friends_rating=avg_rating, 
-            user_rating=avg_rating, 
-            genres=genres_list, 
-            duration=movie.duration, 
-            overview=movie.overview
-        )
-        
-        return movie_data
     
 def get_movie_operations(session: Session = Depends(get_session)):
     return MovieOperations(session)

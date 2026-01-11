@@ -13,9 +13,31 @@ if TYPE_CHECKING:
     from src.modules.rating.models import RatedMovie
     from src.modules.reviews.models import Review
 
+
 # --------------------
-# Movie Model
+# Movie Genre (Many-to-Many Link)
 # --------------------
+class MovieGenre(SQLModel, table=True):
+    __tablename__ = "movie_genre"
+
+    movie_id: int = Field(foreign_key="movies.id", nullable=False, primary_key=True)
+    genre_id: int = Field(foreign_key="genre.id", nullable=False, primary_key=True)
+
+    # Relationships
+    # movie: 'Movie' = Relationship(back_populates="genres")
+    # genre: Genre = Relationship(back_populates="movies")
+
+
+class Genre(SQLModel, table=True):
+    __tablename__ = "genre"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    name: str = Field(unique=True, nullable=False)
+
+    # Relationships
+    movies: List["Movie"] = Relationship(back_populates="genres", link_model=MovieGenre)
+
+
 class Movie(SQLModel, table=True):
     __tablename__ = "movies"
 
@@ -29,34 +51,6 @@ class Movie(SQLModel, table=True):
     release_date: Optional[date] = Field(default=None)
 
     # Relationships
-    genres: List["MovieGenre"] = Relationship(back_populates="movie")
+    genres: List["Genre"] = Relationship(back_populates="movies", link_model=MovieGenre)
     ratings: List["RatedMovie"] = Relationship(back_populates="movie")
     reviews: List["Review"] = Relationship(back_populates="movie")
-
-
-# --------------------
-# Genre Model
-# --------------------
-class Genre(SQLModel, table=True):
-    __tablename__ = "genre"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    name: str = Field(unique=True, nullable=False)
-
-    # Relationships
-    movies: List["MovieGenre"] = Relationship(back_populates="genre")
-
-
-
-# --------------------
-# Movie Genre (Many-to-Many Link)
-# --------------------
-class MovieGenre(SQLModel, table=True):
-    __tablename__ = "movie_genre"
-
-    movie_id: int = Field(foreign_key="movies.id", nullable=False, primary_key=True)
-    genre_id: int = Field(foreign_key="genre.id", nullable=False, primary_key=True)
-
-    # Relationships
-    movie: Movie = Relationship(back_populates="genres")
-    genre: Genre = Relationship(back_populates="movies")

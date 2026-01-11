@@ -23,7 +23,7 @@ router = APIRouter(prefix="/movies", tags=["movies"])
 def get_genres(genre_ops: GenresOperationsDep):
     return genre_ops.get_all_genres()
 
-@router.get("")
+@router.get("", response_model=list[MovieData])
 def get_movies(
     movie_operations: MoviesOperationsDep,
     rating_ops: RatingOperationsDep,
@@ -45,6 +45,7 @@ def get_movies(
         year_min=year_min,
         year_max=year_max
     )
+
     data = []
     for movie in movies_list:
         user_rating = None
@@ -67,14 +68,13 @@ def get_movies(
 def get_random(limit: int, movie_operations: MoviesOperationsDep):
     return movie_operations.get_random_movies(limit=limit)
 
-@router.get("/search", response_model=list[MovieData])
+@router.get("/search", response_model=list[MovieResponse])
 def search_movies_endpoint(
     title: str, 
     movie_operations: MoviesOperationsDep, 
     limit: int = 5
 ):
-    movies = movie_operations.search_movies(title, limit)
-    return [movie_operations.get_full_data(movie) for movie in movies]
+    return movie_operations.search_movies(title, limit)
 
 @router.get("/{id}", response_model=MovieResponse)
 def get_by_id(id: int, movie_operations: MoviesOperationsDep, ):

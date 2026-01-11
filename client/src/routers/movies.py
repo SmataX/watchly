@@ -21,14 +21,15 @@ async def movies(
     token = request.cookies.get("access_token")
     token = token.split(' ')[1] if token else None
 
-    data = await get_data("/movies", client, token)
+    data = await get_data(f"/movies?{request.url.query}" if request.url.query else "/movies", client, token)
     genres_list = await get_data("/movies/genres", client)
 
     return templates.TemplateResponse("all_movies.html", {
         "request": request, 
         "data": data,
         "genres": genres_list,
-        "user": user
+        "user": user,
+        "filters": request.query_params
     })
 
 

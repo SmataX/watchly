@@ -23,7 +23,7 @@
     <div class="allmovies_main_layout">
         
         <aside class="allmovies_filter_sidebar">
-            <form method="GET" action="all_movies"> 
+            <form method="GET" action="."> 
                 
                 <section class="allmovies_filter_section">
                     <p>Showing <span style="font-weight: bold; color: white">{{ data|length}}</span> movies</p>
@@ -56,19 +56,19 @@
                 <section class="allmovies_filter_section">
                     <h3>Ratings (0 - 5)</h3>
                     <div class="allmovies_range_inputs">
-                        <input type="number" name="rating_min" min="0" max="5" step="0.1" placeholder="Min" value="0">
+                        <input type="number" name="rating_min" min="0" max="5" step="0.1" placeholder="Min" value="{{ filters.get('rating_min', 0)}}">
                         <span>-</span>
-                        <input type="number" name="rating_max" min="0" max="5" step="0.1" placeholder="Max" value="5">
+                        <input type="number" name="rating_max" min="0" max="5" step="0.1" placeholder="Max" value="{{ filters.get('rating_max', 5)}}">
                     </div>
                     <div class="allmovies_slider_visual"></div>
                 </section>
 
                 <section class="allmovies_filter_section">
-                    <h3>Years (1955 - 2025)</h3>
+                    <h3>Years (1955 - 2026)</h3>
                     <div class="allmovies_range_inputs">
-                        <input type="number" name="year_min" min="1955" max="2025" placeholder="From" value="1955">
+                        <input type="number" name="year_min" min="1955" max="2025" placeholder="From" value="{{ filters.get('year_min', 1955)}}">
                         <span>-</span>
-                        <input type="number" name="year_max" min="1955" max="2025" placeholder="To" value="2025">
+                        <input type="number" name="year_max" min="1955" max="2026" placeholder="To" value="{{ filters.get('year_max', 2026)}}">
                     </div>
                     <div class="allmovies_slider_visual"></div>
                 </section>
@@ -95,7 +95,7 @@
                             <span>{{ data.movie.release_date}}</span>
                             <span>{{ data.movie.duration }} min</span>
                             {% for genre in data.movie.genres %}
-                            <span class="allmovies_genre_tag">{{ genre }}</span>
+                            <span class="allmovies_genre_tag">{{ genre.name }}</span>
                             {% endfor %}
                         </div>
 
