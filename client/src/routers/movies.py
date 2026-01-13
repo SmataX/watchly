@@ -21,11 +21,13 @@ async def movies(
     token = request.cookies.get("access_token")
     token = token.split(' ')[1] if token else None
 
-    data = await get_data(f"/movies?{request.url.query}" if request.url.query else "/movies", client, token)
-    genres_list = await get_data("/movies/genres", client)
+    data = await get_data(f"http://127.0.0.1:8001/movies?{request.url.query}" if request.url.query else "http://127.0.0.1:8001/movies", client, token)
+    genres_list = await get_data("http://127.0.0.1:8001/movies/genres", client)
+    count = len(data) if data else 0
 
     return templates.TemplateResponse("all_movies.html", {
         "request": request, 
+        "movie_count": count,
         "data": data,
         "genres": genres_list,
         "user": user,

@@ -25,7 +25,7 @@
                         resultsList.style.display = 'block';
                         movies.forEach(movie => {
                             const li = document.createElement('li');
-                            li.innerHTML = <a href="/movies/${movie.id}">${movie.title}</a>;
+                            li.innerHTML = <a href="http://127.0.0.1:8001/movies/${movie.id}">${movie.title}</a>;
                             resultsList.appendChild(li);
                         });
                     } else {

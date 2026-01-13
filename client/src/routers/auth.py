@@ -27,7 +27,7 @@ async def login_user(
 
     try:
         response = await client.post(
-            "/auth/login", 
+            "http://127.0.0.1:8001/auth/login", 
             data={"username": username, "password": password}
         )
         response.raise_for_status()

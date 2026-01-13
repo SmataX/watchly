@@ -10,6 +10,7 @@ from src.modules.auth.models import *
 from src.modules.movies.models import *
 from src.modules.user.models import *
 from src.modules.reviews.models import *
+from src.modules.follows.models import *
 
 
 origins = ["http://127.0.0.1:8000", "http://localhost:8000"]
@@ -40,3 +41,6 @@ app.include_router(rating_router)
 
 from src.modules.reviews.routes import router as reviews_router
 app.include_router(reviews_router)
+
+# from src.modules.follows.routes import router as follows_router
+# app.include_router(follows_router)

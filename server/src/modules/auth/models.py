@@ -6,6 +6,7 @@ from pydantic import BaseModel
 if TYPE_CHECKING:
     from src.modules.rating.models import RatedMovie
     from src.modules.reviews.models import Review
+    from src.modules.follows.models import Follow
 
 
 # --------------------
@@ -24,6 +25,7 @@ class User(SQLModel, table=True):
 
     rated_movies: list["RatedMovie"] = Relationship(back_populates="user")
     reviews: list["Review"] = Relationship(back_populates="user")
+    # follows: list['Follow'] = Relationship(back_populates="follow_user")
 
 
 # --------------------
