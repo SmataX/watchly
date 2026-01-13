@@ -1,0 +1,83 @@
+﻿{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', path='/favorite_movies.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="favorites-container">
+    <!-- Nagłówek -->
+    <div class="favorites-header">
+        <div class="back-to-profile">
+            <a href="/profile/{{ profile_username }}" class="back-link">
+                <svg class="back-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+                Back to Profile
+            </a>
+            <div class="header-content">
+                <h1>{{ profile_username|upper }}'S FAVORITE MOVIES</h1>
+                {% if data|length > 0 %}
+                <div class="header-stats">
+                    <span class="movie-count">{{ data|length }} MOVIES</span>
+                    <span class="separator">•</span>
+                    <span class="last-updated">UPDATED RECENTLY</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="section-divider">
+        <div class="divider-line"></div>
+        <div class="divider-text">FILMS</div>
+        <div class="divider-line"></div>
+    </div>
+    <!-- Siatka filmów -->
+    <div class="movies-grid">
+        {% for item in data %}
+        <a href="/movies/{{ item.movie.id }}" class="movie-card">
+            <div class="poster-container">
+                <img src="https://image.tmdb.org/t/p/w500{{ item.movie.poster_path }}"
+                     alt="{{ item.movie.title }}"
+                     class="movie-poster"
+                     loading="lazy"
+                     onerror="this.onerror=null; this.src='/static/default-poster.jpg';">
+
+                <!-- Overlay -->
+                <div class="poster-overlay">
+                    <div class="overlay-content">
+                        <span class="view-details">VIEW DETAILS →</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Informacje o filmie -->
+            <div class="movie-info">
+                <h3 class="movie-title">{{ item.movie.title|upper }}</h3>
+                {% if item.movie.release_date %}
+                <span class="movie-year">{{ item.movie.release_date[:4] }}</span>
+                {% endif %}
+
+                <!-- Rating (jeśli istnieje) -->
+                {% if item.avg_rating and item.avg_rating > 0 %}
+                <div class="movie-rating">
+                    <span class="rating-star">★</span>
+                    <span class="rating-value">{{ "%.1f"|format(item.avg_rating) }}</span>
+                </div>
+                {% endif %}
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+
+    <!-- Komunikat gdy brak filmów -->
+    {% if data|length == 0 %}
+    <div class="empty-state">
+        <div class="empty-icon">🎬</div>
+        <h2>NO FAVORITE MOVIES YET</h2>
+        <p>Start adding movies to see them here</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

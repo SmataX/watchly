@@ -31,6 +31,7 @@ a {
     color: #fff;
     box-sizing: border-box;
     border-bottom: 1px solid #c4c4c4;
+    height: 80px;
 }
 
 .left {
@@ -48,13 +49,20 @@ a {
 
 .nav {
     display: flex;
+    align-items: center;
+    gap: 60px;
+    height: 80px; 
 }
-
-.nav a {
-    font-size: 16px;
-    color: #fff;
-    margin-right: 40px;
-}
+    .nav a {
+        font-size: 16px;
+        color: #fff;
+        margin-right: 0; 
+        padding: 0 10px; 
+        display: flex;
+        align-items: center;
+        height: 100%; 
+        transform: translateY(-1px);
+    }
 
 .signIn, .logoutBtn {
     padding: 8px 20px;
@@ -67,9 +75,9 @@ a {
 }
 
 .user-greeting {
-    margin-right: 15px;
     font-weight: bold;
-    color: #fffb00;
+    color: #fff;
+    margin-right: 40px;
 }
 
 /* --- FOOTER --- */
@@ -87,7 +95,7 @@ a {
     gap: 40px;
 }
 
-.logoSection {
+.Section {
     max-width: 300px;
 }
 
@@ -288,6 +296,11 @@ a {
 
 .section-container {
     margin-bottom: 40px;
+}
+.stat-box-link {
+    text-decoration: none; 
+    color: inherit; 
+    display: inline-block; 
 }
 
 .section-title {
@@ -1002,4 +1015,240 @@ a {
 
 .allmovies_review_btn:hover {
     background-color: #444444;
+}
+
+/* EDIT PROFILE PAGE */
+.ep-scope {
+    background-color: #000;
+    color: #fff;
+    min-height: 100vh;
+    width: 100%;
+    padding-top: 20px;
+    padding-bottom: 50px;
+}
+
+.ep-scope .edit-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.ep-scope .edit-card {
+    background-color: #121212;
+    border: 1px solid #333;
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.ep-scope h2 {
+    font-size: 28px;
+    margin-bottom: 5px;
+    color: #fff;
+    border-bottom: 1px solid #333;
+    padding-bottom: 15px;
+}
+
+.ep-scope h3 {
+    font-size: 18px;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    color: #e0840d;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.ep-scope .subtitle {
+    color: #aaa;
+    margin-bottom: 25px;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+/* AVATAR */
+.ep-scope .avatar-section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #222;
+}
+
+.ep-scope .avatar-wrapper {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    min-width: 100px; /* Zapobiega zgniataniu */
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #333;
+}
+
+.ep-scope .avatar-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ep-scope .avatar-info button {
+    background: none;
+    border: 1px solid #e0840d;
+    color: #e0840d;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.ep-scope .avatar-info button:hover {
+    background: #e0840d;
+    color: #000;
+}
+
+/* FORMULARZE */
+.ep-scope .form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.ep-scope .form-group {
+    flex: 1;
+    margin-bottom: 20px;
+}
+
+.ep-scope label {
+    display: block;
+    margin-bottom: 8px;
+    color: #ccc;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.ep-scope input[type="text"],
+.ep-scope input[type="email"],
+.ep-scope input[type="password"],
+.ep-scope input[type="url"],
+.ep-scope textarea {
+    width: 100%;
+    background-color: #1f1f1f;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 12px;
+    color: #fff;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+}
+
+.ep-scope input:focus,
+.ep-scope textarea:focus {
+    border-color: #e0840d;
+}
+
+.ep-scope textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* TOGGLE SWITCH */
+.ep-scope .toggle-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #1f1f1f;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #333;
+}
+
+.ep-scope .toggle-label {
+    font-size: 14px;
+    color: #fff;
+}
+
+.ep-scope .switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.ep-scope .switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.ep-scope .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #333;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.ep-scope .slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+.ep-scope input:checked + .slider {
+    background-color: #e0840d;
+}
+
+.ep-scope input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* BUTTONY NA DOLE */
+.ep-scope .form-actions {
+    margin-top: 40px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    border-top: 1px solid #222;
+    padding-top: 20px;
+}
+
+.ep-scope .btn-cancel {
+    padding: 12px 24px;
+    background: transparent;
+    color: #aaa;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.ep-scope .btn-save {
+    padding: 12px 30px;
+    background-color: #e0840d;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.ep-scope .btn-save:hover {
+    transform: scale(1.02);
+    background-color: #e0840d;
 }

@@ -7,7 +7,7 @@
                 <div class="avatar-circle">
                     <img src="https://i.pinimg.com/originals/82/47/0b/82470b4ed44c3edacfcd4201e2297050.jpg?nii=t" alt="Avatar">
                 </div>
-                <a href="#" class="share-profile-link">Edit picture</a>
+                <a href="/profile/edit" class="share-profile-link">Edit picture</a>
             </div>
 
             <div class="info-section">
@@ -15,9 +15,7 @@
                     <div>
                         <h1 class="display-name">{{ user_data.username }}</h1>
                     </div>
-                    {% if user['username'] == user_data.username %}
-                    <a href="/edit_profile" class="edit-btn">Edit profile</a>
-                    {% endif %}
+                    <a href="/profile/edit" class="edit-btn">Edit profile</a>
                 </div>
 
                 <p class="bio-text">{{ user_data.description }}</p>
@@ -36,26 +34,30 @@
         <div class="stat-box">
             <div class="stat-header">
                 <span>Rated movies</span>
-                <span class="icon">★</span> </div>
+                <span class="icon">★</span>
+            </div>
             <div class="stat-number">{{ user_data['rated_movies']|length}}</div>
         </div>
 
         <div class="stat-box">
             <div class="stat-header">
                 <span>Average rating</span>
-                <span class="icon">↗</span> </div>
+                <span class="icon">↗</span>
+            </div>
             <div class="stat-number">{{ user_data['avg_rating'] }}</div>
         </div>
-
-        <div class="stat-box">
-            <div class="stat-header">
-                <span>Favorite movies</span>
-                <span class="icon">♥</span> </div>
-            <div class="stat-number">52</div>
-        </div>
+        <a href="/profile/{{ user.username }}/favorites"  class="stat-box-link">
+            <div class="stat-box">
+                <div class="stat-header">
+                    <span>Favorite movies</span>
+                    <span class="icon">♥</span>
+                </div>
+                <div class="stat-number">52</div>
+            </div>
+        </a>
     </div>
 
-    <!-- <div class="section-container">
+    <div class="section-container">
         <h3 class="section-title">Favorite Genres</h3>
         <hr class="section-divider">
         <div class="genres-list">
@@ -64,12 +66,12 @@
             <span class="genre-tag">Horror</span>
             <span class="genre-tag">Thriller</span>
         </div>
-    </div> -->
+    </div>
 
-    <!-- <div class="section-container">
+    <div class="section-container">
         <div class="section-header-row">
             <h3 class="section-title">Favorite Movies</h3>
-            <a href="#" class="view-all-link">View All</a>
+            <a href="/profile/{{ user.username }}/favorites" class="view-all-link">View All</a>
         </div>
         <hr class="section-divider">
         
@@ -83,7 +85,7 @@
             <img src="https://upload.wikimedia.org/wikipedia/en/3/32/A_Silent_Voice_Film_Poster.jpg" alt="Movie 7" class="movie-poster" style="background: grey;">
             <img src="https://moviesfilmsandflix.com/wp-content/uploads/2023/10/mv5bzwuxztllzgitzjfhys00ndi4ltgwodatyzninzeznjnmmzrkxkeyxkfqcgdeqxvymte0mzqwmjgz._v1_.jpg" alt="Movie 8" class="movie-poster" style="background: grey;">
         </div>
-    </div> -->
+    </div>
 
     <div class="section-container">
         <h3 class="section-title">Rating</h3>
@@ -129,7 +131,7 @@
 
                     <hr class="section-divider">
                     <div class="user-comment">
-                        <!-- <span class="comment-label">Review:</span> -->
+                        <span class="comment-label">Review:</span>
                         <p>{{ review.content }}</p>
                     </div>
                 </div>
