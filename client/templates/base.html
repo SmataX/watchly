@@ -6,6 +6,8 @@
     <title>{% block title %}WATCHLY{% endblock %}</title>
     <link rel="stylesheet" href="/static/style.css">
     <link rel="stylesheet" href="/static/searchbar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
     {% block extra_css %}{% endblock %}
 </head>
 <body>
@@ -18,20 +20,23 @@
 
         <nav class="nav">
             <a href="/movies">Movies</a>
-            <a href="/reviews">Reviews</a>
-            <a href="/friends">Friends</a>
             {% if user %}
-            <a href="/profile/{{ user.username }}">My Ratings</a>
+            <a href="/profile/{{ user.username }}">Profile</a>
             {% endif %}
+            <div class="search-container-nav">
+                <span class="search-icon-nav"><i class="fa-solid fa-magnifying-glass"></i></span>
+                <input type="text" id="movie-search-input-nav" class="search-input-nav" placeholder="SEARCH MOVIE..." autocomplete="off">
+                <ul id="search-results-list-nav"></ul>
+            </div>
         </nav>
 
         <div>
             {% if user %}
-                <a href="/user_profile" class="user-greeting">Hello, {{ user.username }}!</a>
-                
-                <a href="/logout" class="logoutBtn">Logout</a>
+            <a href="/profile" class="user-greeting">Hello, {{ user.username }}!</a>
+
+            <a href="/logout" class="logoutBtn">Logout</a>
             {% else %}
-                <a href="/login" class="signIn">Sign in</a>
+            <a href="/login" class="signIn">Sign in</a>
             {% endif %}
         </div>
     </header>
@@ -83,6 +88,6 @@
             &copy; 2025 WATCHLY. All rights reserved.
         </div>
     </footer>
-
+    <script src="/static/js/header_search.js"></script>
 </body>
 </html>
