@@ -1,5 +1,5 @@
 from typing import TYPE_CHECKING, Optional
-from datetime import datetime
+from datetime import datetime, date
 from pydantic import BaseModel
 
 if TYPE_CHECKING:
@@ -13,6 +13,20 @@ class UserResponse(BaseModel):
     created_at: datetime
     rated_movies: list["RatingResponse"] 
     reviews: list["ReviewResponse"]
+
+
+class UserProfileResponse(BaseModel):
+    username: str
+    profile_path: Optional[str]
+    description: Optional[str]
+    member_since: date
+    rated_movies: list['RatingResponse']
+    avg_rating: float
+    reviews: list['ReviewResponse']
+    fav_genres: list[str]
+    following: int
+    followers: int
+
 
 
 from src.modules.rating.schemas import RatingResponse

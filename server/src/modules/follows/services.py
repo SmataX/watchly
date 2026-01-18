@@ -12,7 +12,7 @@ class FollowOperations:
         self.session = session
 
     def add(self, user_id: int, follow_id: int) -> UserFollow:
-        follow = UserFollow(user_id=user_id, follow_id=follow_id)
+        follow = UserFollow(follower_id=user_id, followed_id=follow_id)
         self.session.add(follow)
         self.session.commit()
         self.session.refresh(follow)
@@ -20,17 +20,27 @@ class FollowOperations:
 
     def remove(self, user_id: int, follow_id: int) -> UserFollow:
         result = self.session.exec(
-            select(UserFollow).where(UserFollow.user_id == user_id, UserFollow.follow_id == follow_id)
+            select(UserFollow).where(UserFollow.follower_id == user_id, UserFollow.followed_id == follow_id)
         ).first()
 
         self.session.delete(result)
         self.session.commit()
         return result
     
-    def get_all_for_user(self, user_id: int) -> list[UserFollow]:
+    def get_all_follows(self, user_id: int) -> list[UserFollow]:
         return self.session.exec(
-            select(UserFollow).where(UserFollow.user_id == user_id)
+            select(UserFollow).where(UserFollow.follower_id == user_id)
         ).all()
+
+    def get_all_followers(self, user_id: int) -> list[UserFollow]:
+        return self.session.exec(
+            select(UserFollow).where(UserFollow.followed_id == user_id)
+        ).all()
+
+    def is_followed(self, user_id: int, followed_id: int) -> bool:
+        return self.session.exec(
+            select(UserFollow).where(UserFollow.follower_id==user_id, UserFollow.followed_id==followed_id)
+        ).first() is not None
         
 def get_follow_operations(session: Session = Depends(get_session)) -> FollowOperations:
     return FollowOperations(session)

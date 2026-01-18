@@ -76,10 +76,17 @@ async def user_profile(
     client: httpx.AsyncClient = Depends(get_http_client),
     username: str = ""
 ):
-    user_data = await get_data(f"http://127.0.0.1:8001/user/{username}", client)
+    token = request.cookies.get("access_token")
+    token = token.split(' ')[1] if token else None
 
+    user_data = await get_data(f"http://127.0.0.1:8001/user/{username}", client)
+    following = False
+    if user:
+        if user['username'] != username:
+            following = await get_data(f"http://127.0.0.1:8001/follow/follow/{username}", client, token)
     return templates.TemplateResponse("profile.html", {
         "request": request, 
         "user": user,
+        "following": following,
         "user_data": user_data,
     })

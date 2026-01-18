@@ -17,7 +17,7 @@ class Review(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     movie_id: int = Field(nullable=False, foreign_key="movies.id")
     user_id: int = Field(nullable=False, foreign_key="users.id")
-    content: str = Field()
+    content: str
     created_at: datetime = Field(default_factory=datetime.now)
 
     user: "User" = Relationship(back_populates="reviews")

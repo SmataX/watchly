@@ -6,9 +6,14 @@ from sqlalchemy.orm import joinedload
 from src.core.deps import get_session
 from src.modules.auth.models import User
 from src.modules.auth.deps import UserDep
+from src.modules.rating.services import RatingOperations
 from src.modules.rating.models import RatedMovie
 from src.modules.reviews.models import Review
+from src.modules.reviews.services import ReviewOperations
+from src.modules.follows.services import FollowOperations
 from src.modules.movies.models import Movie, MovieGenre, Genre
+
+from .schemas import UserProfileResponse
 
 class UserOperations:
     def __init__(self, session: Session):
@@ -30,16 +35,8 @@ class UserOperations:
     def get_user_by_username(self, username: str) -> User:
         """Retrieves a user by their username."""
         user = self.session.exec(
-            select(User)
-            .where(User.username == username)
-            .options(
-                joinedload(User.rated_movies),
-                joinedload(User.reviews)
-                .joinedload(Review.movie)
-                .joinedload(Movie.genres)
-                .joinedload(MovieGenre.genre) 
-            )
-        ).unique().first()
+            select(User).where(User.username == username)
+        ).first()
 
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
@@ -55,6 +52,33 @@ class UserOperations:
         db_session.commit()
         db_session.refresh(u)
         return u
+
+    
+    def get_user(self, username: str, rating_ops: RatingOperations, reviews_ops: ReviewOperations, follows_ops: FollowOperations):
+
+        user = self.get_user_by_username(username)
+        rated_movies = rating_ops.get_all_for_user(user.id)
+        avg_rating = round(sum([x.rating for x in rated_movies]) / len(rated_movies), 2) if rated_movies else 0
+        fav_genres = []
+        reviews = reviews_ops.get_all_for_user(user.id)
+        following = len(follows_ops.get_all_follows(user.id))
+        followers = len(follows_ops.get_all_followers(user.id))
+
+        data = {
+            "username": user.username,
+            "profile_path": user.profile_path,
+            "description": user.description,
+            "member_since": user.created_at.date(),
+            "rated_movies": rated_movies,
+            "avg_rating": avg_rating,
+            "reviews": reviews,
+            "fav_genres": fav_genres,
+            "following": following,
+            "followers": followers
+        }
+
+        return data
+
     
 def get_user_operations(session: Session = Depends(get_session)) -> UserOperations:
     return UserOperations(session)
