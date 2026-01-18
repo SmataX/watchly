@@ -1,6 +1,7 @@
 from fastapi import HTTPException, status, Depends
 from sqlmodel import Session, select, col, func, desc
 from datetime import datetime, timedelta
+from sqlalchemy.orm import selectinload
 
 from src.modules.movies.models import Movie
 from src.modules.movies.schemes import MovieResponse
@@ -8,6 +9,7 @@ from src.modules.follows.models import UserFollow
 from src.core.deps import get_session
 
 from .models import RatedMovie
+from .schemas import RatingResponse
 
 class RatingOperations:
     def __init__(self, session: Session):
@@ -108,18 +110,18 @@ class RatingOperations:
         results = self.session.exec(q).all()
         return results
 
-    def get_latest_ratings(self, user_id: int, limit: int) -> list[MovieResponse]:
+    def get_latest_ratings(self, user_id: int, limit: int) -> list[RatedMovie]:
         q = (
-            select(Movie)
-            .join(RatedMovie, Movie.id == RatedMovie.movie_id)
+            select(RatedMovie)
             .join(UserFollow, RatedMovie.user_id == UserFollow.followed_id)
             .where(UserFollow.follower_id == user_id)
+            .options(selectinload(RatedMovie.movie))
+            .options(selectinload(RatedMovie.user))
             .order_by(RatedMovie.created_at.desc())
             .limit(limit)
         )
         
-        results = self.session.exec(q).all()
-        return results
+        return self.session.exec(q).all()
 
 
 def get_rating_operations(session: Session = Depends(get_session)):

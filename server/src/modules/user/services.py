@@ -1,5 +1,3 @@
-# src/modules/user/user_operations.py
-
 from fastapi import HTTPException, status, Depends
 from sqlmodel import Session, select, func, col
 from sqlalchemy.orm import joinedload
@@ -13,7 +11,7 @@ from src.modules.reviews.services import ReviewOperations
 from src.modules.follows.services import FollowOperations
 from src.modules.movies.models import Movie, MovieGenre, Genre
 
-from .schemas import UserProfileResponse
+from .schemas import UserProfileResponse, TopContributor
 
 class UserOperations:
     def __init__(self, session: Session):
@@ -57,6 +55,48 @@ class UserOperations:
         db_session.refresh(u)
         return u
 
+    def update_username(self, user_id: int, username: str):
+        query = select(User).where(User.username == username)
+        existing_user = self.session.exec(query).first()
+
+
+        if existing_user and existing_user.id != user_id:
+            raise HTTPException(status_code=409, detail="Username is taken.")
+
+        current_user = self.get_user_by_id(user_id)
+        current_user.username = username
+
+        self.session.add(current_user)
+        self.session.commit()
+        self.session.refresh(current_user)
+        return current_user
+
+    def update_email(self, user_id: int, email: str):
+        try:
+            current_user = self.get_user_by_id(user_id)
+            current_user.email = email
+
+            self.session.add(current_user)
+            self.session.commit()
+            self.session.refresh(current_user)
+            return current_user
+        except:
+            raise HTTPException(status_code=409, detail="Username is taken.")
+        
+
+    def update_description(self, user_id: int, description: str):
+        user = self.get_user_by_id(user_id)
+
+        if not user:
+            raise HTTPException(status_code=404, detail="Usern not found.")
+
+        user.description = description
+        self.session.add(user)
+        self.session.commit()
+        self.session.refresh(user)
+        return user
+
+
     
     def get_user(self, username: str, rating_ops: RatingOperations, reviews_ops: ReviewOperations, follows_ops: FollowOperations):
 
@@ -88,6 +128,20 @@ class UserOperations:
         }
 
         return data
+
+    
+    def get_top_contributors(self, limit: int) -> list[TopContributor]:
+        statement = (
+            select(User, func.count(Review.id))
+            .join(Review)
+            .group_by(User)
+            .order_by(func.count(Review.id).desc())
+            .limit(limit)
+        )
+        
+        results = self.session.exec(statement).all()
+        
+        return [{"user_id": user.id, "user": user, "reviews_count": count} for user, count in results]
 
     
 def get_user_operations(session: Session = Depends(get_session)) -> UserOperations:

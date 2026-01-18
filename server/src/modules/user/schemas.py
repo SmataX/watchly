@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, Optional
 from datetime import datetime, date
 from pydantic import BaseModel
+from fastapi import Form
 
 if TYPE_CHECKING:
     from src.modules.rating.schemas import RatingResponse
@@ -26,6 +27,17 @@ class UserProfileResponse(BaseModel):
     fav_genres: list[str]
     following: int
     followers: int
+
+class TopContributor(BaseModel):
+    user_id: int
+    user: UserResponse
+    reviews_count: int
+
+class UserUpdateRequest(BaseModel):
+    user_id: int = Form()
+    username: Optional[str] = Form(None)
+    email: Optional[str] = Form(None)
+    description: Optional[str] = Form(None)
 
 
 
