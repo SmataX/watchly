@@ -8,12 +8,11 @@
 <div class="movie-hero">
     <div class="movie-hero-background"></div>
     <div class="hero-gradient-overlay"></div>
-    
+
     <div class="movie-hero-content">
         <div class="poster-column">
-            <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}"
-                 alt="{{ movie.title }} poster"
-                 class="movie-poster">
+            <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} poster"
+                class="movie-poster">
         </div>
 
         <div class="info-column">
@@ -25,7 +24,7 @@
                 </div>
             </div>
 
-             <!-- Gatunki -->
+            <!-- Gatunki -->
 
             <div class="genres-container">
                 {% for genre in movie.genres %}
@@ -37,7 +36,7 @@
             <div class="ratings-container">
                 <div class="rating-box">
                     <div class="rating-title">Global Rating</div>
-                    <div class="rating-value">★ {{ avg_rating }}</div> 
+                    <div class="rating-value">★ {{ avg_rating }}</div>
                 </div>
 
                 <div class="rating-box">
@@ -81,11 +80,14 @@
                 <div class="action-box rate-box">
                     <div class="action-title">Rate</div>
                     <div class="rating-stars" id="ratingStars">
-                        <span class="star" data-value="1">★</span>
-                        <span class="star" data-value="2">★</span>
-                        <span class="star" data-value="3">★</span>
-                        <span class="star" data-value="4">★</span>
-                        <span class="star" data-value="5">★</span>
+                        {% if user_rating %}
+                        {% for i in range(user_rating) %}
+                        <span class="star rating-star" style="color: orange" onclick="rate_movie({{ movie.id }}, {{ loop.index }})">★</span>
+                        {% endfor %}
+                        {% endif %}
+                        {% for i in range(user_rating + 1, 6) %}
+                        <span class="star rating-star" onclick="rate_movie({{ movie.id }}, {{ user_rating + loop.index }})">★</span>
+                        {% endfor %}
                     </div>
                 </div>
 
@@ -103,11 +105,10 @@
             <div class="trailer-column">
                 <div class="trailer-video-wrapper">
                     <iframe class="trailer-video"
-                            src="https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1"
-                            title="Trailer"
-                            frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen>
+                        src="https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1"
+                        title="Trailer" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
                     </iframe>
                 </div>
             </div>
@@ -179,22 +180,21 @@
             <h2>No Reviews Yet</h2>
             <p> Be the first to share your thoughts about this movie!</p>
             {% endif %}
-         </div>
+        </div>
     </div>
 
     <div class="review">
         <div class="review-header">
             <span class="review-title">Write a review:</span>
             <div class="reveiw-stars">
-                <span class="inline-star" data-value="1">★</span>
-                <span class="inline-star" data-value="2">★</span>
-                <span class="inline-star" data-value="3">★</span>
-                <span class="inline-star" data-value="4">★</span>
-                <span class="inline-star" data-value="5">★</span>
+                <!-- {% for i in range(user_rating) %}
+                <span class="inline-star rating-star" data-value="1" style="color: yellow">★</span>
+                {% endfor %} -->
             </div>
         </div>
 
-        <textarea class="review-textarea" id="user-review-textarea" placeholder="Your thoughts..." maxlength="500" minlength="0"></textarea>
+        <textarea class="review-textarea" id="user-review-textarea" placeholder="Your thoughts..." maxlength="500"
+            minlength="0"></textarea>
 
         <div class="review-actions">
             <span class="review-count" id="user-review-counter">0/500</span>
@@ -205,4 +205,5 @@
 </div>
 
 <script src="{{ url_for('static', path='js/write_review.js') }}"></script>
+<script src="{{ url_for('static', path='js/rating.js') }}"></script>
 {% endblock %}

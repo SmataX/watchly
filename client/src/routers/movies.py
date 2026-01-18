@@ -61,6 +61,6 @@ async def movie_detail(
         "user": user,
         "reviews": reviews,
         "avg_rating": avg_rating,
-        "user_rating": user_rating,
+        "user_rating": int(user_rating) if user_rating else 0,
         "friends_rating": friends_rating
     })

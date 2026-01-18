@@ -32,15 +32,17 @@ class RatingOperations:
         ).first()
 
         if existing_rating:
-            raise HTTPException(
-                status_code=status.HTTP_409_CONFLICT,
-                detail="You have already rated this movie. Use update instead."
-            )
+            self.delete(existing_rating)
+            
 
         self.session.add(rating)
         self.session.commit()
         self.session.refresh(rating)
         return rating
+
+    def delete(self, rating):
+        self.session.delete(rating)
+        self.session.commit()
 
 
     def get(self, id: int) -> RatedMovie:
