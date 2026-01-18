@@ -6,8 +6,10 @@ from src.core.deps import SessionDep
 from src.modules.rating.deps import RatingOperationsDep
 from src.modules.reviews.deps import ReviewOperationsDep
 from src.modules.follows.deps import FollowOperationsDep
+from src.modules.favourite.deps import FavouriteListOperationsDep
 from .deps import UserOperationsDep
 from .schemas import UserResponse, UserProfileResponse
+from src.modules.favourite.schemes import FavouriteListElement
 
 
 user_router = APIRouter(prefix="/user", tags=["user"])
@@ -22,7 +24,10 @@ def search_users_endpoint(username: str, user_ops: UserOperationsDep, limit: int
 def get_user_profile(username: str, user_ops: UserOperationsDep, rating_ops: RatingOperationsDep, reviews_ops: ReviewOperationsDep, follow_ops: FollowOperationsDep):
     return user_ops.get_user(username, rating_ops, reviews_ops, follow_ops, )
 
-
+@user_router.get("/{username}/fav", response_model=list[FavouriteListElement])
+def get_fav_movies(fav_ops: FavouriteListOperationsDep, user_ops: UserOperationsDep, username: str, limit: int):
+    print("asdasd")
+    return fav_ops.get_list(user_ops.get_user_by_username(username).id, limit)
 
 
 # @user_router.put("/update_description", status_code=status.HTTP_200_OK)

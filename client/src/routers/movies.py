@@ -50,7 +50,7 @@ async def movie_detail(
     avg_rating = await get_data(f"http://127.0.0.1:8001/movies/{movie_id}/rating", client)
     user_rating = await get_data(f"http://127.0.0.1:8001/movies/{movie_id}/user_rating", client, token)
     friends_rating = await get_data(f"http://127.0.0.1:8001/movies/{movie_id}/friends_rating", client, token)
-    
+    is_fav = await get_data(f"http://127.0.0.1:8001/movies/{movie_id}/fav", client, token)
 
     if not movie:
         pass    # Redirect to Not Found page
@@ -62,5 +62,6 @@ async def movie_detail(
         "reviews": reviews,
         "avg_rating": avg_rating,
         "user_rating": int(user_rating) if user_rating else 0,
-        "friends_rating": friends_rating
+        "friends_rating": friends_rating,
+        "is_fav": is_fav,
     })

@@ -93,7 +93,12 @@
 
                 <div class="action-box favorite-box">
                     <div class="action-title">Add to Favourite</div>
-                    <div class="action-icon">❤</div>
+                    {% if is_fav %}
+                    <div class="action-icon" id="fav-btn" style="color: orange" onclick="remove_fav({{ movie.id }})">❤</div>
+                    {% else %}
+                    <div class="action-icon" id="fav-btn" onclick="add_fav({{ movie.id }})">❤</div>
+                    {% endif %}
+                
                 </div>
 
                 <div class="action-box watchlist-box">
@@ -206,4 +211,5 @@
 
 <script src="{{ url_for('static', path='js/write_review.js') }}"></script>
 <script src="{{ url_for('static', path='js/rating.js') }}"></script>
+<script src="{{ url_for('static', path='js/fav.js') }}"></script>
 {% endblock %}

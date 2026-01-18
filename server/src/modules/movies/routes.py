@@ -9,6 +9,7 @@ from src.modules.rating.schemas import RatingResponse
 from src.modules.reviews.deps import ReviewOperationsDep
 from src.modules.reviews.models import Review
 from src.modules.reviews.schemas import ReviewResponse
+from src.modules.favourite.deps import FavouriteListOperationsDep
 
 from .models import Movie, Genre
 from .schemes import MovieData, MovieResponse
@@ -112,3 +113,15 @@ def get_user_rating(id: int, user: UserDep, rating_ops: RatingOperationsDep):
 @router.get("/{id}/friends_rating", response_model=float)
 def get_firends_rating(id: int, user: UserDep, rating_ops: RatingOperationsDep):
     return 0
+
+@router.get("/{id}/fav")
+def is_fav(user: UserDep, fav_ops: FavouriteListOperationsDep, id: int):
+    return fav_ops.is_fav(user['id'], id)
+
+@router.post("/{id}/fav")
+def add_to_fav(user: UserDep, fav_ops: FavouriteListOperationsDep, id: int):
+    return fav_ops.add(user['id'], id)
+
+@router.delete("/{id}/fav")
+def remove_from_fav(user: UserDep, fav_ops: FavouriteListOperationsDep, id: int):
+    return fav_ops.remove(user['id'], id)

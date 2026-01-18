@@ -25,11 +25,13 @@ async def user_profile(
         return RedirectResponse("http://127.0.0.1:8001/login")
     
     user_data = await get_data(f"/user/{user['username']}", client)
+    fav_movies = await get_data(f"http://127.0.0.1:8001/user/{user['username']}/fav?limit=8", client)
 
     return templates.TemplateResponse("profile.html", {
         "request": request, 
         "user": user,
         "user_data": user_data,
+        "fav_movies": fav_movies,
     })
 
 
@@ -43,14 +45,13 @@ async def user_favorites(
     
     token = request.cookies.get("access_token")
     token = token.split(' ')[1] if token else None
-    # Pobiera jakieś filmy z bazy (tymczasowo)
-    movies_data = await get_data("http://127.0.0.1:8001/movies?limit=12", client, token)
+    fav_movies = await get_data(f"http://127.0.0.1:8001/user/{username}/fav?limit=100", client)
     
     return templates.TemplateResponse("favorite_movies.html", {
         "request": request,
         "user": user,
         "profile_username": username,
-        "data": movies_data  
+        "data": fav_movies if fav_movies else []
     })
 
 
@@ -78,9 +79,9 @@ async def user_profile(
 ):
     token = request.cookies.get("access_token")
     token = token.split(' ')[1] if token else None
-
     user_data = await get_data(f"http://127.0.0.1:8001/user/{username}", client)
     following = False
+    fav_movies = await get_data(f"http://127.0.0.1:8001/user/{username}/fav?limit=8", client)
     if user:
         if user['username'] != username:
             following = await get_data(f"http://127.0.0.1:8001/follow/follow/{username}", client, token)
@@ -89,4 +90,5 @@ async def user_profile(
         "user": user,
         "following": following,
         "user_data": user_data,
+        "fav_movies": fav_movies if fav_movies else [],
     })

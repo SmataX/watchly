@@ -65,7 +65,7 @@
                     <span>Favorite movies</span>
                     <span class="icon">♥</span>
                 </div>
-                <div class="stat-number">52</div>
+                <div class="stat-number">{{ fav_movies|length }}</div>
             </div>
         </a>
     </div>
@@ -88,22 +88,9 @@
         <hr class="section-divider">
 
         <div class="movies-grid">
-            <img src="https://s3.amazonaws.com/nightjarprod/content/uploads/sites/261/2025/02/22162818/wTxYZNj3NselE9H9dST2GUn4UYE1-683x1024.jpg"
-                alt="Movie 1" class="movie-poster" style="background: grey;">
-            <img src="https://images.justwatch.com/poster/336489292/s718/chainsaw-man-the-movie-reze-arc.jpg"
-                alt="Movie 2" class="movie-poster" style="background: grey;">
-            <img src="https://play-lh.googleusercontent.com/skArSY8m4e4g3ggAR8gmGobZ_Gl8cd1qLlmrUSX9WzbcFkvxeLnQVi97SJGEojt_kRbSbFynQYdCApKlqg"
-                alt="Movie 3" class="movie-poster" style="background: grey;">
-            <img src="https://m.media-amazon.com/images/M/MV5BNzJkMjBjYzUtMjZjNy00MTg5LTkxNzgtMmM3ZWZjYzRjMDliXkEyXkFqcGc@._V1_.jpg"
-                alt="Movie 4" class="movie-poster" style="background: grey;">
-            <img src="https://resizing.flixster.com/wV43LjsGt0QL6XSY-smx2uiCReI=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzlhMmM2NWRlLWNlNmYtNDk4Zi1iNzlmLTE4YTg2NzRiZWU5YS5qcGc="
-                alt="Movie 5" class="movie-poster" style="background: grey;">
-            <img src="https://m.media-amazon.com/images/M/MV5BYmQwNzRiNmItODc4Ny00Mjk4LThmYWQtNjI5OGU4OGUxMmY0XkEyXkFqcGc@._V1_.jpg"
-                alt="Movie 6" class="movie-poster" style="background: grey;">
-            <img src="https://upload.wikimedia.org/wikipedia/en/3/32/A_Silent_Voice_Film_Poster.jpg" alt="Movie 7"
-                class="movie-poster" style="background: grey;">
-            <img src="https://moviesfilmsandflix.com/wp-content/uploads/2023/10/mv5bzwuxztllzgitzjfhys00ndi4ltgwodatyzninzeznjnmmzrkxkeyxkfqcgdeqxvymte0mzqwmjgz._v1_.jpg"
-                alt="Movie 8" class="movie-poster" style="background: grey;">
+            {% for movie in fav_movies %}
+            <img src="https://image.tmdb.org/t/p/w500{{ movie.movie.poster_path }}alt="Movie 1" class="movie-poster" style="background: grey;">
+            {% endfor %}
         </div>
     </div>
 

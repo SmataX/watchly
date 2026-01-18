@@ -10,6 +10,7 @@ from src.modules.auth.models import *
 from src.modules.movies.models import *
 from src.modules.follows.models import *
 from src.modules.reviews.models import *
+from src.modules.favourite.models import *
 
 
 

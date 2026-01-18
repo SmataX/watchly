@@ -1,5 +1,4 @@
 const rating_stars = document.querySelectorAll(".rating-star")
-console.log(rating_stars)
 
 async function rate_movie(movie_id, value) {
     try {
