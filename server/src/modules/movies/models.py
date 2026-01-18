@@ -4,10 +4,7 @@ from datetime import datetime, date
 from typing import Optional, List, TYPE_CHECKING
 from sqlmodel import SQLModel, Field, Relationship
 from pydantic import BaseModel
-
-from typing import Optional, List
-from datetime import datetime, date
-from sqlmodel import Field, SQLModel, Relationship
+from sqlalchemy import Column, JSON
 
 if TYPE_CHECKING:
     from src.modules.rating.models import RatedMovie
@@ -49,6 +46,9 @@ class Movie(SQLModel, table=True):
     duration: int
     poster_path: Optional[str] = Field(default=None)
     release_date: Optional[date] = Field(default=None)
+    trailer_url: Optional[str] = Field(default=None)
+    backdrop_url: Optional[str] = Field(default=None)
+    photos: List[str] = Field(default=[], sa_column=Column(JSON))
 
     # Relationships
     genres: List["Genre"] = Relationship(back_populates="movies", link_model=MovieGenre)

@@ -77,11 +77,9 @@ async def search_combined_api(request: Request, query: str, client: httpx.AsyncC
     results = []
     
     try:
-        #1. Get movies
         response_movies = await client.get("/movies/search", params={"title": query, "limit": 5})
         
         movies = response_movies.json()
-        print(movies)
         for m in movies:
             results.append({
                 "id": m["id"],

@@ -6,7 +6,11 @@
 
 {% block content %}
 <div class="movie-hero">
+    {% if movie.backdrop_url %}
+    <div class="movie-hero-background" style="background-image: url('{{ movie.backdrop_url }}');"></div>
+    {% else %}
     <div class="movie-hero-background"></div>
+    {% endif %}
     <div class="hero-gradient-overlay"></div>
 
     <div class="movie-hero-content">
@@ -99,12 +103,18 @@
 
             <div class="trailer-column">
                 <div class="trailer-video-wrapper">
+                    {% if movie.trailer_url %}
                     <iframe class="trailer-video"
-                        src="https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1"
+                        src="{{ movie.trailer_url }}"
                         title="Trailer" frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen>
                     </iframe>
+                    {% else %}
+                    <div class="no-trailer" style="color: white; text-align: center; padding: 50px; background: #222; border-radius: 10px;">
+                        No trailer available.
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -137,18 +147,15 @@
         </div>
 
         <div class="photos-grid">
-            <div class="photo-item item-1">
-                <img src="https://placehold.net/400x400.png" alt="Scene 1">
+        {% if movie.photos %}
+            {% for photo in movie.photos[:4] %}
+            <div class="photo-item item-{{ loop.index }}">
+                <img src="{{ photo }}" alt="Scene {{ loop.index }}">
             </div>
-            <div class="photo-item item-2">
-                <img src="https://placehold.net/400x400.png" alt="Scene 2">
-            </div>
-            <div class="photo-item item-3">
-                <img src="https://placehold.net/400x400.png" alt="Scene 3">
-            </div>
-            <div class="photo-item item-4">
-                <img src="https://placehold.net/400x400.png" alt="Scene 4">
-            </div>
+            {% endfor %}
+        {% else %}
+            <p style="color: #666;">No photos available.</p>
+        {% endif %}
         </div>
     </div>
 
