@@ -55,6 +55,48 @@ class UserOperations:
         db_session.refresh(u)
         return u
 
+    def update_username(self, user_id: int, username: str):
+        query = select(User).where(User.username == username)
+        existing_user = self.session.exec(query).first()
+
+
+        if existing_user and existing_user.id != user_id:
+            raise HTTPException(status_code=409, detail="Username is taken.")
+
+        current_user = self.get_user_by_id(user_id)
+        current_user.username = username
+
+        self.session.add(current_user)
+        self.session.commit()
+        self.session.refresh(current_user)
+        return current_user
+
+    def update_email(self, user_id: int, email: str):
+        try:
+            current_user = self.get_user_by_id(user_id)
+            current_user.email = email
+
+            self.session.add(current_user)
+            self.session.commit()
+            self.session.refresh(current_user)
+            return current_user
+        except:
+            raise HTTPException(status_code=409, detail="Username is taken.")
+        
+
+    def update_description(self, user_id: int, description: str):
+        user = self.get_user_by_id(user_id)
+
+        if not user:
+            raise HTTPException(status_code=404, detail="Usern not found.")
+
+        user.description = description
+        self.session.add(user)
+        self.session.commit()
+        self.session.refresh(user)
+        return user
+
+
     
     def get_user(self, username: str, rating_ops: RatingOperations, reviews_ops: ReviewOperations, follows_ops: FollowOperations):
 

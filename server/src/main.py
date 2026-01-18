@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from src.core.db import create_db_and_tables
 from src.modules.auth import auth_router
-from src.modules.user import user_router
+from src.modules.user.routes import user_router
 
 from src.modules.auth.models import *
 from src.modules.movies.models import *
