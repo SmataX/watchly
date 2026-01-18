@@ -6,6 +6,7 @@ from src.core.db import Session
 from src.core.deps import get_session
 from src.modules.auth.services import get_current_user
 from src.modules.auth.models import User
+from src.modules.movies.models import Movie
 
 from .models import Review
 from .schemas import ReviewCreateForm
@@ -48,8 +49,10 @@ class ReviewOperations:
 
     def get_all_for_user(self, user_id: int) -> list[Review]:
         return self.session.exec(
-            select(Review).where(Review.user_id==user_id).options(joinedload(Review.user))
-        ).all()
+            select(Review)
+            .where(Review.user_id == user_id)
+            .options(joinedload(Review.user), joinedload(Review.movie))
+        ).unique().all()
 
 
     def get_all_for_movie(self, movie_id: int) -> list[Review]:

@@ -65,6 +65,12 @@ class UserOperations:
         avg_rating = round(sum([x.rating for x in rated_movies]) / len(rated_movies), 2) if rated_movies else 0
         fav_genres = []
         reviews = reviews_ops.get_all_for_user(user.id)
+        reviews_data = []
+        for review in reviews:
+            r_dict = review.model_dump()
+            if review.movie:
+                r_dict["movie"] = review.movie.model_dump()
+            reviews_data.append(r_dict)
         following = len(follows_ops.get_all_follows(user.id))
         followers = len(follows_ops.get_all_followers(user.id))
 
@@ -75,7 +81,7 @@ class UserOperations:
             "member_since": user.created_at.date(),
             "rated_movies": rated_movies,
             "avg_rating": avg_rating,
-            "reviews": reviews,
+            "reviews": reviews_data,
             "fav_genres": fav_genres,
             "following": following,
             "followers": followers
