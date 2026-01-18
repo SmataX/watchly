@@ -5,8 +5,8 @@
         <div class="profile-header-content">
             <div class="avatar-section">
                 <div class="avatar-circle">
-                    <img src="/static/images/avatars/{{ (user_data.get('id', 0) % 7) + 1 }}.png"
-                        alt="Avatar" class="profile-avatar-img">
+                    <img src="/static/images/avatars/{{ (user_data.get('id', 0) % 7) + 1 }}.png" alt="Avatar"
+                        class="profile-avatar-img">
                 </div>
                 <a href="/profile/edit" class="share-profile-link">Edit picture</a>
             </div>
@@ -89,7 +89,8 @@
 
         <div class="movies-grid">
             {% for movie in fav_movies %}
-            <img src="https://image.tmdb.org/t/p/w500{{ movie.movie.poster_path }}alt="Movie 1" class="movie-poster" style="background: grey;">
+            <img src="https://image.tmdb.org/t/p/w500{{ movie.movie.poster_path }}alt=" Movie 1" class="movie-poster"
+                style="background: grey;">
             {% endfor %}
         </div>
     </div>
@@ -98,11 +99,14 @@
         <h3 class="section-title">Rating</h3>
         <hr class="section-divider">
         {% if user_data['rated_movies'] %}
-        {% for movie in user_data['rated_movies'] %}
+        {% for rating_item in user_data['rated_movies'] %}
         <div>
-            <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
-            <span>{{ movie.title }} </span>
-            <span>{{ movie.rating }}</span>
+            {% if rating_item.movie %}
+            <img src="https://image.tmdb.org/t/p/w500{{ rating_item.movie.poster_path }}"
+                alt="{{ rating_item.movie.title }}">
+            <span>{{ rating_item.movie.title }}</span>
+            {% endif %}
+            <span>{{ rating_item.rating }}</span>
         </div>
         {% endfor %}
         {% else %}

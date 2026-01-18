@@ -97,13 +97,19 @@ class UserOperations:
         return user
 
 
-    
     def get_user(self, username: str, rating_ops: RatingOperations, reviews_ops: ReviewOperations, follows_ops: FollowOperations):
-
         user = self.get_user_by_username(username)
+        
         rated_movies = rating_ops.get_all_for_user(user.id)
         avg_rating = round(sum([x.rating for x in rated_movies]) / len(rated_movies), 2) if rated_movies else 0
-        fav_genres = []
+        
+        rated_movies_data = []
+        for rating in rated_movies:
+            r_dict = rating.model_dump()
+            if rating.movie:
+                r_dict["movie"] = rating.movie.model_dump()
+            rated_movies_data.append(r_dict)
+
         reviews = reviews_ops.get_all_for_user(user.id)
         reviews_data = []
         for review in reviews:
@@ -111,23 +117,23 @@ class UserOperations:
             if review.movie:
                 r_dict["movie"] = review.movie.model_dump()
             reviews_data.append(r_dict)
+
+        fav_genres = []
         following = len(follows_ops.get_all_follows(user.id))
         followers = len(follows_ops.get_all_followers(user.id))
 
-        data = {
+        return {
             "username": user.username,
             "profile_path": user.profile_path,
             "description": user.description,
             "member_since": user.created_at.date(),
-            "rated_movies": rated_movies,
+            "rated_movies": rated_movies_data,
             "avg_rating": avg_rating,
             "reviews": reviews_data,
             "fav_genres": fav_genres,
             "following": following,
             "followers": followers
         }
-
-        return data
 
     
     def get_top_contributors(self, limit: int) -> list[TopContributor]:
