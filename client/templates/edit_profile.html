@@ -6,8 +6,8 @@
 <div class="ep-scope">
     <div class="edit-container" style="margin-top: 30px;">
         <div class="edit-card">
-            <h2>Ustawienia Profilu</h2>
-            <p class="subtitle">Zarządzaj swoimi danymi, hasłem i prywatnością.</p>
+            <h2>Profile Settings</h2>
+            <p class="subtitle">Manage your profile data, password and privacy.</p>
 
             <form method="POST" enctype="multipart/form-data">
                 
@@ -16,15 +16,15 @@
                         <img src="https://i.pinimg.com/736x/19/cd/9d/19cd9d5c743ad46b6a7a130029fb4d18.jpg" alt="Avatar">
                     </div>
                     <div class="avatar-info">
-                        <div style="margin-bottom: 5px; font-weight: bold;">Zdjęcie profilowe</div>
-                        <div style="margin-bottom: 10px; font-size: 12px; color: #666;">JPG, GIF lub PNG. Max 155MB.</div>
-                        <button type="button">Wgraj nowe zdjęcie</button>
+                        <div style="margin-bottom: 5px; font-weight: bold;">Profile Picture</div>
+                        <div style="margin-bottom: 10px; font-size: 12px; color: #666;">JPG, GIF or PNG. Max 155MB.</div>
+                        <button type="button">Upload new picture</button>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Nazwa użytkownika</label>
+                        <label>Username</label>
                         <input type="text" name="username">
                     </div>
                     <div class="form-group">
@@ -38,20 +38,20 @@
                     <textarea name="bio" placeholder="Napisz, jakie gatunki filmowe lubisz najbardziej..."></textarea>
                 </div>
 
-                <h3>Bezpieczeństwo</h3>
+                <h3>Security</h3>
                 
                 <div class="form-group">
-                    <label>Aktualne hasło</label>
+                    <label>Current Password</label>
                     <input type="password" name="current_password" placeholder="••••••••">
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Nowe hasło</label>
+                        <label>New Password</label>
                         <input type="password" name="new_password" placeholder="••••••••">
                     </div>
                     <div class="form-group">
-                        <label>Powtórz nowe hasło</label>
+                        <label>Confirm New Password</label>
                         <input type="password" name="confirm_password" placeholder="••••••••">
                     </div>
                 </div>
@@ -68,11 +68,11 @@
                     </div>
                 </div>
 
-                <h3>Prywatność</h3>
+                <h3>Privacy</h3>
                 <div class="toggle-wrapper">
                     <div>
-                        <div class="toggle-label" style="font-weight: bold;">Profil Prywatny</div>
-                        <div style="font-size: 12px; color: #777;">Tylko osoby, które obserwujesz, zobaczą Twoje oceny.</div>
+                        <div class="toggle-label" style="font-weight: bold;">Private Profile</div>
+                        <div style="font-size: 12px; color: #777;">Only people you follow will see your ratings.</div>
                     </div>
                     <label class="switch">
                         <input type="checkbox" name="is_private">
@@ -81,8 +81,8 @@
                 </div>
 
                 <div class="form-actions">
-                    <button type="button" class="btn-cancel">Anuluj</button>
-                    <button type="submit" class="btn-save">Zapisz zmiany</button>
+                    <button type="button" class="btn-cancel">Cancel</button>
+                    <button type="submit" class="btn-save">Save Changes</button>
                 </div>
 
             </form>

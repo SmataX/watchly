@@ -5,8 +5,8 @@
         <div class="profile-header-content">
             <div class="avatar-section">
                 <div class="avatar-circle">
-                    <img src="https://i.pinimg.com/originals/82/47/0b/82470b4ed44c3edacfcd4201e2297050.jpg?nii=t"
-                        alt="Avatar">
+                    <img src="/static/images/avatars/{{ (user_data.get('id', 0) % 7) + 1 }}.png"
+                        alt="Avatar" class="profile-avatar-img">
                 </div>
                 <a href="/profile/edit" class="share-profile-link">Edit picture</a>
             </div>

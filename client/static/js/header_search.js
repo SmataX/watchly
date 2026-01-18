@@ -1,7 +1,9 @@
+/* --- OBSŁUGA WYSZUKIWARKI --- */
 const searchInput = document.getElementById('movie-search-input-nav');
 const resultsList = document.getElementById('search-results-list-nav');
-    let debounceTimer;
+let debounceTimer;
 
+if (searchInput && resultsList) {
     searchInput.addEventListener('input', function() {
         const query = this.value.trim();
 
@@ -46,9 +48,28 @@ const resultsList = document.getElementById('search-results-list-nav');
                 .catch(error => console.error('Błąd pobierania:', error));
         }, 300);
     });
+}
 
-    document.addEventListener('click', function(e) {
+/* --- OBSŁUGA ROZWIJANEGO MENU UŻYTKOWNIKA --- */
+function toggleUserMenu() {
+    const dropdown = document.getElementById("userDropdown");
+    if (dropdown) {
+        dropdown.classList.toggle("show");
+    }
+}
+
+/* --- ZAMYKANIE ELEMENTÓW PO KLIKNIĘCIU NA ZEWNĄTRZ --- */
+document.addEventListener('click', function(e) {
+    if (searchInput && resultsList) {
         if (!searchInput.contains(e.target) && !resultsList.contains(e.target)) {
             resultsList.style.display = 'none';
         }
-    });
+    }
+
+    if (!e.target.closest('.user-menu-container')) {
+        const dropdown = document.getElementById("userDropdown");
+        if (dropdown && dropdown.classList.contains('show')) {
+            dropdown.classList.remove('show');
+        }
+    }
+});
