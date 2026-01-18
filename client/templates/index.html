@@ -9,12 +9,6 @@
 <!-- BANNER SECTION-->
 <section class="banner-section">
     <h1 class="banner-title">FIND 1000+ MOVIES <br> RATE THEM</h1>
-
-    <div class="search-container">
-        <div class="search-icon">🔍</div>
-        <input type="text" id="movie-search-input" class="search-input" placeholder="SEARCH MOVIE..." autocomplete="off">
-        <ul id="search-results-list"></ul>
-    </div>
 </section>
 
 <div class="homepage-wrapper">
@@ -268,53 +262,5 @@
         </div>
     </div>
 </div>
-<script>
-    const searchInput = document.getElementById('movie-search-input');
-    const resultsList = document.getElementById('search-results-list');
-    let debounceTimer;
-
-    searchInput.addEventListener('input', function() {
-        const query = this.value.trim();
-
-        clearTimeout(debounceTimer);
-
-        if (query.length < 2) {
-            resultsList.style.display = 'none';
-            resultsList.innerHTML = '';
-            return;
-        }
-
-        debounceTimer = setTimeout(() => {
-            // Logowanie dla celów testowych (zobaczysz to w F12 -> Console)
-            console.log(`Wysyłam zapytanie o: ${query}`);
-
-            fetch(`/api/search_movies?query=${encodeURIComponent(query)}`)
-                .then(response => response.json())
-                .then(movies => {
-                    resultsList.innerHTML = '';
-                    
-                    if (movies.length > 0) {
-                        resultsList.style.display = 'block';
-                        movies.forEach(movie => {
-                            const li = document.createElement('li');
-                            // POPRAWKA: Zmieniono /movie/ na /movies/
-                            li.innerHTML = `<a href="/movies/${movie.id}">${movie.title}</a>`;
-                            resultsList.appendChild(li);
-                        });
-                    } else {
-                        resultsList.style.display = 'none';
-                    }
-                })
-                .catch(error => console.error('Błąd pobierania:', error));
-        }, 300);
-    });
-
-    // Ukrywanie listy po kliknięciu poza nią
-    document.addEventListener('click', function(e) {
-        if (!searchInput.contains(e.target) && !resultsList.contains(e.target)) {
-            resultsList.style.display = 'none';
-        }
-    });
-</script>
 
 {% endblock %}

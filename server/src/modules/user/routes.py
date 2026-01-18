@@ -12,6 +12,12 @@ from .schemas import UserResponse, UserProfileResponse
 
 user_router = APIRouter(prefix="/user", tags=["user"])
 
+@user_router.get("/search")
+def search_users_endpoint(username: str, user_ops: UserOperationsDep, limit: int = 5):
+    test = user_ops.search_users(username)
+    print(test)
+    return user_ops.search_users(username)
+
 @user_router.get("/{username}", status_code=status.HTTP_200_OK)
 def get_user_profile(username: str, user_ops: UserOperationsDep, rating_ops: RatingOperationsDep, reviews_ops: ReviewOperationsDep, follow_ops: FollowOperationsDep):
     return user_ops.get_user(username, rating_ops, reviews_ops, follow_ops, )

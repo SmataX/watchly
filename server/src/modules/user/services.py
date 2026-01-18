@@ -1,7 +1,7 @@
 # src/modules/user/user_operations.py
 
 from fastapi import HTTPException, status, Depends
-from sqlmodel import Session, select, func
+from sqlmodel import Session, select, func, col
 from sqlalchemy.orm import joinedload
 from src.core.deps import get_session
 from src.modules.auth.models import User
@@ -31,6 +31,10 @@ class UserOperations:
             )
         return user
     
+    def search_users(self, username: str) -> list[User]:
+        '''Searches for users by username.'''
+        query = select(User).where(col(User.username).contains(username))
+        return self.session.exec(query).all()
 
     def get_user_by_username(self, username: str) -> User:
         """Retrieves a user by their username."""
