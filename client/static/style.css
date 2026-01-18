@@ -321,10 +321,19 @@ a {
     margin-bottom: 10px;
 }
 
+.view-all-link {
+    text-decoration: none;
+    color: #ffb01f;
+    background-color: #2e2e2e;
+    padding: 10px;
+    border-radius: 15px;
+    font-weight: bold;
+}
+
 
 .view-all-link:hover {
-    text-decoration: underline;
-    color: #ffb01f;
+    color: white;
+    background-color: #3d3d3d;
 }
 
 .section-divider {
@@ -466,7 +475,8 @@ a {
     width: 100%;
     height: 330px;
     object-fit: cover;
-    border-radius: 12px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
     transition: transform 0.2s;
 }
 
@@ -500,6 +510,23 @@ a {
     letter-spacing: 1px;
 }
 
+.rating-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #2e2e2e;
+    padding: 5px 0;
+    cursor: pointer;
+}
+
+.rating-info span {
+    margin: 0 5px;
+}
+
+.rating-info .rating {
+    color: orange;
+}
+
 /* TRENDING CARDS */
 .movie-card-trending {
     position: relative;
@@ -527,11 +554,6 @@ a {
 /* Section spacing */
 .section-container {
     margin-bottom: 60px;
-}
-
-.view-all-link:hover {
-        color: #ffb01f;
-        text-decoration: underline;
 }
 
 /* RATINGS*/

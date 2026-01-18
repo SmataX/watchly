@@ -23,10 +23,14 @@
 
         <div class="movies-grid-homepage">
             {% if followers_ratings %}
-            {% for movie in followers_ratings %}
+            {% for rating in followers_ratings %}
             <div class="movie-card-rating">
-                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="THE BATMAN" class="movie-poster-large">
-                <div class="movie-title-overlay">{{ movie.title }}</div>
+                <img src="https://image.tmdb.org/t/p/w500{{ rating.movie.poster_path }}" onclick="go_to('/movies/{{ rating.movie.id }}')" alt="THE BATMAN" class="movie-poster-large">
+                <div class="rating-info" onclick="go_to('/profile/{{ rating.user.username }}')">
+                    <span>{{ rating.user.username }}</span>
+                    <span class="rating">{{ rating.rating }}★</span>
+                </div>
+                
             </div>
             {% endfor %}
             {% else %}
@@ -46,123 +50,11 @@
 
         <div class="movies-grid-homepage">
             {% for movie in trending %}
-            <div class="movie-card-trending">
+            <div class="movie-card-trending" onclick="go_to(`/movies/{{ movie.id }}`)">
                 <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="Trending 1" class="movie-poster-large">
                 <div class="trending-badge">#{{ loop.index }}</div>
-                <div class="movie-title-overlay">{{ movie.title }}</div>
             </div>
             {% endfor %}
-        </div>
-    </div>
-
-    <!-- JUST REVIEWED SECTION -->
-    <div class="section-container">
-        <h3 class="section-title">Just Reviewed...</h3>
-        <hr class="section-divider">
-
-        <div class="reviews-list">
-            <div class="review-card">
-                <div class="review-poster-wrapper">
-                    <div class="poster-container">
-                        <img src="https://fwcdn.pl/fpo/85/13/868513/8133073.3.jpg" alt="Deadpool & Wolverine" class="review-poster">
-                    </div>
-                </div>
-                <div class="review-content">
-                    <div class="movie-header">
-                        <h4 class="movie-title">Deadpool & Wolverine <span class="movie-year">2024</span></h4>
-                    </div>
-
-                    <div class="genres-list">
-                        <span class="genre-tag">Comedy</span>
-                        <span class="genre-tag">Romance</span>
-                        <span class="genre-tag">Action</span>
-                    </div>
-
-                    <hr class="section-divider">
-                    <div class="user-comment">
-                        <div class="comment-header">
-                            <div class="comment-user-info">
-                                <div class="comment-user-avatar">
-                                    <img src="https://i.pinimg.com/originals/82/47/0b/82470b4ed44c3edacfcd4201e2297050.jpg?nii=t" alt="User Avatar">
-                                </div>
-                                <span class="comment-username">SigmaKaro</span>
-                                <div class="user-rating-stars">★★★★★ 5.0</div>
-                            </div>
-                        </div>
-                        <p>Best war movie I've seen in years. I was bawling my eyes out during "that" scene between the two soldiers in the crater. Outstanding performances all around.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="reviews-list">
-            <div class="review-card">
-                <div class="review-poster-wrapper">
-                    <div class="poster-container">
-                        <img src="https://fwcdn.pl/fpo/85/13/868513/8133073.3.jpg" alt="Deadpool & Wolverine" class="review-poster">
-                    </div>
-                </div>
-                <div class="review-content">
-                    <div class="movie-header">
-                        <h4 class="movie-title">Deadpool & Wolverine <span class="movie-year">2024</span></h4>
-                    </div>
-
-                    <div class="genres-list">
-                        <span class="genre-tag">Comedy</span>
-                        <span class="genre-tag">Romance</span>
-                        <span class="genre-tag">Action</span>
-                    </div>
-
-                    <hr class="section-divider">
-                    <div class="user-comment">
-                        <div class="comment-header">
-                            <div class="comment-user-info">
-                                <div class="comment-user-avatar">
-                                    <img src="https://i.pinimg.com/originals/82/47/0b/82470b4ed44c3edacfcd4201e2297050.jpg?nii=t" alt="User Avatar">
-                                </div>
-                                <span class="comment-username">SigmaKaro</span>
-                                <div class="user-rating-stars">★★★★★ 5.0</div>
-                            </div>
-                        </div>
-                        <p>Best war movie I've seen in years. I was bawling my eyes out during "that" scene between the two soldiers in the crater. Outstanding performances all around.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="reviews-list">
-            <div class="review-card">
-                <div class="review-poster-wrapper">
-                    <div class="poster-container">
-                        <img src="https://fwcdn.pl/fpo/85/13/868513/8133073.3.jpg" alt="Deadpool & Wolverine" class="review-poster">
-                    </div>
-                </div>
-                <div class="review-content">
-                    <div class="movie-header">
-                        <h4 class="movie-title">Deadpool & Wolverine <span class="movie-year">2024</span></h4>
-                    </div>
-
-                    <div class="genres-list">
-                        <span class="genre-tag">Comedy</span>
-                        <span class="genre-tag">Romance</span>
-                        <span class="genre-tag">Action</span>
-                    </div>
-
-                    <hr class="section-divider">
-                    <div class="user-comment">
-                        <div class="comment-header">
-                            <div class="comment-user-info">
-                                <div class="comment-user-avatar">
-                                    <img src="https://i.pinimg.com/originals/82/47/0b/82470b4ed44c3edacfcd4201e2297050.jpg?nii=t" alt="User Avatar">
-                                </div>
-                                <span class="comment-username">SigmaKaro</span>
-                                <div class="user-rating-stars">★★★★★ 5.0</div>
-                            </div>
-                        </div>
-                        <p>Best war movie I've seen in years. I was bawling my eyes out during "that" scene between the two soldiers in the crater. Outstanding performances all around.</p>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -174,44 +66,24 @@
         </div>
         <hr class="section-divider">
 
+        
         <div class="contributors-grid">
-            <div class="contributor-card">
+            {% for contributor in top_contributors %}
+            <div class="contributor-card" onclick="go_to('/profile/{{ contributor.user.username }}')">
                 <div class="contributor-avatar">
-                    <img src="https://i.pinimg.com/originals/82/47/0b/82470b4ed44c3edacfcd4201e2297050.jpg?nii=t" alt="User123">
+                    <img src="/static/images/avatars/{{ (contributor.user_id % 34) + 1 }}.png" alt="User123">
                 </div>
                 <div class="contributor-info">
-                    <h4 class="contributor-name">User123</h4>
+                    <h4 class="contributor-name">{{ contributor.user.username }}</h4>
                     <div class="contributor-stats">
-                        <span class="reviews-count">847 reviews</span>
+                        <span class="reviews-count">{{ contributor.reviews_count }} reviews</span>
                     </div>
                 </div>
             </div>
-
-            <div class="contributor-card">
-                <div class="contributor-avatar">
-                    <img src="https://i.pinimg.com/originals/82/47/0b/82470b4ed44c3edacfcd4201e2297050.jpg?nii=t" alt="User456">
-                </div>
-                <div class="contributor-info">
-                    <h4 class="contributor-name">User456</h4>
-                    <div class="contributor-stats">
-                        <span class="reviews-count">723 reviews</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="contributor-card">
-                <div class="contributor-avatar">
-                    <img src="https://i.pinimg.com/originals/82/47/0b/82470b4ed44c3edacfcd4201e2297050.jpg?nii=t" alt="MovieLover">
-                </div>
-                <div class="contributor-info">
-                    <h4 class="contributor-name">MovieLover</h4>
-                    <div class="contributor-stats">
-                        <span class="reviews-count">592 reviews</span>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
+        
     </div>
 </div>
-
+<script src="{{ url_for('static', path='js/utils.js') }}"></script>
 {% endblock %}

@@ -57,6 +57,7 @@ async def index(
     if user:
         followers_ratings = await get_data("/movies/following_ratings?limit=4", client, token)
     movies = await get_data("/movies/random?limit=8", client)
+    top_contributors = await get_data("/user/top-contributors?limit=3", client)
 
     if len(trending_movies) < 8:
         trending_movies.extend(movies[:8-len(trending_movies)])
@@ -67,6 +68,7 @@ async def index(
         "movies": movies,
         "trending": trending_movies, 
         "followers_ratings": followers_ratings, 
+        "top_contributors": top_contributors, 
     })
 
 @app.get("/api/search_movies")

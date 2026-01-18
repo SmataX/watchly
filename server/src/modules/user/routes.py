@@ -8,7 +8,7 @@ from src.modules.reviews.deps import ReviewOperationsDep
 from src.modules.follows.deps import FollowOperationsDep
 from src.modules.favourite.deps import FavouriteListOperationsDep
 from .deps import UserOperationsDep
-from .schemas import UserResponse, UserProfileResponse
+from .schemas import UserResponse, UserProfileResponse, TopContributor
 from src.modules.favourite.schemes import FavouriteListElement
 
 
@@ -20,14 +20,20 @@ def search_users_endpoint(username: str, user_ops: UserOperationsDep, limit: int
     print(test)
     return user_ops.search_users(username)
 
+
+@user_router.get("/top-contributors", response_model=list[TopContributor])
+def get_top_contributors(user_ops: UserOperationsDep, limit: int = 5):
+    return user_ops.get_top_contributors(limit)
+
 @user_router.get("/{username}", status_code=status.HTTP_200_OK)
 def get_user_profile(username: str, user_ops: UserOperationsDep, rating_ops: RatingOperationsDep, reviews_ops: ReviewOperationsDep, follow_ops: FollowOperationsDep):
     return user_ops.get_user(username, rating_ops, reviews_ops, follow_ops, )
 
 @user_router.get("/{username}/fav", response_model=list[FavouriteListElement])
 def get_fav_movies(fav_ops: FavouriteListOperationsDep, user_ops: UserOperationsDep, username: str, limit: int):
-    print("asdasd")
     return fav_ops.get_list(user_ops.get_user_by_username(username).id, limit)
+
+
 
 
 # @user_router.put("/update_description", status_code=status.HTTP_200_OK)

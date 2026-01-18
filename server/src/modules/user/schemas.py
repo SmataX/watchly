@@ -27,6 +27,11 @@ class UserProfileResponse(BaseModel):
     following: int
     followers: int
 
+class TopContributor(BaseModel):
+    user_id: int
+    user: UserResponse
+    reviews_count: int
+
 
 
 from src.modules.rating.schemas import RatingResponse

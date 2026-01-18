@@ -81,7 +81,7 @@ def search_movies_endpoint(
 def get_trending_movies(rating_ops: RatingOperationsDep, limit: int):
     return rating_ops.get_trending_movies(limit=8)
 
-@router.get("/following_ratings", response_model=list[MovieResponse])
+@router.get("/following_ratings", response_model=list[RatingResponse])
 def get_following_ratings(rating_ops: RatingOperationsDep, user: UserDep, limit: int):
     return rating_ops.get_latest_ratings(user_id=user['id'], limit=4)
 

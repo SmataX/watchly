@@ -1,5 +1,3 @@
-# src/modules/user/user_operations.py
-
 from fastapi import HTTPException, status, Depends
 from sqlmodel import Session, select, func, col
 from sqlalchemy.orm import joinedload
@@ -13,7 +11,7 @@ from src.modules.reviews.services import ReviewOperations
 from src.modules.follows.services import FollowOperations
 from src.modules.movies.models import Movie, MovieGenre, Genre
 
-from .schemas import UserProfileResponse
+from .schemas import UserProfileResponse, TopContributor
 
 class UserOperations:
     def __init__(self, session: Session):
@@ -88,6 +86,20 @@ class UserOperations:
         }
 
         return data
+
+    
+    def get_top_contributors(self, limit: int) -> list[TopContributor]:
+        statement = (
+            select(User, func.count(Review.id))
+            .join(Review)
+            .group_by(User)
+            .order_by(func.count(Review.id).desc())
+            .limit(limit)
+        )
+        
+        results = self.session.exec(statement).all()
+        
+        return [{"user_id": user.id, "user": user, "reviews_count": count} for user, count in results]
 
     
 def get_user_operations(session: Session = Depends(get_session)) -> UserOperations:
