@@ -76,6 +76,14 @@ def search_movies_endpoint(
 ):
     return movie_operations.search_movies(title, limit)
 
+@router.get("/trending", response_model=list[MovieResponse])
+def get_trending_movies(rating_ops: RatingOperationsDep, limit: int):
+    return rating_ops.get_trending_movies(limit=8)
+
+@router.get("/following_ratings", response_model=list[MovieResponse])
+def get_following_ratings(rating_ops: RatingOperationsDep, user_id: int, limit: int):
+    return rating_ops.get_trending_movies(limit=4)
+
 @router.get("/{id}", response_model=MovieResponse)
 def get_by_id(id: int, movie_operations: MoviesOperationsDep, ):
     return movie_operations.get_movie(id)

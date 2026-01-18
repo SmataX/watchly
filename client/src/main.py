@@ -49,12 +49,17 @@ async def index(
     user: Optional[dict] = Depends(get_optional_user),
     client: httpx.AsyncClient = Depends(get_http_client)
 ):
-    movies = await get_data("/movies/random?limit=10", client)
+    trending_movies = await get_data("/movies/trending?limit=8", client)
+    movies = await get_data("/movies/random?limit=8", client)
+
+    if len(trending_movies) < 8:
+        trending_movies.extend(movies[:8-len(trending_movies)])
 
     return templates.TemplateResponse("index.html", {
         "request": request, 
         "user": user,
-        "movies": movies
+        "movies": movies,
+        "trending": trending_movies, 
     })
 
 @app.get("/api/search_movies")

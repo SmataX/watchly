@@ -52,55 +52,13 @@
         <hr class="section-divider">
 
         <div class="movies-grid-homepage">
-            <!-- Pierwszy rząd - pozycje 1-4 -->
+            {% for movie in trending %}
             <div class="movie-card-trending">
-                <img src="https://cineboom.bg/wp-content/uploads/2018/10/jokera-bg-poster.jpg" alt="Trending 1" class="movie-poster-large">
-                <div class="trending-badge">#1</div>
-                <div class="movie-title-overlay">JOKER</div>
+                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="Trending 1" class="movie-poster-large">
+                <div class="trending-badge">#{{ loop.index }}</div>
+                <div class="movie-title-overlay">{{ movie.title }}</div>
             </div>
-
-            <div class="movie-card-trending">
-                <img src="https://fwcdn.pl/fpo/08/91/500891/7354571_1.3.jpg" alt="Trending 2" class="movie-poster-large">
-                <div class="trending-badge">#2</div>
-                <div class="movie-title-overlay">INCEPCJA</div>
-            </div>
-
-            <div class="movie-card-trending">
-                <img src="https://www.sliceofscifi.com/wp-content/uploads/2008/06/wall_e_1.jpg" alt="Trending 3" class="movie-poster-large">
-                <div class="trending-badge">#3</div>
-                <div class="movie-title-overlay">WALL·E</div>
-            </div>
-
-            <div class="movie-card-trending">
-                <img src="https://medias.spotern.com/wanted/w640/53/53865-1581583121.jpg" alt="Trending 4" class="movie-poster-large">
-                <div class="trending-badge">#4</div>
-                <div class="movie-title-overlay">PARASITE</div>
-            </div>
-
-            <!-- Drugi rząd - pozycje 5-8 -->
-            <div class="movie-card-trending">
-                <img src="https://cineboom.bg/wp-content/uploads/2018/10/jokera-bg-poster.jpg" alt="Trending 5" class="movie-poster-large">
-                <div class="trending-badge">#5</div>
-                <div class="movie-title-overlay">JOKER</div>
-            </div>
-
-            <div class="movie-card-trending">
-                <img src="https://fwcdn.pl/fpo/08/91/500891/7354571_1.3.jpg" alt="Trending 6" class="movie-poster-large">
-                <div class="trending-badge">#6</div>
-                <div class="movie-title-overlay">INCEPCJA</div>
-            </div>
-
-            <div class="movie-card-trending">
-                <img src="https://www.sliceofscifi.com/wp-content/uploads/2008/06/wall_e_1.jpg" alt="Trending 7" class="movie-poster-large">
-                <div class="trending-badge">#7</div>
-                <div class="movie-title-overlay">WALL·E</div>
-            </div>
-
-            <div class="movie-card-trending">
-                <img src="https://medias.spotern.com/wanted/w640/53/53865-1581583121.jpg" alt="Trending 8" class="movie-poster-large">
-                <div class="trending-badge">#8</div>
-                <div class="movie-title-overlay">PARASITE</div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 

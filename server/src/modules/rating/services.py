@@ -1,7 +1,9 @@
 from fastapi import HTTPException, status, Depends
-from sqlmodel import Session, select, col
+from sqlmodel import Session, select, col, func, desc
+from datetime import datetime, timedelta
 
 from src.modules.movies.models import Movie
+from src.modules.movies.schemes import MovieResponse
 from src.core.deps import get_session
 
 from .models import RatedMovie
@@ -87,6 +89,21 @@ class RatingOperations:
         if result:
             return result.rating
         return None
+
+    def get_trending_movies(self, limit: int) -> list[MovieResponse]:
+        seven_days_ago = datetime.now() - timedelta(days=7)
+
+        q = (
+            select(Movie)
+            .join(RatedMovie)
+            .where(RatedMovie.created_at >= seven_days_ago)
+            .group_by(Movie.id)
+            .order_by(func.count(RatedMovie.id).desc())
+            .limit(limit)
+        )
+
+        results = self.session.exec(q).all()
+        return results
 
 
 def get_rating_operations(session: Session = Depends(get_session)):
