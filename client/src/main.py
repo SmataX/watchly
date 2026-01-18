@@ -49,7 +49,13 @@ async def index(
     user: Optional[dict] = Depends(get_optional_user),
     client: httpx.AsyncClient = Depends(get_http_client)
 ):
+    token = request.cookies.get("access_token")
+    token = token.split(' ')[1] if token else None
+
     trending_movies = await get_data("/movies/trending?limit=8", client)
+    followers_ratings = []
+    if user:
+        followers_ratings = await get_data("/movies/following_ratings?limit=4", client, token)
     movies = await get_data("/movies/random?limit=8", client)
 
     if len(trending_movies) < 8:
@@ -60,6 +66,7 @@ async def index(
         "user": user,
         "movies": movies,
         "trending": trending_movies, 
+        "followers_ratings": followers_ratings, 
     })
 
 @app.get("/api/search_movies")

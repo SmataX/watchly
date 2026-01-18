@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 
 from src.modules.movies.models import Movie
 from src.modules.movies.schemes import MovieResponse
+from src.modules.follows.models import UserFollow
 from src.core.deps import get_session
 
 from .models import RatedMovie
@@ -102,6 +103,19 @@ class RatingOperations:
             .limit(limit)
         )
 
+        results = self.session.exec(q).all()
+        return results
+
+    def get_latest_ratings(self, user_id: int, limit: int) -> list[MovieResponse]:
+        q = (
+            select(Movie)
+            .join(RatedMovie, Movie.id == RatedMovie.movie_id)
+            .join(UserFollow, RatedMovie.user_id == UserFollow.followed_id)
+            .where(UserFollow.follower_id == user_id)
+            .order_by(RatedMovie.created_at.desc())
+            .limit(limit)
+        )
+        
         results = self.session.exec(q).all()
         return results
 

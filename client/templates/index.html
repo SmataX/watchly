@@ -13,6 +13,7 @@
 
 <div class="homepage-wrapper">
     <!-- LATEST RATINGS SECTION -->
+     {% if user %}
     <div class="section-container">
         <div class="section-header-row">
             <h3 class="section-title">Latest Ratings</h3>
@@ -21,27 +22,19 @@
         <hr class="section-divider">
 
         <div class="movies-grid-homepage">
+            {% if followers_ratings %}
+            {% for movie in followers_ratings %}
             <div class="movie-card-rating">
-                <img src="https://i.pinimg.com/736x/03/4a/24/034a248bb847a2a89890ebb42130c4db.jpg" alt="HIMSAN TRAI" class="movie-poster-large">
-                <div class="movie-title-overlay">HIMSAN TRAI</div>
+                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="THE BATMAN" class="movie-poster-large">
+                <div class="movie-title-overlay">{{ movie.title }}</div>
             </div>
-
-            <div class="movie-card-rating">
-                <img src="https://iftm.tmgrup.com.tr/2023/05/10/oppenheimer-fragmani-izle-oppenheimer-konusu-ne-oyuncu-kadrosu-ve-vizyon-tarihi-ne-1683724550349.jpeg" alt="OPPENLINER" class="movie-poster-large">
-                <div class="movie-title-overlay">OPPENLINER</div>
-            </div>
-
-            <div class="movie-card-rating">
-                <img src="https://shuminuma.com/wp-content/uploads/2021/06/Amazing_Spider-Man_Poster-768x1138.jpg" alt="SCREAM" class="movie-poster-large">
-                <div class="movie-title-overlay">SPIDER MAN</div>
-            </div>
-
-            <div class="movie-card-rating">
-                <img src="https://static.wixstatic.com/media/14d182_06512cc568a5493897d0d73fb470ca69~mv2.png/v1/fill/w_639,h_1000,al_c,q_90,usm_0.66_1.00_0.01/14d182_06512cc568a5493897d0d73fb470ca69~mv2.png" alt="THE BATMAN" class="movie-poster-large">
-                <div class="movie-title-overlay">SCREAM</div>
-            </div>
+            {% endfor %}
+            {% else %}
+            <span>No rated movies</span>
+            {% endif %}
         </div>
     </div>
+    {% endif %}
 
     <!-- TRENDING NOW SECTION -->
     <div class="section-container">

@@ -81,8 +81,8 @@ def get_trending_movies(rating_ops: RatingOperationsDep, limit: int):
     return rating_ops.get_trending_movies(limit=8)
 
 @router.get("/following_ratings", response_model=list[MovieResponse])
-def get_following_ratings(rating_ops: RatingOperationsDep, user_id: int, limit: int):
-    return rating_ops.get_trending_movies(limit=4)
+def get_following_ratings(rating_ops: RatingOperationsDep, user: UserDep, limit: int):
+    return rating_ops.get_latest_ratings(user_id=user['id'], limit=4)
 
 @router.get("/{id}", response_model=MovieResponse)
 def get_by_id(id: int, movie_operations: MoviesOperationsDep, ):
