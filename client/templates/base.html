@@ -13,15 +13,11 @@
 
     <header class="header">
         <div class="left">
-            <img src="/static/images/logo.png" alt="logo" width="40" height="40">
             <a href="/" class="logoText">WATCHLY</a>
         </div>
 
         <nav class="nav">
             <a href="/movies">Movies</a>
-            {% if user %}
-            <a href="/profile/{{ user.username }}">Profile</a>
-            {% endif %}
             <div class="search-container-nav">
                 <span class="search-icon-nav"><i class="fa-solid fa-magnifying-glass"></i></span>
                 <input type="text" id="movie-search-input-nav" class="search-input-nav" placeholder="SEARCH MOVIE..." autocomplete="off">
@@ -29,13 +25,22 @@
             </div>
         </nav>
 
-        <div>
+        <div class="header-right">
             {% if user %}
-            <a href="/profile" class="user-greeting">Hello, {{ user.username }}!</a>
-
-            <a href="/logout" class="logoutBtn">Logout</a>
+            <div class="user-menu-container">
+                <div class="user-pill" onclick="toggleUserMenu()">
+                    <span class="user-name">{{ user.username }}</span>
+                    <img src="/static/images/avatars/{{ (user.id % 34) + 1 }}.png" alt="User" class="user-avatar">
+                </div>
+                
+                <div id="userDropdown" class="user-dropdown-content">
+                    <a href="/profile/{{ user.username }}">My Profile</a>
+                    <a href="/profile/edit">Settings</a>
+                    <a href="/logout">Logout</a>
+                </div>
+            </div>
             {% else %}
-            <a href="/login" class="signIn">Sign in</a>
+            <a href="/login" class="signIn">Sign In</a>
             {% endif %}
         </div>
     </header>

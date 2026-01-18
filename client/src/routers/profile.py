@@ -1,5 +1,4 @@
-﻿
-from fastapi.responses import HTMLResponse
+﻿from fastapi.responses import HTMLResponse
 import httpx
 
 from typing import Optional
@@ -16,7 +15,7 @@ router = APIRouter(prefix="/profile")
 
 
 @router.get("/")
-async def user_profile(
+async def my_profile(  # Zmieniłem nazwę funkcji, żeby nie było konfliktu
     request: Request, 
     user: Optional[dict] = Depends(get_optional_user),
     client: httpx.AsyncClient = Depends(get_http_client),
@@ -25,6 +24,12 @@ async def user_profile(
         return RedirectResponse("http://127.0.0.1:8001/login")
     
     user_data = await get_data(f"/user/{user['username']}", client)
+    
+    # --- NAPRAWA ---
+    # Uzupełniamy ID z sesji, jeśli brakuje go w odpowiedzi z API
+    if user and "id" not in user_data:
+        user_data["id"] = user.get("id")
+    # ---------------
 
     return templates.TemplateResponse("profile.html", {
         "request": request, 
@@ -54,8 +59,6 @@ async def user_favorites(
     })
 
 
-
-
 @router.get("/edit", response_class=HTMLResponse)
 async def edit_profile_page(
     request: Request,
@@ -80,10 +83,18 @@ async def user_profile(
     token = token.split(' ')[1] if token else None
 
     user_data = await get_data(f"http://127.0.0.1:8001/user/{username}", client)
+    if "id" not in user_data:
+        if user and user.get("username") == username:
+            user_data["id"] = user.get("id")
+        else:
+            fake_id = sum(ord(c) for c in user_data['username'])
+            user_data["id"] = fake_id
+
     following = False
     if user:
         if user['username'] != username:
             following = await get_data(f"http://127.0.0.1:8001/follow/follow/{username}", client, token)
+            
     return templates.TemplateResponse("profile.html", {
         "request": request, 
         "user": user,
