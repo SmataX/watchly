@@ -16,7 +16,7 @@ from src.core.config import config
 
 
 bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
-oauth2_bearer = OAuth2PasswordBearer(tokenUrl="/auth/login")
+oauth2_bearer = OAuth2PasswordBearer(tokenUrl="/auth/login", auto_error=False)
 
 
 def create_user(db_session: Session, form: RegisterUserScheme) -> User:
@@ -83,18 +83,15 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm, db_session: Ses
     return {'access_token': token, 'token_type': 'bearer'}
 
 
-async def get_token(request: Request) -> Optional[str]:
+async def get_token(request: Request, token_from_header: Annotated[Optional[str], Depends(oauth2_bearer)]) -> Optional[str]:
     cookie_token = request.cookies.get("access_token")
     if cookie_token:
         if " " in cookie_token:
             return cookie_token.split(" ")[1]
         return cookie_token
 
-    header_token = request.headers.get("Authorization")
-    if header_token:
-        scheme, _, param = header_token.partition(" ")
-        if scheme.lower() == "bearer":
-            return param
+    if token_from_header:
+        return token_from_header
             
     return None
 
