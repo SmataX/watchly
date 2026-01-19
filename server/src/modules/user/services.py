@@ -114,6 +114,7 @@ class UserOperations:
         reviews_data = []
         for review in reviews:
             r_dict = review.model_dump()
+            r_dict['created_at'] = r_dict['created_at'].date()
             if review.movie:
                 r_dict["movie"] = review.movie.model_dump()
             reviews_data.append(r_dict)
