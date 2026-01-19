@@ -67,9 +67,13 @@
 
 <div class="main-content">
     <div class="details-section">
-        <h2 class="section-title">Synopsis</h2>
-        <div class="synopsis-text">
-            {{ movie.overview }}
+        <div class="synopsis-wrapper">
+            <div class="synopsis-spacer"></div> 
+            <div class="synopsis-content">
+                <div class="synopsis-text">
+                    {{ movie.overview }}
+                </div>
+            </div>
         </div>
     </div>
 
@@ -143,47 +147,67 @@
     <div class="photos-section">
         <div class="photos-header">
             <h2 class="section-title">Photos</h2>
-            <a href="#" class="view-all-link" id="viewAllLink">View All </a>
         </div>
 
-        <div class="photos-grid">
         {% if movie.photos %}
+        <div class="photos-grid count-{{ movie.photos[:4]|length }}">
             {% for photo in movie.photos[:4] %}
             <div class="photo-item item-{{ loop.index }}">
                 <img src="{{ photo }}" alt="Scene {{ loop.index }}">
             </div>
             {% endfor %}
-        {% else %}
-            <p style="color: #666;">No photos available.</p>
-        {% endif %}
         </div>
+        {% else %}
+        <div class="no-photos-msg">
+            <p>No photos available.</p>
+        </div>
+        {% endif %}
     </div>
 
-    <div>
-        <div class="user-reviews">
+    <div class="reviews-section-container">
+        <div class="reviews-header-title">
+            <h3 class="section-title">Community Reviews</h3>
+        </div>
+
+        <div class="user-reviews-list">
             {% if reviews %}
-            {% for review in reviews %}
-            <div>
-                <span>{{ review.user.username }}</span>
-                <span>{{ review.created_at }}</span>
-                <span>{{ review.content }}</span>
-            </div>
-            {% endfor %}
+                {% for review in reviews %}
+                <div class="review-card-item">
+                    <div class="review-card-top">
+                        <div class="review-user-info">
+                            <a href="/profile/{{ review.user.username }}" class="review-user-link">
+                                <img src="/static/images/avatars/1.png" 
+                                     data-username="{{ review.user.username }}" 
+                                     alt="{{ review.user.username }}" 
+                                     class="review-avatar auto-avatar">
+                                <span class="review-username">{{ review.user.username }}</span>
+                            </a>
+                        </div>
+                        <span class="review-date">{{ review.created_at }}</span>
+                    </div>
+                    
+                    <div class="review-card-text">
+                        <p>{{ review.content }}</p>
+                    </div>
+                </div>
+                {% endfor %}
             {% else %}
-            <h2>No Reviews Yet</h2>
-            <p> Be the first to share your thoughts about this movie!</p>
+                <div class="no-reviews-container">
+                    <div class="no-reviews-icon">💬</div>
+                    <h3>No Reviews Yet</h3>
+                    <p>Be the first to share your thoughts about this movie!</p>
+                </div>
             {% endif %}
         </div>
     </div>
 
+    {% if user %}
+    
     <div class="review">
         <div class="review-header">
             <span class="review-title">Write a review:</span>
             <div class="reveiw-stars">
-                <!-- {% for i in range(user_rating) %}
-                <span class="inline-star rating-star" data-value="1" style="color: yellow">★</span>
-                {% endfor %} -->
-            </div>
+                </div>
         </div>
 
         <textarea class="review-textarea" id="user-review-textarea" placeholder="Your thoughts..." maxlength="500"
@@ -195,9 +219,51 @@
         </div>
     </div>
 
+    {% else %}
+
+    <div class="login-prompt-box">
+        <div class="lock-icon">🔒</div>
+        <h3>Want to write a review?</h3>
+        <p>You need to be logged in to share your thoughts about this movie.</p>
+        <a href="/login" class="login-btn-review">Sign In to Review</a>
+    </div>
+
+    {% endif %}
+
 </div>
 
 <script src="{{ url_for('static', path='js/write_review.js') }}"></script>
 <script src="{{ url_for('static', path='js/rating.js') }}"></script>
 <script src="{{ url_for('static', path='js/fav.js') }}"></script>
+
+<script src="{{ url_for('static', path='js/fav.js') }}"></script>
+
+    <div id="imageLightbox" class="lightbox">
+        <span class="close-lightbox">&times;</span>
+        <img class="lightbox-content" id="lightboxImg">
+    </div>
+
+    <script>
+        const lightbox = document.getElementById('imageLightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const closeBtn = document.querySelector('.close-lightbox');
+        
+        const galleryImages = document.querySelectorAll('.photo-item img');
+        galleryImages.forEach(img => {
+            img.addEventListener('click', function() {
+                lightbox.style.display = "flex";
+                lightboxImg.src = this.src;
+            });
+        });
+
+        closeBtn.addEventListener('click', function() {
+            lightbox.style.display = "none";
+        });
+
+        lightbox.addEventListener('click', function(e) {
+            if (e.target === lightbox) {
+                lightbox.style.display = "none";
+            }
+        });
+    </script>
 {% endblock %}

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/static/style.css">
     <link rel="stylesheet" href="/static/searchbar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     {% block extra_css %}{% endblock %}
 </head>
 <body>
@@ -30,8 +31,11 @@
             <div class="user-menu-container">
                 <div class="user-pill" onclick="toggleUserMenu()">
                     <span class="user-name">{{ user.username }}</span>
-                    <img src="/static/images/avatars/{{ (user.id % 34) + 1 }}.png" alt="User" class="user-avatar">
-                </div>
+                    <img src="/static/images/avatars/1.png" 
+                        data-username="{{ user.username }}" 
+                        alt="User" 
+                        class="user-avatar auto-avatar">
+                    </div>
                 
                 <div id="userDropdown" class="user-dropdown-content">
                     <a href="/profile/{{ user.username }}">My Profile</a>
@@ -89,7 +93,7 @@
         </div>
 
         <div class="copy">
-            &copy; 2025 WATCHLY. All rights reserved.
+            &copy; 2026 WATCHLY. All rights reserved.
         </div>
     </footer>
     <script src="/static/js/header_search.js"></script>

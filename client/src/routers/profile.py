@@ -128,16 +128,12 @@ async def user_profile(
 ):
     token = request.cookies.get("access_token")
     token = token.split(' ')[1] if token else None
+    
     user_data = await get_data(f"http://127.0.0.1:8001/user/{username}", client)
-    if "id" not in user_data:
-        if user and user.get("username") == username:
-            user_data["id"] = user.get("id")
-        else:
-            fake_id = sum(ord(c) for c in user_data['username'])
-            user_data["id"] = fake_id
 
     following = False
     fav_movies = await get_data(f"http://127.0.0.1:8001/user/{username}/fav?limit=8", client)
+    
     if user:
         if user['username'] != username:
             following = await get_data(f"http://127.0.0.1:8001/follow/follow/{username}", client, token)

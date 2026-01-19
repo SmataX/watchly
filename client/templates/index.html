@@ -17,7 +17,7 @@
     <div class="section-container">
         <div class="section-header-row">
             <h3 class="section-title">Latest Ratings</h3>
-            <a href="#" class="view-all-link">View All</a>
+            <a href="movies" class="view-all-link">View All</a>
         </div>
         <hr class="section-divider">
 
@@ -25,16 +25,31 @@
             {% if followers_ratings %}
             {% for rating in followers_ratings %}
             <div class="movie-card-rating">
-                <img src="https://image.tmdb.org/t/p/w500{{ rating.movie.poster_path }}" onclick="go_to('/movies/{{ rating.movie.id }}')" alt="THE BATMAN" class="movie-poster-large">
-                <div class="rating-info" onclick="go_to('/profile/{{ rating.user.username }}')">
-                    <span>{{ rating.user.username }}</span>
-                    <span class="rating">{{ rating.rating }}★</span>
+                <div class="rating-poster-wrapper" onclick="go_to('/movies/{{ rating.movie.id }}')">
+                    <img src="https://image.tmdb.org/t/p/w500{{ rating.movie.poster_path }}" alt="{{ rating.movie.title }}" class="movie-poster-large">
+                    <div class="poster-overlay"></div>
                 </div>
-                
+
+                <div class="rating-info-bar" onclick="go_to('/profile/{{ rating.user.username }}')">
+                    <div class="user-mini-info">
+                        <img src="/static/images/avatars/1.png" 
+                             class="mini-avatar auto-avatar" 
+                             data-username="{{ rating.user.username }}">
+                        <span class="mini-username">{{ rating.user.username }}</span>
+                    </div>
+                    
+                    <div class="rating-pill">
+                        ★ {{ rating.rating }}
+                    </div>
+                </div>
             </div>
             {% endfor %}
             {% else %}
-            <span>No rated movies</span>
+            <div class="no-content-placeholder">
+                <div class="placeholder-icon">★</div>
+                <h3>No Rated Movies Yet</h3>
+                <p>Follow users to see their latest ratings here!</p>
+            </div>
             {% endif %}
         </div>
     </div>
@@ -44,7 +59,7 @@
     <div class="section-container">
         <div class="section-header-row">
             <h3 class="section-title">TRENDING NOW</h3>
-            <a href="#" class="view-all-link">View All</a>
+            <a href="movies" class="view-all-link">View All</a>
         </div>
         <hr class="section-divider">
 
@@ -62,7 +77,6 @@
     <div class="section-container">
         <div class="section-header-row">
             <h3 class="section-title">Top Contributors</h3>
-            <a href="#" class="view-all-link">View All</a>
         </div>
         <hr class="section-divider">
 

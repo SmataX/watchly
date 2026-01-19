@@ -73,3 +73,26 @@ document.addEventListener('click', function(e) {
         }
     }
 });
+
+/* --- AUTOMATYCZNE GENEROWANIE AWATARÓW  --- */
+document.addEventListener("DOMContentLoaded", function() {
+    const avatarImages = document.querySelectorAll('.auto-avatar');
+
+    avatarImages.forEach(img => {
+        const username = img.getAttribute('data-username');
+        
+        if (username) {
+            // 1. Sumujemy kody ASCII liter w nazwie (np. k+a+r+o)
+            let charSum = 0;
+            for (let i = 0; i < username.length; i++) {
+                charSum += username.charCodeAt(i);
+            }
+
+            // 2. Obliczamy numer obrazka (modulo 34 + 1)
+            const avatarNum = (charSum % 34) + 1;
+
+            // 3. Ustawiamy źródło obrazka :)
+            img.src = `/static/images/avatars/${avatarNum}.png`;
+        }
+    });
+});
