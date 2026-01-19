@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from src.modules.auth.deps import UserDep
 
 
-from .schemas import ReviewCreateForm, ReviewGetForm, ReviewResponse
+from .schemas import ReviewCreateForm, ReviewGetForm, ReviewResponse, ReviewUpdateForm
 from .deps import ReviewOperationsDep
 from .models import Review
 
@@ -19,6 +19,16 @@ def add(review_ops: ReviewOperationsDep, user: UserDep, form: ReviewCreateForm) 
         )
     
     return review_ops.add(review)
+
+
+@router.put('/{review_id}', response_model=ReviewResponse)
+def update(
+    review_id: int, 
+    review_ops: ReviewOperationsDep, 
+    user: UserDep, 
+    form: ReviewUpdateForm
+):
+    return review_ops.update(review_id, user['id'], form.content)
 
 
 @router.delete('/')

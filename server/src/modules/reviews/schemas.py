@@ -26,3 +26,6 @@ class ReviewResponse(BaseModel):
         if isinstance(v, datetime):
             return v.date()
         return v
+
+class ReviewUpdateForm(BaseModel):
+    content: str

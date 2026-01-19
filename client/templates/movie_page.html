@@ -68,7 +68,7 @@
 <div class="main-content">
     <div class="details-section">
         <div class="synopsis-wrapper">
-            <div class="synopsis-spacer"></div> 
+            <div class="synopsis-spacer"></div>
             <div class="synopsis-content">
                 <div class="synopsis-text">
                     {{ movie.overview }}
@@ -85,11 +85,13 @@
                     <div class="rating-stars" id="ratingStars">
                         {% if user_rating %}
                         {% for i in range(user_rating) %}
-                        <span class="star rating-star" style="color: orange" onclick="rate_movie({{ movie.id }}, {{ loop.index }})">★</span>
+                        <span class="star rating-star" style="color: orange"
+                            onclick="rate_movie({{ movie.id }}, {{ loop.index }})">★</span>
                         {% endfor %}
                         {% endif %}
                         {% for i in range(user_rating + 1, 6) %}
-                        <span class="star rating-star" onclick="rate_movie({{ movie.id }}, {{ user_rating + loop.index }})">★</span>
+                        <span class="star rating-star"
+                            onclick="rate_movie({{ movie.id }}, {{ user_rating + loop.index }})">★</span>
                         {% endfor %}
                     </div>
                 </div>
@@ -97,25 +99,25 @@
                 <div class="action-box favorite-box">
                     <div class="action-title">Add to Favourite</div>
                     {% if is_fav %}
-                    <div class="action-icon" id="fav-btn" style="color: orange" onclick="remove_fav({{ movie.id }})">❤</div>
+                    <div class="action-icon" id="fav-btn" style="color: orange" onclick="remove_fav({{ movie.id }})">❤
+                    </div>
                     {% else %}
                     <div class="action-icon" id="fav-btn" onclick="add_fav({{ movie.id }})">❤</div>
                     {% endif %}
-                
+
                 </div>
             </div>
 
             <div class="trailer-column">
                 <div class="trailer-video-wrapper">
                     {% if movie.trailer_url %}
-                    <iframe class="trailer-video"
-                        src="{{ movie.trailer_url }}"
-                        title="Trailer" frameborder="0"
+                    <iframe class="trailer-video" src="{{ movie.trailer_url }}" title="Trailer" frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen>
                     </iframe>
                     {% else %}
-                    <div class="no-trailer" style="color: white; text-align: center; padding: 50px; background: #222; border-radius: 10px;">
+                    <div class="no-trailer"
+                        style="color: white; text-align: center; padding: 50px; background: #222; border-radius: 10px;">
                         No trailer available.
                     </div>
                     {% endif %}
@@ -169,67 +171,69 @@
             <h3 class="section-title">Community Reviews</h3>
         </div>
 
+        {% if user %}
+
+        <div class="review">
+            <div class="review-header">
+                <span class="review-title">Write a review:</span>
+                <div class="reveiw-stars">
+                </div>
+            </div>
+
+            <textarea class="review-textarea" id="user-review-textarea" placeholder="Your thoughts..." maxlength="500"
+                minlength="0"></textarea>
+
+            <div class="review-actions">
+                <span class="review-count" id="user-review-counter">0/500</span>
+                <button class="review-submit" onclick="submit_review('{{ movie.id }}')">Submit</button>
+            </div>
+        </div>
+
+        {% else %}
+
+        <div class="login-prompt-box">
+            <div class="lock-icon">🔒</div>
+            <h3>Want to write a review?</h3>
+            <p>You need to be logged in to share your thoughts about this movie.</p>
+            <a href="/login" class="login-btn-review">Sign In to Review</a>
+        </div>
+
+        {% endif %}
+
         <div class="user-reviews-list">
             {% if reviews %}
-                {% for review in reviews %}
-                <div class="review-card-item">
-                    <div class="review-card-top">
-                        <div class="review-user-info">
-                            <a href="/profile/{{ review.user.username }}" class="review-user-link">
-                                <img src="/static/images/avatars/1.png" 
-                                     data-username="{{ review.user.username }}" 
-                                     alt="{{ review.user.username }}" 
-                                     class="review-avatar auto-avatar">
-                                <span class="review-username">{{ review.user.username }}</span>
-                            </a>
-                        </div>
+            {% for review in reviews %}
+            <div class="review-card-item">
+                <div class="review-card-top">
+                    <div class="review-user-info">
+                        <a href="/profile/{{ review.user.username }}" class="review-user-link">
+                            <img src="/static/images/avatars/1.png" data-username="{{ review.user.username }}"
+                                alt="{{ review.user.username }}" class="review-avatar auto-avatar">
+                            <span class="review-username">{{ review.user.username }}</span>
+                        </a>
+                    </div>
+                    <div>
+                        {% if review.user.username == user.username %}
+                        <button class="review-submit review-edit" onclick="enable_edit(this, '{{ review.id }}')">Edit</button>
+                        {% endif %}
                         <span class="review-date">{{ review.created_at }}</span>
                     </div>
-                    
-                    <div class="review-card-text">
-                        <p>{{ review.content }}</p>
-                    </div>
                 </div>
-                {% endfor %}
+
+                <div class="review-card-text">
+                    <p>{{ review.content }}</p>
+                </div>
+            </div>
+            {% endfor %}
             {% else %}
-                <div class="no-reviews-container">
-                    <div class="no-reviews-icon">💬</div>
-                    <h3>No Reviews Yet</h3>
-                    <p>Be the first to share your thoughts about this movie!</p>
-                </div>
+            <div class="no-reviews-container">
+                <div class="no-reviews-icon">💬</div>
+                <h3>No Reviews Yet</h3>
+                <p>Be the first to share your thoughts about this movie!</p>
+            </div>
             {% endif %}
         </div>
     </div>
-
-    {% if user %}
-    
-    <div class="review">
-        <div class="review-header">
-            <span class="review-title">Write a review:</span>
-            <div class="reveiw-stars">
-                </div>
-        </div>
-
-        <textarea class="review-textarea" id="user-review-textarea" placeholder="Your thoughts..." maxlength="500"
-            minlength="0"></textarea>
-
-        <div class="review-actions">
-            <span class="review-count" id="user-review-counter">0/500</span>
-            <button class="review-submit" onclick="submit_review('{{ movie.id }}')">Submit</button>
-        </div>
-    </div>
-
-    {% else %}
-
-    <div class="login-prompt-box">
-        <div class="lock-icon">🔒</div>
-        <h3>Want to write a review?</h3>
-        <p>You need to be logged in to share your thoughts about this movie.</p>
-        <a href="/login" class="login-btn-review">Sign In to Review</a>
-    </div>
-
-    {% endif %}
-
 </div>
 
 <script src="{{ url_for('static', path='js/write_review.js') }}"></script>
@@ -238,32 +242,32 @@
 
 <script src="{{ url_for('static', path='js/fav.js') }}"></script>
 
-    <div id="imageLightbox" class="lightbox">
-        <span class="close-lightbox">&times;</span>
-        <img class="lightbox-content" id="lightboxImg">
-    </div>
+<div id="imageLightbox" class="lightbox">
+    <span class="close-lightbox">&times;</span>
+    <img class="lightbox-content" id="lightboxImg">
+</div>
 
-    <script>
-        const lightbox = document.getElementById('imageLightbox');
-        const lightboxImg = document.getElementById('lightboxImg');
-        const closeBtn = document.querySelector('.close-lightbox');
-        
-        const galleryImages = document.querySelectorAll('.photo-item img');
-        galleryImages.forEach(img => {
-            img.addEventListener('click', function() {
-                lightbox.style.display = "flex";
-                lightboxImg.src = this.src;
-            });
+<script>
+    const lightbox = document.getElementById('imageLightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const closeBtn = document.querySelector('.close-lightbox');
+
+    const galleryImages = document.querySelectorAll('.photo-item img');
+    galleryImages.forEach(img => {
+        img.addEventListener('click', function () {
+            lightbox.style.display = "flex";
+            lightboxImg.src = this.src;
         });
+    });
 
-        closeBtn.addEventListener('click', function() {
+    closeBtn.addEventListener('click', function () {
+        lightbox.style.display = "none";
+    });
+
+    lightbox.addEventListener('click', function (e) {
+        if (e.target === lightbox) {
             lightbox.style.display = "none";
-        });
-
-        lightbox.addEventListener('click', function(e) {
-            if (e.target === lightbox) {
-                lightbox.style.display = "none";
-            }
-        });
-    </script>
+        }
+    });
+</script>
 {% endblock %}

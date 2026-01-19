@@ -42,6 +42,28 @@ class ReviewOperations:
 
         return review
 
+    
+    def update(self, review_id: int, user_id: int, new_content: str) -> Review:
+        review = self.get(review_id)
+
+        if not review:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Review not found."
+            )
+
+        if review.user_id != user_id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You can only edit your own reviews."
+            )
+
+        review.content = new_content
+        self.session.add(review)
+        self.session.commit()
+        self.session.refresh(review)
+        return review
+
 
     def get(self, review_id: int) -> Review:
         return self.session.get(Review, review_id)
