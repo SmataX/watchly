@@ -49,24 +49,57 @@ async def index(
     user: Optional[dict] = Depends(get_optional_user),
     client: httpx.AsyncClient = Depends(get_http_client)
 ):
-    movies = await get_data("/movies/random?limit=10", client)
+    token = request.cookies.get("access_token")
+    token = token.split(' ')[1] if token else None
+
+    trending_movies = await get_data("/movies/trending?limit=8", client)
+    followers_ratings = []
+    if user:
+        followers_ratings = await get_data("/movies/following_ratings?limit=4", client, token)
+    movies = await get_data("/movies/random?limit=8", client)
+    top_contributors = await get_data("/user/top-contributors?limit=3", client)
+
+    if len(trending_movies) < 8:
+        trending_movies.extend(movies[:8-len(trending_movies)])
 
     return templates.TemplateResponse("index.html", {
         "request": request, 
         "user": user,
-        "movies": movies
+        "movies": movies,
+        "trending": trending_movies, 
+        "followers_ratings": followers_ratings, 
+        "top_contributors": top_contributors, 
     })
 
 @app.get("/api/search_movies")
-async def search_movies_api(request: Request, query: str, client: httpx.AsyncClient = Depends(get_http_client)):
-    if not query:
+async def search_combined_api(request: Request, query: str, client: httpx.AsyncClient = Depends(get_http_client)):
+    if not query or len(query) < 3:
         return []
     
+    results = []
+    
     try:
-        response = await client.get("/movies/search", params={"title": query, "limit": 5})
+        response_movies = await client.get("/movies/search", params={"title": query, "limit": 5})
         
-        if response.status_code == 200:
-            return response.json()
-    except httpx.RequestError:
-        return []
-    return []
+        movies = response_movies.json()
+        for m in movies:
+            results.append({
+                "id": m["id"],
+                "title": m["title"],
+                "type": "movie",
+                "url": f"/movies/{m['id']}"
+            })
+
+        response_users = await client.get("/user/search", params={"username": query, "limit": 5})
+
+        if response_users.status_code == 200:
+            users = response_users.json()
+            for u in users:
+                results.append({
+                    "title": u["username"],
+                    "type": "user",
+                    "url": f"/profile/{u['username']}"
+                })
+    except httpx.HTTPError:
+        pass
+    return results

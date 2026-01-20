@@ -1,6 +1,6 @@
 from pydantic import BaseModel, field_validator, ConfigDict
 from datetime import date
-from typing import Optional
+from typing import Optional, List
 
 from .models import Genre
 
@@ -33,6 +33,16 @@ class MovieResponse(BaseModel):
     actors: Optional[str]
     duration: Optional[int]
     overview: Optional[str]
+    trailer_url: Optional[str] = None
+    backdrop_url: Optional[str] = None
+    photos: List[str] = []
+
+    @field_validator('photos', mode='before')
+    @classmethod
+    def check_photos(cls, v):
+        if v is None:
+            return []
+        return v
 
 class GenreResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)

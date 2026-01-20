@@ -6,14 +6,17 @@
 
 {% block content %}
 <div class="movie-hero">
+    {% if movie.backdrop_url %}
+    <div class="movie-hero-background" style="background-image: url('{{ movie.backdrop_url }}');"></div>
+    {% else %}
     <div class="movie-hero-background"></div>
+    {% endif %}
     <div class="hero-gradient-overlay"></div>
-    
+
     <div class="movie-hero-content">
         <div class="poster-column">
-            <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}"
-                 alt="{{ movie.title }} poster"
-                 class="movie-poster">
+            <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} poster"
+                class="movie-poster">
         </div>
 
         <div class="info-column">
@@ -25,7 +28,7 @@
                 </div>
             </div>
 
-             <!-- Gatunki -->
+            <!-- Gatunki -->
 
             <div class="genres-container">
                 {% for genre in movie.genres %}
@@ -37,7 +40,7 @@
             <div class="ratings-container">
                 <div class="rating-box">
                     <div class="rating-title">Global Rating</div>
-                    <div class="rating-value">★ {{ avg_rating }}</div> 
+                    <div class="rating-value">★ {{ avg_rating }}</div>
                 </div>
 
                 <div class="rating-box">
@@ -57,11 +60,6 @@
                     <div class="rating-value">★ -</div>
                     {% endif %}
                 </div>
-
-                <div class="rating-box">
-                    <div class="rating-title">Awards</div>
-                    <div class="awards-value">0</div>
-                </div>
             </div>
         </div>
     </div>
@@ -69,9 +67,13 @@
 
 <div class="main-content">
     <div class="details-section">
-        <h2 class="section-title">Synopsis</h2>
-        <div class="synopsis-text">
-            {{ movie.overview }}
+        <div class="synopsis-wrapper">
+            <div class="synopsis-spacer"></div>
+            <div class="synopsis-content">
+                <div class="synopsis-text">
+                    {{ movie.overview }}
+                </div>
+            </div>
         </div>
     </div>
 
@@ -81,34 +83,44 @@
                 <div class="action-box rate-box">
                     <div class="action-title">Rate</div>
                     <div class="rating-stars" id="ratingStars">
-                        <span class="star" data-value="1">★</span>
-                        <span class="star" data-value="2">★</span>
-                        <span class="star" data-value="3">★</span>
-                        <span class="star" data-value="4">★</span>
-                        <span class="star" data-value="5">★</span>
+                        {% if user_rating %}
+                        {% for i in range(user_rating) %}
+                        <span class="star rating-star" style="color: orange"
+                            onclick="rate_movie({{ movie.id }}, {{ loop.index }})">★</span>
+                        {% endfor %}
+                        {% endif %}
+                        {% for i in range(user_rating + 1, 6) %}
+                        <span class="star rating-star"
+                            onclick="rate_movie({{ movie.id }}, {{ user_rating + loop.index }})">★</span>
+                        {% endfor %}
                     </div>
                 </div>
 
                 <div class="action-box favorite-box">
                     <div class="action-title">Add to Favourite</div>
-                    <div class="action-icon">❤</div>
-                </div>
+                    {% if is_fav %}
+                    <div class="action-icon" id="fav-btn" style="color: orange" onclick="remove_fav({{ movie.id }})">❤
+                    </div>
+                    {% else %}
+                    <div class="action-icon" id="fav-btn" onclick="add_fav({{ movie.id }})">❤</div>
+                    {% endif %}
 
-                <div class="action-box watchlist-box">
-                    <div class="action-title">Add to Watchlist</div>
-                    <div class="action-icon">➕</div>
                 </div>
             </div>
 
             <div class="trailer-column">
                 <div class="trailer-video-wrapper">
-                    <iframe class="trailer-video"
-                            src="https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1"
-                            title="Trailer"
-                            frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen>
+                    {% if movie.trailer_url %}
+                    <iframe class="trailer-video" src="{{ movie.trailer_url }}" title="Trailer" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
                     </iframe>
+                    {% else %}
+                    <div class="no-trailer"
+                        style="color: white; text-align: center; padding: 50px; background: #222; border-radius: 10px;">
+                        No trailer available.
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -131,78 +143,131 @@
                     <p>{{ movie.actors }}</p>
                 </div>
             </div>
-
-            <hr class="crew-divider">
-
-            <div class="crew-item">
-                <div class="crew-category">Production</div>
-                <div class="crew-names">
-                    <p>USA, Wielka Brytania</p>
-                </div>
-            </div>
         </div>
     </div>
 
     <div class="photos-section">
         <div class="photos-header">
             <h2 class="section-title">Photos</h2>
-            <a href="#" class="view-all-link" id="viewAllLink">View All </a>
         </div>
 
-        <div class="photos-grid">
-            <div class="photo-item item-1">
-                <img src="https://placehold.net/400x400.png" alt="Scene 1">
+        {% if movie.photos %}
+        <div class="photos-grid count-{{ movie.photos[:4]|length }}">
+            {% for photo in movie.photos[:4] %}
+            <div class="photo-item item-{{ loop.index }}">
+                <img src="{{ photo }}" alt="Scene {{ loop.index }}">
             </div>
-            <div class="photo-item item-2">
-                <img src="https://placehold.net/400x400.png" alt="Scene 2">
-            </div>
-            <div class="photo-item item-3">
-                <img src="https://placehold.net/400x400.png" alt="Scene 3">
-            </div>
-            <div class="photo-item item-4">
-                <img src="https://placehold.net/400x400.png" alt="Scene 4">
-            </div>
+            {% endfor %}
         </div>
+        {% else %}
+        <div class="no-photos-msg">
+            <p>No photos available.</p>
+        </div>
+        {% endif %}
     </div>
 
-    <div>
-        <div class="user-reviews">
+    <div class="reviews-section-container">
+        <div class="reviews-header-title">
+            <h3 class="section-title">Community Reviews</h3>
+        </div>
+
+        {% if user %}
+
+        <div class="review">
+            <div class="review-header">
+                <span class="review-title">Write a review:</span>
+                <div class="reveiw-stars">
+                </div>
+            </div>
+
+            <textarea class="review-textarea" id="user-review-textarea" placeholder="Your thoughts..." maxlength="500"
+                minlength="0"></textarea>
+
+            <div class="review-actions">
+                <span class="review-count" id="user-review-counter">0/500</span>
+                <button class="review-submit" onclick="submit_review('{{ movie.id }}')">Submit</button>
+            </div>
+        </div>
+
+        {% else %}
+
+        <div class="login-prompt-box">
+            <div class="lock-icon">🔒</div>
+            <h3>Want to write a review?</h3>
+            <p>You need to be logged in to share your thoughts about this movie.</p>
+            <a href="/login" class="login-btn-review">Sign In to Review</a>
+        </div>
+
+        {% endif %}
+
+        <div class="user-reviews-list">
             {% if reviews %}
             {% for review in reviews %}
-            <div>
-                <span>{{ review.user.username }}</span>
-                <span>{{ review.created_at }}</span>
-                <span>{{ review.content }}</span>
+            <div class="review-card-item">
+                <div class="review-card-top">
+                    <div class="review-user-info">
+                        <a href="/profile/{{ review.user.username }}" class="review-user-link">
+                            <img src="/static/images/avatars/1.png" data-username="{{ review.user.username }}"
+                                alt="{{ review.user.username }}" class="review-avatar auto-avatar">
+                            <span class="review-username">{{ review.user.username }}</span>
+                        </a>
+                    </div>
+                    <div>
+                        {% if review.user.username == user.username %}
+                        <button class="review-submit review-edit" onclick="enable_edit(this, '{{ review.id }}')">Edit</button>
+                        {% endif %}
+                        <span class="review-date">{{ review.created_at }}</span>
+                    </div>
+                </div>
+
+                <div class="review-card-text">
+                    <p>{{ review.content }}</p>
+                </div>
             </div>
             {% endfor %}
             {% else %}
-            <h2>No Reviews Yet</h2>
-            <p> Be the first to share your thoughts about this movie!</p>
-            {% endif %}
-         </div>
-    </div>
-
-    <div class="review">
-        <div class="review-header">
-            <span class="review-title">Write a review:</span>
-            <div class="reveiw-stars">
-                <span class="inline-star" data-value="1">★</span>
-                <span class="inline-star" data-value="2">★</span>
-                <span class="inline-star" data-value="3">★</span>
-                <span class="inline-star" data-value="4">★</span>
-                <span class="inline-star" data-value="5">★</span>
+            <div class="no-reviews-container">
+                <div class="no-reviews-icon">💬</div>
+                <h3>No Reviews Yet</h3>
+                <p>Be the first to share your thoughts about this movie!</p>
             </div>
-        </div>
-
-        <textarea class="review-textarea" id="user-review-textarea" placeholder="Your thoughts..." maxlength="500" minlength="0"></textarea>
-
-        <div class="review-actions">
-            <span class="review-count" id="user-review-counter">0/500</span>
-            <button class="review-submit" onclick="submit_review('{{ movie.id }}')">Submit</button>
+            {% endif %}
         </div>
     </div>
-
 </div>
 
 <script src="{{ url_for('static', path='js/write_review.js') }}"></script>
+<script src="{{ url_for('static', path='js/rating.js') }}"></script>
+<script src="{{ url_for('static', path='js/fav.js') }}"></script>
+
+<script src="{{ url_for('static', path='js/fav.js') }}"></script>
+
+<div id="imageLightbox" class="lightbox">
+    <span class="close-lightbox">&times;</span>
+    <img class="lightbox-content" id="lightboxImg">
+</div>
+
+<script>
+    const lightbox = document.getElementById('imageLightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const closeBtn = document.querySelector('.close-lightbox');
+
+    const galleryImages = document.querySelectorAll('.photo-item img');
+    galleryImages.forEach(img => {
+        img.addEventListener('click', function () {
+            lightbox.style.display = "flex";
+            lightboxImg.src = this.src;
+        });
+    });
+
+    closeBtn.addEventListener('click', function () {
+        lightbox.style.display = "none";
+    });
+
+    lightbox.addEventListener('click', function (e) {
+        if (e.target === lightbox) {
+            lightbox.style.display = "none";
+        }
+    });
+</script>
 {% endblock %}

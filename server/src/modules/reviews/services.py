@@ -6,6 +6,7 @@ from src.core.db import Session
 from src.core.deps import get_session
 from src.modules.auth.services import get_current_user
 from src.modules.auth.models import User
+from src.modules.movies.models import Movie
 
 from .models import Review
 from .schemas import ReviewCreateForm
@@ -41,6 +42,28 @@ class ReviewOperations:
 
         return review
 
+    
+    def update(self, review_id: int, user_id: int, new_content: str) -> Review:
+        review = self.get(review_id)
+
+        if not review:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Review not found."
+            )
+
+        if review.user_id != user_id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You can only edit your own reviews."
+            )
+
+        review.content = new_content
+        self.session.add(review)
+        self.session.commit()
+        self.session.refresh(review)
+        return review
+
 
     def get(self, review_id: int) -> Review:
         return self.session.get(Review, review_id)
@@ -48,8 +71,10 @@ class ReviewOperations:
 
     def get_all_for_user(self, user_id: int) -> list[Review]:
         return self.session.exec(
-            select(Review).where(Review.user_id==user_id).options(joinedload(Review.user))
-        ).all()
+            select(Review)
+            .where(Review.user_id == user_id)
+            .options(joinedload(Review.user), joinedload(Review.movie))
+        ).unique().all()
 
 
     def get_all_for_movie(self, movie_id: int) -> list[Review]:

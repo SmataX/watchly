@@ -2,10 +2,14 @@ from datetime import datetime
 from typing import Optional, TYPE_CHECKING
 from sqlmodel import SQLModel, Field, Relationship
 from pydantic import BaseModel
+from src.modules.follows.models import UserFollow
+
 
 if TYPE_CHECKING:
     from src.modules.rating.models import RatedMovie
     from src.modules.reviews.models import Review
+
+
 
 
 # --------------------
@@ -24,6 +28,24 @@ class User(SQLModel, table=True):
 
     rated_movies: list["RatedMovie"] = Relationship(back_populates="user")
     reviews: list["Review"] = Relationship(back_populates="user")
+    
+    follows: list["User"] = Relationship(
+        link_model=UserFollow,
+        back_populates="followers",
+        sa_relationship_kwargs={
+            "primaryjoin": "User.id==user_follows.c.follower_id",
+            "secondaryjoin": "User.id==user_follows.c.followed_id",
+        }
+    )
+
+    followers: list["User"] = Relationship(
+        link_model=UserFollow,
+        back_populates="follows",
+        sa_relationship_kwargs={
+            "primaryjoin": "User.id==user_follows.c.followed_id",
+            "secondaryjoin": "User.id==user_follows.c.follower_id",
+        }
+    )
 
 
 # --------------------

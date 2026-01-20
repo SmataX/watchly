@@ -21,11 +21,13 @@ async def movies(
     token = request.cookies.get("access_token")
     token = token.split(' ')[1] if token else None
 
-    data = await get_data(f"/movies?{request.url.query}" if request.url.query else "/movies", client, token)
-    genres_list = await get_data("/movies/genres", client)
+    data = await get_data(f"http://127.0.0.1:8001/movies?{request.url.query}" if request.url.query else "http://127.0.0.1:8001/movies", client, token)
+    genres_list = await get_data("http://127.0.0.1:8001/movies/genres", client)
+    count = len(data) if data else 0
 
     return templates.TemplateResponse("all_movies.html", {
         "request": request, 
+        "movie_count": count,
         "data": data,
         "genres": genres_list,
         "user": user,
@@ -48,7 +50,7 @@ async def movie_detail(
     avg_rating = await get_data(f"http://127.0.0.1:8001/movies/{movie_id}/rating", client)
     user_rating = await get_data(f"http://127.0.0.1:8001/movies/{movie_id}/user_rating", client, token)
     friends_rating = await get_data(f"http://127.0.0.1:8001/movies/{movie_id}/friends_rating", client, token)
-    
+    is_fav = await get_data(f"http://127.0.0.1:8001/movies/{movie_id}/fav", client, token)
 
     if not movie:
         pass    # Redirect to Not Found page
@@ -59,6 +61,7 @@ async def movie_detail(
         "user": user,
         "reviews": reviews,
         "avg_rating": avg_rating,
-        "user_rating": user_rating,
-        "friends_rating": friends_rating
+        "user_rating": int(user_rating) if user_rating else 0,
+        "friends_rating": friends_rating,
+        "is_fav": is_fav,
     })

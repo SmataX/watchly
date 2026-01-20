@@ -1,10 +1,15 @@
 from fastapi import HTTPException, status, Depends
-from sqlmodel import Session, select, col
+from sqlmodel import Session, select, col, func, desc
+from datetime import datetime, timedelta
+from sqlalchemy.orm import selectinload
 
 from src.modules.movies.models import Movie
+from src.modules.movies.schemes import MovieResponse
+from src.modules.follows.models import UserFollow
 from src.core.deps import get_session
 
 from .models import RatedMovie
+from .schemas import RatingResponse
 
 class RatingOperations:
     def __init__(self, session: Session):
@@ -29,15 +34,17 @@ class RatingOperations:
         ).first()
 
         if existing_rating:
-            raise HTTPException(
-                status_code=status.HTTP_409_CONFLICT,
-                detail="You have already rated this movie. Use update instead."
-            )
+            self.delete(existing_rating)
+            
 
         self.session.add(rating)
         self.session.commit()
         self.session.refresh(rating)
         return rating
+
+    def delete(self, rating):
+        self.session.delete(rating)
+        self.session.commit()
 
 
     def get(self, id: int) -> RatedMovie:
@@ -87,6 +94,34 @@ class RatingOperations:
         if result:
             return result.rating
         return None
+
+    def get_trending_movies(self, limit: int) -> list[MovieResponse]:
+        seven_days_ago = datetime.now() - timedelta(days=7)
+
+        q = (
+            select(Movie)
+            .join(RatedMovie)
+            .where(RatedMovie.created_at >= seven_days_ago)
+            .group_by(Movie.id)
+            .order_by(func.count(RatedMovie.id).desc())
+            .limit(limit)
+        )
+
+        results = self.session.exec(q).all()
+        return results
+
+    def get_latest_ratings(self, user_id: int, limit: int) -> list[RatedMovie]:
+        q = (
+            select(RatedMovie)
+            .join(UserFollow, RatedMovie.user_id == UserFollow.followed_id)
+            .where(UserFollow.follower_id == user_id)
+            .options(selectinload(RatedMovie.movie))
+            .options(selectinload(RatedMovie.user))
+            .order_by(RatedMovie.created_at.desc())
+            .limit(limit)
+        )
+        
+        return self.session.exec(q).all()
 
 
 def get_rating_operations(session: Session = Depends(get_session)):

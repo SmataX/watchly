@@ -5,7 +5,10 @@
         <div class="profile-header-content">
             <div class="avatar-section">
                 <div class="avatar-circle">
-                    <img src="https://i.pinimg.com/originals/82/47/0b/82470b4ed44c3edacfcd4201e2297050.jpg?nii=t" alt="Avatar">
+                    <img src="/static/images/avatars/1.png" 
+                        data-username="{{ user_data.username }}" 
+                        alt="Avatar" 
+                        class="profile-avatar-img auto-avatar">
                 </div>
                 <a href="/profile/edit" class="share-profile-link">Edit picture</a>
             </div>
@@ -15,17 +18,29 @@
                     <div>
                         <h1 class="display-name">{{ user_data.username }}</h1>
                     </div>
+                    {% if user %}
+                    {% if user.username == user_data.username %}
                     <a href="/profile/edit" class="edit-btn">Edit profile</a>
+                    {% else %}
+                    {% if following %}
+                    <button id="follow-btn" onclick="unfollow('{{ user_data.username }}')">unfollow</button>
+                    {% else %}
+                    <button id="follow-btn" onclick="follow('{{ user_data.username }}')">follow</button>
+                    {% endif %}
+                    {% endif%}
+                    {% else %}
+
+                    {% endif %}
                 </div>
 
                 <p class="bio-text">{{ user_data.description }}</p>
 
                 <div class="follow-stats">
                     <span><strong>{{ user_data['following'] }}</strong> Following</span>
-                    <span><strong>{{ user_data['followers'] }}</strong> Followers</span>
+                    <span id="follow-count"><strong>{{ user_data['followers'] }}</strong> Followers</span>
                 </div>
-                
-                <p class="member-since">Member since <span class="date-account">{{ user_data.created_at }}</span></p>
+
+                <p class="member-since">Member since <span class="date-account">{{ user_data.member_since }}</span></p>
             </div>
         </div>
     </div>
@@ -46,13 +61,13 @@
             </div>
             <div class="stat-number">{{ user_data['avg_rating'] }}</div>
         </div>
-        <a href="/profile/{{ user.username }}/favorites"  class="stat-box-link">
+        <a href="/profile/{{ user_data.username }}/favorites" class="stat-box-link">
             <div class="stat-box">
                 <div class="stat-header">
                     <span>Favorite movies</span>
                     <span class="icon">♥</span>
                 </div>
-                <div class="stat-number">52</div>
+                <div class="stat-number">{{ fav_movies|length }}</div>
             </div>
         </a>
     </div>
@@ -60,46 +75,75 @@
     <div class="section-container">
         <h3 class="section-title">Favorite Genres</h3>
         <hr class="section-divider">
+        
+        {% if fav_genres %}
         <div class="genres-list">
-            <span class="genre-tag">Comedy</span>
-            <span class="genre-tag">Romance</span>
-            <span class="genre-tag">Horror</span>
-            <span class="genre-tag">Thriller</span>
+            {% for fav_genre in fav_genres %}
+            <span class="genre-tag">{{ fav_genre }}</span>
+            {% endfor %}
         </div>
+        {% else %}
+        <div class="no-reviews-container">
+            <div class="no-reviews-icon">🎭</div>
+            <h3>No Favorite Genres</h3>
+            <p>This user hasn't selected any favorite genres yet.</p>
+        </div>
+        {% endif %}
     </div>
 
     <div class="section-container">
         <div class="section-header-row">
             <h3 class="section-title">Favorite Movies</h3>
-            <a href="/profile/{{ user.username }}/favorites" class="view-all-link">View All</a>
+            <a href="/profile/{{ user_data.username }}/favorites" class="view-all-link">View All</a>
         </div>
         <hr class="section-divider">
-        
+
+        {% if fav_movies %}
         <div class="movies-grid">
-            <img src="https://s3.amazonaws.com/nightjarprod/content/uploads/sites/261/2025/02/22162818/wTxYZNj3NselE9H9dST2GUn4UYE1-683x1024.jpg" alt="Movie 1" class="movie-poster" style="background: grey;"> 
-            <img src="https://images.justwatch.com/poster/336489292/s718/chainsaw-man-the-movie-reze-arc.jpg" alt="Movie 2" class="movie-poster" style="background: grey;">
-            <img src="https://play-lh.googleusercontent.com/skArSY8m4e4g3ggAR8gmGobZ_Gl8cd1qLlmrUSX9WzbcFkvxeLnQVi97SJGEojt_kRbSbFynQYdCApKlqg" alt="Movie 3" class="movie-poster" style="background: grey;">
-            <img src="https://m.media-amazon.com/images/M/MV5BNzJkMjBjYzUtMjZjNy00MTg5LTkxNzgtMmM3ZWZjYzRjMDliXkEyXkFqcGc@._V1_.jpg" alt="Movie 4" class="movie-poster" style="background: grey;">
-            <img src="https://resizing.flixster.com/wV43LjsGt0QL6XSY-smx2uiCReI=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzlhMmM2NWRlLWNlNmYtNDk4Zi1iNzlmLTE4YTg2NzRiZWU5YS5qcGc=" alt="Movie 5" class="movie-poster" style="background: grey;"> 
-            <img src="https://m.media-amazon.com/images/M/MV5BYmQwNzRiNmItODc4Ny00Mjk4LThmYWQtNjI5OGU4OGUxMmY0XkEyXkFqcGc@._V1_.jpg" alt="Movie 6" class="movie-poster" style="background: grey;">
-            <img src="https://upload.wikimedia.org/wikipedia/en/3/32/A_Silent_Voice_Film_Poster.jpg" alt="Movie 7" class="movie-poster" style="background: grey;">
-            <img src="https://moviesfilmsandflix.com/wp-content/uploads/2023/10/mv5bzwuxztllzgitzjfhys00ndi4ltgwodatyzninzeznjnmmzrkxkeyxkfqcgdeqxvymte0mzqwmjgz._v1_.jpg" alt="Movie 8" class="movie-poster" style="background: grey;">
+            {% for movie in fav_movies %}
+            <a href="/movies/{{ movie.movie.id }}">
+                <img src="https://image.tmdb.org/t/p/w500{{ movie.movie.poster_path }}" alt="{{ movie.movie.title }}" class="movie-poster"
+                    style="background: grey;">
+            </a>
+            {% endfor %}
         </div>
+        {% else %}
+        <div class="no-reviews-container">
+            <div class="no-reviews-icon">❤</div>
+            <h3>No Favorites Yet</h3>
+            <p>No favorite movies added yet.</p>
+        </div>
+        {% endif %}
     </div>
 
     <div class="section-container">
         <h3 class="section-title">Rating</h3>
         <hr class="section-divider">
+        
         {% if user_data['rated_movies'] %}
-            {% for movie in user_data['rated_movies'] %}
-                <div>
-                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
-                    <span>{{ movie.title }} </span>
-                    <span>{{ movie.rating }}</span>
+        <div class="movies-grid">
+            {% for rating_item in user_data['rated_movies'] %}
+            
+            <a href="/movies/{{ rating_item.movie.id }}" style="text-decoration: none; display: block; width: 100%;">
+                <div class="rating-card-profile">
+                    {% if rating_item.movie %}
+                    <div class="poster-wrapper">
+                        <img src="https://image.tmdb.org/t/p/w500{{ rating_item.movie.poster_path }}"
+                            alt="{{ rating_item.movie.title }}" class="movie-poster">
+                        
+                        <div class="rating-badge-overlay">
+                            ★ {{ rating_item.rating }}
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
+            </a>
             {% endfor %}
+        </div>
         {% else %}
-        <div class="rating-placeholder">
+        <div class="no-reviews-container">
+            <div class="no-reviews-icon">★</div>
+            <h3>No Ratings Yet</h3>
             <p>Your rating activity will appear here.</p>
         </div>
         {% endif %}
@@ -108,40 +152,64 @@
     <div class="section-container">
         <h3 class="section-title">Reviews</h3>
         <hr class="section-divider">
+        
         {% if user_data.reviews %}
-        {% for review in user_data.reviews %}
-    <div class="reviews-list">
-            <div class="review-card">
-                <div class="review-poster-wrapper">
-                    <img src="https://image.tmdb.org/t/p/w500{{ review.movie.poster_path }}" alt="{{ review.movie.title }}" class="review-poster">
-                </div>
-                <div class="review-content">
-                    <div class="movie-header">
-                        <h4 class="movie-title">{{ review.movie.title }} <span class="movie-year">{{ review.movie.release_date }}</span></h4>
+        <div class="reviews-list-vertical">
+            {% for review in user_data.reviews %}
+            
+            {% if review.movie %}
+            <div class="profile-review-card">
+                
+                <a href="/movies/{{ review.movie.id }}" class="profile-review-poster-link">
+                    <div class="poster-shadow-wrapper">
+                        {% if review.movie.poster_path %}
+                        <img src="https://image.tmdb.org/t/p/w500{{ review.movie.poster_path }}"
+                            alt="{{ review.movie.title }}" class="profile-review-poster">
+                        {% else %}
+                        <div class="profile-review-poster no-img"><span>No Img</span></div>
+                        {% endif %}
                     </div>
-                    <p class="movie-description">
-                        {{ review.movie.description }}
-                    </p>
+                </a>
+
+                <div class="profile-review-content">
                     
-                    <div class="genres-list">
-                        {% for genre in review.movie.genres %}
-                        <span class="genre-tag">{{ genre }}</span>
+                    <div class="review-movie-header">
+                        <a href="/movies/{{ review.movie.id }}" class="review-movie-title-link">
+                            {{ review.movie.title }}
+                        </a>
+                        {% if review.movie.release_date %}
+                        <span class="review-movie-year">({{ review.movie.release_date[:4] }})</span>
+                        {% endif %}
+                    </div>
+                    {% if review.movie.genres %}
+                    <div class="review-genres-row">
+                        {% for genre in review.movie.genres[:3] %}
+                        <span class="mini-genre-tag">{{ genre.name }}</span>
                         {% endfor %}
                     </div>
+                    {% endif %}
 
-                    <hr class="section-divider">
-                    <div class="user-comment">
-                        <span class="comment-label">Review:</span>
+                    <div class="review-body-clean">
                         <p>{{ review.content }}</p>
+                    </div>
+                    
+                    <div class="review-footer-date">
+                        Written on {{ review.created_at }}
                     </div>
                 </div>
             </div>
+            {% endif %}
+            
+            {% endfor %}
         </div>
-        {% endfor %}
         {% else %}
-        <span>There's no reviews</span>
+        <div class="no-reviews-container">
+            <div class="no-reviews-icon">💬</div>
+            <h3>No Reviews Yet</h3>
+            <p>No reviews written yet.</p>
+        </div>
         {% endif %}
-        
     </div>
 </div>
+<script src="{{ url_for('static', path='js/follow_user.js') }}"></script>
 {% endblock %}

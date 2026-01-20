@@ -1,13 +1,10 @@
 from typing import Optional
-
 from fastapi import HTTPException, status, Depends
 from sqlmodel import Session, select, func, extract, col
-from sqlalchemy.orm import joinedload, selectinload
+from sqlalchemy.orm import selectinload
 
 from src.core.deps import get_session
 from src.modules.rating.models import RatedMovie
-
-from .schemes import MovieData
 from .models import Movie, Genre, MovieGenre
 
 
@@ -17,11 +14,10 @@ class MovieOperations:
 
     def get_all_movies(self, skip: int = 0, limit: int = 100) -> list[Movie]:
         """Retrieves all movies with pagination."""
-
         return self.session.exec(
             select(Movie).offset(skip).limit(limit)
         ).all()
-    
+
     def search_movies(self, title: str, limit: int = 5) -> list[Movie]:
         """
         Dedykowana funkcja do wyszukiwania filmów po tytule.
@@ -42,7 +38,7 @@ class MovieOperations:
     ) -> list[Movie]:
 
         query = select(Movie)
-        
+
         if year_min is not None:
             query = query.filter(extract("year", Movie.release_date) >= year_min)
         if year_max is not None:
@@ -67,33 +63,31 @@ class MovieOperations:
         elif genres:
             query = query.distinct()
 
+        # Eager loading gatunków
         query = query.options(selectinload(Movie.genres))
-
+        
         return self.session.exec(query.offset(skip).limit(limit)).all()
     
-
     def get_random_movies(self, limit: int = 100) -> list[Movie]:
-        """Retrives a random selection of movies."""
-
+        """Retrieves a random selection of movies."""
         return self.session.exec(
             select(Movie).order_by(func.random()).limit(limit)
-        )
-
+        ).all()
 
     def get_movie(self, id: int) -> Movie:
         """Retrieves a movie by its ID."""
         movie = self.session.exec(
             select(Movie).where(Movie.id == id).options(selectinload(Movie.genres))
         ).first()
-
+        
         if not movie:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, 
                 detail=f"Movie with id {id} not found."
             )
         return movie
-    
-    
+
+# Ta funkcja musi być POZA klasą
 def get_movie_operations(session: Session = Depends(get_session)):
     return MovieOperations(session)
 
@@ -111,11 +105,8 @@ class GenreOperations:
             .join(MovieGenre, Genre.id == MovieGenre.genre_id)
             .where(MovieGenre.movie_id == id)
         )
-
         return self.session.exec(q).all()
-    
+
+# Ta funkcja też musi być POZA klasą
 def get_genre_operations(session: Session = Depends(get_session)):
     return GenreOperations(session)
-    
-
-
